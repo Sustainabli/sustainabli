@@ -1,9 +1,9 @@
 {
   "files": {
-    "main.css": "/static/css/main.31d6cfe0.css",
-    "main.js": "/static/js/main.3c8653ac.js",
-    "index.html": "/index.html",
-    "main.3c8653ac.js.map": "/static/js/main.3c8653ac.js.map"
+    "main.css": "/sustainabli/static/css/main.31d6cfe0.css",
+    "main.js": "/sustainabli/static/js/main.3c8653ac.js",
+    "index.html": "/sustainabli/index.html",
+    "main.3c8653ac.js.map": "/sustainabli/static/js/main.3c8653ac.js.map"
   },
   "entrypoints": [
     "static/css/main.31d6cfe0.css",
