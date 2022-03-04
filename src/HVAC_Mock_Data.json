@@ -1,0 +1,3194 @@
+[
+  {
+    "date": "2022-01-24",
+    "time": 3,
+    "sash": 6,
+    "percent_open": 7
+  },
+  {
+    "date": "2022-01-24",
+    "time": 3,
+    "sash": 9,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-01-24",
+    "time": 16,
+    "sash": 5,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-01-24",
+    "time": 20,
+    "sash": 8,
+    "percent_open": 50
+  },
+  {
+    "date": "2022-01-24",
+    "time": 18,
+    "sash": 1,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-01-24",
+    "time": 3,
+    "sash": 8,
+    "percent_open": 52
+  },
+  {
+    "date": "2022-01-24",
+    "time": 10,
+    "sash": 10,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-01-24",
+    "time": 1,
+    "sash": 7,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-01-24",
+    "time": 12,
+    "sash": 1,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-01-24",
+    "time": 18,
+    "sash": 2,
+    "percent_open": 44
+  },
+  {
+    "date": "2022-01-24",
+    "time": 9,
+    "sash": 7,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-01-25",
+    "time": 6,
+    "sash": 3,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-01-25",
+    "time": 15,
+    "sash": 6,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-01-25",
+    "time": 20,
+    "sash": 4,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-01-25",
+    "time": 24,
+    "sash": 9,
+    "percent_open": 2
+  },
+  {
+    "date": "2022-01-25",
+    "time": 15,
+    "sash": 3,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-01-25",
+    "time": 7,
+    "sash": 2,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-01-25",
+    "time": 16,
+    "sash": 5,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-01-25",
+    "time": 11,
+    "sash": 5,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-01-25",
+    "time": 4,
+    "sash": 3,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-01-25",
+    "time": 16,
+    "sash": 9,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-01-26",
+    "time": 18,
+    "sash": 1,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-01-26",
+    "time": 19,
+    "sash": 10,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-01-26",
+    "time": 2,
+    "sash": 7,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-01-26",
+    "time": 20,
+    "sash": 10,
+    "percent_open": 47
+  },
+  {
+    "date": "2022-01-26",
+    "time": 11,
+    "sash": 1,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-01-26",
+    "time": 23,
+    "sash": 3,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-01-26",
+    "time": 19,
+    "sash": 1,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-01-26",
+    "time": 20,
+    "sash": 3,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-01-26",
+    "time": 0,
+    "sash": 10,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-01-26",
+    "time": 6,
+    "sash": 5,
+    "percent_open": 5
+  },
+  {
+    "date": "2022-01-26",
+    "time": 2,
+    "sash": 2,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-01-27",
+    "time": 9,
+    "sash": 10,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-01-27",
+    "time": 6,
+    "sash": 7,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-01-27",
+    "time": 17,
+    "sash": 8,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-01-27",
+    "time": 1,
+    "sash": 10,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-01-27",
+    "time": 23,
+    "sash": 7,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-01-27",
+    "time": 24,
+    "sash": 4,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-01-27",
+    "time": 18,
+    "sash": 10,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-01-27",
+    "time": 23,
+    "sash": 1,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-01-27",
+    "time": 3,
+    "sash": 5,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-01-27",
+    "time": 1,
+    "sash": 3,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-01-27",
+    "time": 15,
+    "sash": 4,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-01-28",
+    "time": 19,
+    "sash": 4,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-01-28",
+    "time": 0,
+    "sash": 3,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-01-28",
+    "time": 0,
+    "sash": 1,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-01-28",
+    "time": 22,
+    "sash": 2,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-01-28",
+    "time": 17,
+    "sash": 5,
+    "percent_open": 20
+  },
+  {
+    "date": "2022-01-28",
+    "time": 3,
+    "sash": 7,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-01-28",
+    "time": 16,
+    "sash": 2,
+    "percent_open": 15
+  },
+  {
+    "date": "2022-01-28",
+    "time": 17,
+    "sash": 2,
+    "percent_open": 2
+  },
+  {
+    "date": "2022-01-28",
+    "time": 11,
+    "sash": 1,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-01-28",
+    "time": 4,
+    "sash": 4,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-01-29",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-01-29",
+    "time": 23,
+    "sash": 7,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-01-29",
+    "time": 10,
+    "sash": 7,
+    "percent_open": 44
+  },
+  {
+    "date": "2022-01-29",
+    "time": 24,
+    "sash": 6,
+    "percent_open": 32
+  },
+  {
+    "date": "2022-01-29",
+    "time": 21,
+    "sash": 3,
+    "percent_open": 20
+  },
+  {
+    "date": "2022-01-29",
+    "time": 15,
+    "sash": 4,
+    "percent_open": 10
+  },
+  {
+    "date": "2022-01-29",
+    "time": 16,
+    "sash": 4,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-01-29",
+    "time": 2,
+    "sash": 3,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-01-29",
+    "time": 2,
+    "sash": 6,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-01-29",
+    "time": 1,
+    "sash": 7,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-01-29",
+    "time": 19,
+    "sash": 8,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-01-29",
+    "time": 10,
+    "sash": 2,
+    "percent_open": 39
+  },
+  {
+    "date": "2022-01-30",
+    "time": 5,
+    "sash": 2,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-01-30",
+    "time": 15,
+    "sash": 8,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-01-30",
+    "time": 18,
+    "sash": 1,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-01-30",
+    "time": 2,
+    "sash": 8,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-01-30",
+    "time": 12,
+    "sash": 5,
+    "percent_open": 50
+  },
+  {
+    "date": "2022-01-30",
+    "time": 18,
+    "sash": 4,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-01-30",
+    "time": 20,
+    "sash": 8,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-01-30",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-01-30",
+    "time": 6,
+    "sash": 7,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-01-30",
+    "time": 7,
+    "sash": 6,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-01-30",
+    "time": 17,
+    "sash": 1,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-01-31",
+    "time": 8,
+    "sash": 8,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-01-31",
+    "time": 0,
+    "sash": 9,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-01-31",
+    "time": 24,
+    "sash": 9,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-01-31",
+    "time": 22,
+    "sash": 1,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-01-31",
+    "time": 17,
+    "sash": 6,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-01-31",
+    "time": 16,
+    "sash": 6,
+    "percent_open": 39
+  },
+  {
+    "date": "2022-01-31",
+    "time": 9,
+    "sash": 9,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-01-31",
+    "time": 23,
+    "sash": 8,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-01-31",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-01-31",
+    "time": 5,
+    "sash": 4,
+    "percent_open": 40
+  },
+  {
+    "date": "2022-01-31",
+    "time": 18,
+    "sash": 4,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-02-01",
+    "time": 19,
+    "sash": 3,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-02-01",
+    "time": 8,
+    "sash": 2,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-02-01",
+    "time": 14,
+    "sash": 5,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-02-01",
+    "time": 7,
+    "sash": 1,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-02-01",
+    "time": 23,
+    "sash": 10,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-02-01",
+    "time": 13,
+    "sash": 9,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-02-01",
+    "time": 9,
+    "sash": 8,
+    "percent_open": 32
+  },
+  {
+    "date": "2022-02-01",
+    "time": 19,
+    "sash": 7,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-02-01",
+    "time": 0,
+    "sash": 1,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-02-01",
+    "time": 19,
+    "sash": 1,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-02-01",
+    "time": 8,
+    "sash": 6,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-02-01",
+    "time": 23,
+    "sash": 1,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-02-02",
+    "time": 22,
+    "sash": 4,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-02-02",
+    "time": 19,
+    "sash": 8,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-02-02",
+    "time": 23,
+    "sash": 6,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-02-02",
+    "time": 7,
+    "sash": 4,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-02-02",
+    "time": 4,
+    "sash": 2,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-02-02",
+    "time": 1,
+    "sash": 8,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-02-02",
+    "time": 16,
+    "sash": 1,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-02-02",
+    "time": 1,
+    "sash": 4,
+    "percent_open": 31
+  },
+  {
+    "date": "2022-02-02",
+    "time": 2,
+    "sash": 4,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-02-02",
+    "time": 1,
+    "sash": 4,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-02-02",
+    "time": 22,
+    "sash": 9,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-02-02",
+    "time": 0,
+    "sash": 5,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-02-03",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-02-03",
+    "time": 5,
+    "sash": 10,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-02-03",
+    "time": 9,
+    "sash": 5,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-02-03",
+    "time": 5,
+    "sash": 1,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-02-03",
+    "time": 10,
+    "sash": 4,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-02-03",
+    "time": 1,
+    "sash": 2,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-02-03",
+    "time": 15,
+    "sash": 5,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-02-03",
+    "time": 16,
+    "sash": 9,
+    "percent_open": 39
+  },
+  {
+    "date": "2022-02-03",
+    "time": 11,
+    "sash": 4,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-02-03",
+    "time": 23,
+    "sash": 9,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-02-03",
+    "time": 24,
+    "sash": 7,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-02-03",
+    "time": 6,
+    "sash": 8,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-02-04",
+    "time": 17,
+    "sash": 1,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-02-04",
+    "time": 21,
+    "sash": 2,
+    "percent_open": 52
+  },
+  {
+    "date": "2022-02-04",
+    "time": 6,
+    "sash": 1,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-02-04",
+    "time": 19,
+    "sash": 3,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-02-04",
+    "time": 5,
+    "sash": 1,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-02-04",
+    "time": 20,
+    "sash": 5,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-02-04",
+    "time": 7,
+    "sash": 1,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-02-04",
+    "time": 5,
+    "sash": 6,
+    "percent_open": 7
+  },
+  {
+    "date": "2022-02-04",
+    "time": 12,
+    "sash": 7,
+    "percent_open": 60
+  },
+  {
+    "date": "2022-02-04",
+    "time": 4,
+    "sash": 2,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-02-04",
+    "time": 2,
+    "sash": 7,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-02-04",
+    "time": 10,
+    "sash": 9,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-02-04",
+    "time": 21,
+    "sash": 10,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-02-05",
+    "time": 10,
+    "sash": 3,
+    "percent_open": 52
+  },
+  {
+    "date": "2022-02-05",
+    "time": 16,
+    "sash": 3,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-02-05",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 39
+  },
+  {
+    "date": "2022-02-05",
+    "time": 22,
+    "sash": 7,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-02-05",
+    "time": 4,
+    "sash": 3,
+    "percent_open": 15
+  },
+  {
+    "date": "2022-02-05",
+    "time": 4,
+    "sash": 8,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-02-05",
+    "time": 14,
+    "sash": 8,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-02-05",
+    "time": 1,
+    "sash": 1,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-02-05",
+    "time": 8,
+    "sash": 1,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-02-05",
+    "time": 19,
+    "sash": 1,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-02-05",
+    "time": 3,
+    "sash": 7,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-02-05",
+    "time": 13,
+    "sash": 4,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-02-05",
+    "time": 19,
+    "sash": 9,
+    "percent_open": 2
+  },
+  {
+    "date": "2022-02-06",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-02-06",
+    "time": 19,
+    "sash": 2,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-02-06",
+    "time": 12,
+    "sash": 9,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-02-07",
+    "time": 15,
+    "sash": 5,
+    "percent_open": 41
+  },
+  {
+    "date": "2022-02-07",
+    "time": 4,
+    "sash": 2,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-02-07",
+    "time": 11,
+    "sash": 4,
+    "percent_open": 20
+  },
+  {
+    "date": "2022-02-08",
+    "time": 10,
+    "sash": 7,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-02-08",
+    "time": 18,
+    "sash": 10,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-02-08",
+    "time": 3,
+    "sash": 3,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-02-09",
+    "time": 22,
+    "sash": 8,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-02-09",
+    "time": 22,
+    "sash": 9,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-02-09",
+    "time": 15,
+    "sash": 7,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-02-10",
+    "time": 14,
+    "sash": 2,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-02-10",
+    "time": 21,
+    "sash": 8,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-02-10",
+    "time": 17,
+    "sash": 8,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-02-11",
+    "time": 11,
+    "sash": 10,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-02-11",
+    "time": 9,
+    "sash": 4,
+    "percent_open": 0
+  },
+  {
+    "date": "2022-02-11",
+    "time": 15,
+    "sash": 3,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-02-12",
+    "time": 14,
+    "sash": 7,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-02-12",
+    "time": 14,
+    "sash": 10,
+    "percent_open": 41
+  },
+  {
+    "date": "2022-02-12",
+    "time": 17,
+    "sash": 9,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-02-13",
+    "time": 17,
+    "sash": 3,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-02-13",
+    "time": 17,
+    "sash": 9,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-02-13",
+    "time": 0,
+    "sash": 7,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-02-14",
+    "time": 9,
+    "sash": 4,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-02-14",
+    "time": 1,
+    "sash": 9,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-02-14",
+    "time": 15,
+    "sash": 5,
+    "percent_open": 0
+  },
+  {
+    "date": "2022-02-15",
+    "time": 4,
+    "sash": 2,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-02-15",
+    "time": 15,
+    "sash": 2,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-02-15",
+    "time": 5,
+    "sash": 2,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-02-16",
+    "time": 6,
+    "sash": 7,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-02-16",
+    "time": 7,
+    "sash": 1,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-02-16",
+    "time": 8,
+    "sash": 9,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-02-17",
+    "time": 23,
+    "sash": 9,
+    "percent_open": 31
+  },
+  {
+    "date": "2022-02-17",
+    "time": 19,
+    "sash": 2,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-02-17",
+    "time": 9,
+    "sash": 10,
+    "percent_open": 42
+  },
+  {
+    "date": "2022-02-18",
+    "time": 19,
+    "sash": 4,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-02-18",
+    "time": 15,
+    "sash": 9,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-02-18",
+    "time": 6,
+    "sash": 9,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-02-19",
+    "time": 15,
+    "sash": 2,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-02-19",
+    "time": 0,
+    "sash": 10,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-02-19",
+    "time": 6,
+    "sash": 4,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-02-20",
+    "time": 17,
+    "sash": 1,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-02-20",
+    "time": 4,
+    "sash": 6,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-02-20",
+    "time": 5,
+    "sash": 4,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-02-21",
+    "time": 16,
+    "sash": 3,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-02-21",
+    "time": 15,
+    "sash": 2,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-02-21",
+    "time": 23,
+    "sash": 10,
+    "percent_open": 10
+  },
+  {
+    "date": "2022-02-22",
+    "time": 5,
+    "sash": 7,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-02-22",
+    "time": 18,
+    "sash": 5,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-02-22",
+    "time": 14,
+    "sash": 10,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-02-23",
+    "time": 23,
+    "sash": 4,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-02-23",
+    "time": 18,
+    "sash": 5,
+    "percent_open": 20
+  },
+  {
+    "date": "2022-02-23",
+    "time": 15,
+    "sash": 3,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-02-24",
+    "time": 10,
+    "sash": 2,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-02-24",
+    "time": 2,
+    "sash": 9,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-02-25",
+    "time": 7,
+    "sash": 8,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-02-25",
+    "time": 14,
+    "sash": 7,
+    "percent_open": 15
+  },
+  {
+    "date": "2022-02-26",
+    "time": 16,
+    "sash": 8,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-02-26",
+    "time": 19,
+    "sash": 2,
+    "percent_open": 40
+  },
+  {
+    "date": "2022-02-26",
+    "time": 14,
+    "sash": 1,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-02-27",
+    "time": 21,
+    "sash": 8,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-02-27",
+    "time": 4,
+    "sash": 3,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-02-27",
+    "time": 24,
+    "sash": 4,
+    "percent_open": 41
+  },
+  {
+    "date": "2022-02-28",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-02-28",
+    "time": 3,
+    "sash": 2,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-02-28",
+    "time": 7,
+    "sash": 6,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-03-01",
+    "time": 23,
+    "sash": 2,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-03-01",
+    "time": 5,
+    "sash": 1,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-03-01",
+    "time": 15,
+    "sash": 3,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-03-02",
+    "time": 4,
+    "sash": 10,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-03-02",
+    "time": 16,
+    "sash": 4,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-03-03",
+    "time": 13,
+    "sash": 3,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-03-03",
+    "time": 14,
+    "sash": 2,
+    "percent_open": 6
+  },
+  {
+    "date": "2022-03-04",
+    "time": 18,
+    "sash": 5,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-03-04",
+    "time": 7,
+    "sash": 5,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-03-05",
+    "time": 3,
+    "sash": 9,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-03-05",
+    "time": 17,
+    "sash": 10,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-03-06",
+    "time": 16,
+    "sash": 7,
+    "percent_open": 42
+  },
+  {
+    "date": "2022-03-06",
+    "time": 16,
+    "sash": 7,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-03-07",
+    "time": 0,
+    "sash": 5,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-03-07",
+    "time": 1,
+    "sash": 6,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-03-08",
+    "time": 4,
+    "sash": 1,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-03-08",
+    "time": 3,
+    "sash": 7,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-03-09",
+    "time": 23,
+    "sash": 8,
+    "percent_open": 47
+  },
+  {
+    "date": "2022-03-09",
+    "time": 3,
+    "sash": 8,
+    "percent_open": 43
+  },
+  {
+    "date": "2022-03-10",
+    "time": 19,
+    "sash": 2,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-03-10",
+    "time": 7,
+    "sash": 8,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-03-11",
+    "time": 4,
+    "sash": 9,
+    "percent_open": 50
+  },
+  {
+    "date": "2022-03-11",
+    "time": 7,
+    "sash": 3,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-03-12",
+    "time": 8,
+    "sash": 4,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-03-12",
+    "time": 14,
+    "sash": 5,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-03-13",
+    "time": 1,
+    "sash": 6,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-03-13",
+    "time": 8,
+    "sash": 9,
+    "percent_open": 5
+  },
+  {
+    "date": "2022-03-14",
+    "time": 20,
+    "sash": 8,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-03-14",
+    "time": 13,
+    "sash": 4,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-03-15",
+    "time": 13,
+    "sash": 8,
+    "percent_open": 0
+  },
+  {
+    "date": "2022-03-15",
+    "time": 13,
+    "sash": 9,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-03-16",
+    "time": 2,
+    "sash": 1,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-03-16",
+    "time": 16,
+    "sash": 4,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-03-17",
+    "time": 3,
+    "sash": 5,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-03-17",
+    "time": 5,
+    "sash": 4,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-03-18",
+    "time": 2,
+    "sash": 8,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-03-18",
+    "time": 16,
+    "sash": 9,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-03-19",
+    "time": 12,
+    "sash": 7,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-03-19",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-03-20",
+    "time": 9,
+    "sash": 10,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-03-20",
+    "time": 12,
+    "sash": 7,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-03-21",
+    "time": 11,
+    "sash": 6,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-03-21",
+    "time": 9,
+    "sash": 6,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-03-22",
+    "time": 0,
+    "sash": 3,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-03-23",
+    "time": 0,
+    "sash": 2,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-03-23",
+    "time": 4,
+    "sash": 8,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-03-24",
+    "time": 17,
+    "sash": 2,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-03-25",
+    "time": 19,
+    "sash": 9,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-03-26",
+    "time": 24,
+    "sash": 9,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-03-27",
+    "time": 6,
+    "sash": 8,
+    "percent_open": 10
+  },
+  {
+    "date": "2022-03-28",
+    "time": 22,
+    "sash": 5,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-03-29",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-03-30",
+    "time": 22,
+    "sash": 2,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-03-31",
+    "time": 10,
+    "sash": 5,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-04-01",
+    "time": 0,
+    "sash": 6,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-04-02",
+    "time": 9,
+    "sash": 4,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-04-03",
+    "time": 24,
+    "sash": 7,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-04-04",
+    "time": 20,
+    "sash": 3,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-04-05",
+    "time": 7,
+    "sash": 4,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-04-06",
+    "time": 13,
+    "sash": 10,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-04-07",
+    "time": 7,
+    "sash": 8,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-04-08",
+    "time": 24,
+    "sash": 1,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-04-09",
+    "time": 4,
+    "sash": 6,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-04-10",
+    "time": 17,
+    "sash": 9,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-04-11",
+    "time": 8,
+    "sash": 3,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-04-12",
+    "time": 10,
+    "sash": 1,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-04-13",
+    "time": 18,
+    "sash": 4,
+    "percent_open": 40
+  },
+  {
+    "date": "2022-04-14",
+    "time": 6,
+    "sash": 7,
+    "percent_open": 60
+  },
+  {
+    "date": "2022-04-15",
+    "time": 13,
+    "sash": 2,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-04-16",
+    "time": 14,
+    "sash": 9,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-04-17",
+    "time": 3,
+    "sash": 4,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-04-18",
+    "time": 3,
+    "sash": 9,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-04-19",
+    "time": 13,
+    "sash": 1,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-04-20",
+    "time": 22,
+    "sash": 4,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-04-21",
+    "time": 7,
+    "sash": 1,
+    "percent_open": 44
+  },
+  {
+    "date": "2022-04-22",
+    "time": 7,
+    "sash": 5,
+    "percent_open": 39
+  },
+  {
+    "date": "2022-04-23",
+    "time": 18,
+    "sash": 10,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-04-24",
+    "time": 8,
+    "sash": 4,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-04-25",
+    "time": 10,
+    "sash": 7,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-04-26",
+    "time": 4,
+    "sash": 3,
+    "percent_open": 50
+  },
+  {
+    "date": "2022-04-27",
+    "time": 21,
+    "sash": 9,
+    "percent_open": 32
+  },
+  {
+    "date": "2022-04-28",
+    "time": 5,
+    "sash": 5,
+    "percent_open": 41
+  },
+  {
+    "date": "2022-04-29",
+    "time": 13,
+    "sash": 4,
+    "percent_open": 60
+  },
+  {
+    "date": "2022-04-30",
+    "time": 4,
+    "sash": 5,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-05-01",
+    "time": 22,
+    "sash": 6,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-05-02",
+    "time": 10,
+    "sash": 8,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-05-03",
+    "time": 6,
+    "sash": 3,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-05-04",
+    "time": 24,
+    "sash": 10,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-05-05",
+    "time": 10,
+    "sash": 10,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-05-06",
+    "time": 2,
+    "sash": 3,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-05-07",
+    "time": 21,
+    "sash": 6,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-05-08",
+    "time": 21,
+    "sash": 4,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-05-09",
+    "time": 16,
+    "sash": 9,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-05-10",
+    "time": 21,
+    "sash": 9,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-05-11",
+    "time": 13,
+    "sash": 9,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-05-12",
+    "time": 0,
+    "sash": 4,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-05-13",
+    "time": 4,
+    "sash": 4,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-05-14",
+    "time": 15,
+    "sash": 5,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-05-15",
+    "time": 3,
+    "sash": 2,
+    "percent_open": 21
+  },
+  {
+    "date": "2022-05-16",
+    "time": 14,
+    "sash": 3,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-05-17",
+    "time": 21,
+    "sash": 3,
+    "percent_open": 5
+  },
+  {
+    "date": "2022-05-18",
+    "time": 22,
+    "sash": 6,
+    "percent_open": 60
+  },
+  {
+    "date": "2022-05-19",
+    "time": 16,
+    "sash": 3,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-05-20",
+    "time": 22,
+    "sash": 10,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-05-21",
+    "time": 11,
+    "sash": 4,
+    "percent_open": 52
+  },
+  {
+    "date": "2022-05-22",
+    "time": 12,
+    "sash": 9,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-05-23",
+    "time": 10,
+    "sash": 1,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-05-24",
+    "time": 21,
+    "sash": 10,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-05-25",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-05-26",
+    "time": 3,
+    "sash": 1,
+    "percent_open": 2
+  },
+  {
+    "date": "2022-05-27",
+    "time": 3,
+    "sash": 6,
+    "percent_open": 42
+  },
+  {
+    "date": "2022-05-28",
+    "time": 2,
+    "sash": 7,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-05-29",
+    "time": 4,
+    "sash": 9,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-05-30",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 40
+  },
+  {
+    "date": "2022-05-31",
+    "time": 11,
+    "sash": 10,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-06-01",
+    "time": 14,
+    "sash": 5,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-06-02",
+    "time": 9,
+    "sash": 1,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-06-03",
+    "time": 19,
+    "sash": 9,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-06-04",
+    "time": 8,
+    "sash": 6,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-06-05",
+    "time": 10,
+    "sash": 6,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-06-06",
+    "time": 12,
+    "sash": 6,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-06-07",
+    "time": 4,
+    "sash": 2,
+    "percent_open": 15
+  },
+  {
+    "date": "2022-06-08",
+    "time": 19,
+    "sash": 5,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-06-09",
+    "time": 23,
+    "sash": 10,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-06-10",
+    "time": 17,
+    "sash": 4,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-06-11",
+    "time": 15,
+    "sash": 10,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-06-12",
+    "time": 11,
+    "sash": 5,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-06-13",
+    "time": 23,
+    "sash": 1,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-06-14",
+    "time": 3,
+    "sash": 1,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-06-15",
+    "time": 16,
+    "sash": 9,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-06-16",
+    "time": 7,
+    "sash": 9,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-06-17",
+    "time": 20,
+    "sash": 9,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-06-18",
+    "time": 13,
+    "sash": 4,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-06-19",
+    "time": 10,
+    "sash": 6,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-06-20",
+    "time": 11,
+    "sash": 9,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-06-21",
+    "time": 1,
+    "sash": 9,
+    "percent_open": 50
+  },
+  {
+    "date": "2022-06-22",
+    "time": 1,
+    "sash": 5,
+    "percent_open": 44
+  },
+  {
+    "date": "2022-06-23",
+    "time": 22,
+    "sash": 9,
+    "percent_open": 7
+  },
+  {
+    "date": "2022-06-24",
+    "time": 18,
+    "sash": 8,
+    "percent_open": 43
+  },
+  {
+    "date": "2022-06-25",
+    "time": 19,
+    "sash": 2,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-06-26",
+    "time": 7,
+    "sash": 2,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-06-27",
+    "time": 15,
+    "sash": 10,
+    "percent_open": 5
+  },
+  {
+    "date": "2022-06-28",
+    "time": 13,
+    "sash": 5,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-06-29",
+    "time": 18,
+    "sash": 1,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-06-30",
+    "time": 24,
+    "sash": 3,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-07-01",
+    "time": 8,
+    "sash": 1,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-07-02",
+    "time": 5,
+    "sash": 4,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-07-03",
+    "time": 3,
+    "sash": 2,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-07-04",
+    "time": 12,
+    "sash": 6,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-07-05",
+    "time": 23,
+    "sash": 5,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-07-06",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 6
+  },
+  {
+    "date": "2022-07-07",
+    "time": 2,
+    "sash": 2,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-07-08",
+    "time": 1,
+    "sash": 8,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-07-09",
+    "time": 12,
+    "sash": 7,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-07-10",
+    "time": 21,
+    "sash": 7,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-07-11",
+    "time": 5,
+    "sash": 1,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-07-12",
+    "time": 17,
+    "sash": 8,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-07-13",
+    "time": 12,
+    "sash": 2,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-07-14",
+    "time": 7,
+    "sash": 7,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-07-15",
+    "time": 11,
+    "sash": 5,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-07-16",
+    "time": 23,
+    "sash": 9,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-07-17",
+    "time": 3,
+    "sash": 9,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-07-18",
+    "time": 17,
+    "sash": 4,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-07-19",
+    "time": 18,
+    "sash": 7,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-07-20",
+    "time": 22,
+    "sash": 4,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-07-21",
+    "time": 3,
+    "sash": 10,
+    "percent_open": 40
+  },
+  {
+    "date": "2022-07-22",
+    "time": 7,
+    "sash": 8,
+    "percent_open": 42
+  },
+  {
+    "date": "2022-07-23",
+    "time": 13,
+    "sash": 1,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-07-24",
+    "time": 17,
+    "sash": 4,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-07-25",
+    "time": 15,
+    "sash": 5,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-07-26",
+    "time": 8,
+    "sash": 10,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-07-27",
+    "time": 21,
+    "sash": 1,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-07-28",
+    "time": 16,
+    "sash": 5,
+    "percent_open": 0
+  },
+  {
+    "date": "2022-07-29",
+    "time": 23,
+    "sash": 8,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-07-30",
+    "time": 18,
+    "sash": 9,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-07-31",
+    "time": 10,
+    "sash": 4,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-08-01",
+    "time": 7,
+    "sash": 8,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-08-02",
+    "time": 12,
+    "sash": 5,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-08-03",
+    "time": 7,
+    "sash": 5,
+    "percent_open": 14
+  },
+  {
+    "date": "2022-08-04",
+    "time": 15,
+    "sash": 10,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-08-05",
+    "time": 17,
+    "sash": 6,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-08-06",
+    "time": 23,
+    "sash": 1,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-08-07",
+    "time": 1,
+    "sash": 8,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-08-08",
+    "time": 5,
+    "sash": 3,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-08-09",
+    "time": 10,
+    "sash": 9,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-08-10",
+    "time": 3,
+    "sash": 3,
+    "percent_open": 31
+  },
+  {
+    "date": "2022-08-11",
+    "time": 13,
+    "sash": 9,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-08-12",
+    "time": 14,
+    "sash": 5,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-08-13",
+    "time": 6,
+    "sash": 6,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-08-14",
+    "time": 5,
+    "sash": 8,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-08-15",
+    "time": 3,
+    "sash": 4,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-08-16",
+    "time": 14,
+    "sash": 6,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-08-17",
+    "time": 18,
+    "sash": 1,
+    "percent_open": 15
+  },
+  {
+    "date": "2022-08-18",
+    "time": 16,
+    "sash": 2,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-08-19",
+    "time": 16,
+    "sash": 6,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-08-20",
+    "time": 23,
+    "sash": 1,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-08-21",
+    "time": 22,
+    "sash": 8,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-08-22",
+    "time": 12,
+    "sash": 9,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-08-23",
+    "time": 1,
+    "sash": 10,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-08-24",
+    "time": 15,
+    "sash": 3,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-08-25",
+    "time": 13,
+    "sash": 3,
+    "percent_open": 32
+  },
+  {
+    "date": "2022-08-26",
+    "time": 9,
+    "sash": 8,
+    "percent_open": 57
+  },
+  {
+    "date": "2022-08-27",
+    "time": 22,
+    "sash": 5,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-08-28",
+    "time": 9,
+    "sash": 2,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-08-29",
+    "time": 11,
+    "sash": 6,
+    "percent_open": 42
+  },
+  {
+    "date": "2022-08-30",
+    "time": 16,
+    "sash": 7,
+    "percent_open": 3
+  },
+  {
+    "date": "2022-08-31",
+    "time": 22,
+    "sash": 6,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-09-01",
+    "time": 3,
+    "sash": 5,
+    "percent_open": 31
+  },
+  {
+    "date": "2022-09-02",
+    "time": 3,
+    "sash": 1,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-09-03",
+    "time": 15,
+    "sash": 3,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-09-04",
+    "time": 17,
+    "sash": 3,
+    "percent_open": 28
+  },
+  {
+    "date": "2022-09-05",
+    "time": 1,
+    "sash": 7,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-09-06",
+    "time": 19,
+    "sash": 3,
+    "percent_open": 20
+  },
+  {
+    "date": "2022-09-07",
+    "time": 8,
+    "sash": 8,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-09-08",
+    "time": 16,
+    "sash": 9,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-09-09",
+    "time": 12,
+    "sash": 10,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-09-10",
+    "time": 1,
+    "sash": 5,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-09-11",
+    "time": 21,
+    "sash": 2,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-09-12",
+    "time": 17,
+    "sash": 10,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-09-13",
+    "time": 6,
+    "sash": 4,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-09-14",
+    "time": 5,
+    "sash": 3,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-09-15",
+    "time": 9,
+    "sash": 4,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-09-16",
+    "time": 1,
+    "sash": 7,
+    "percent_open": 27
+  },
+  {
+    "date": "2022-09-17",
+    "time": 3,
+    "sash": 3,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-09-18",
+    "time": 7,
+    "sash": 10,
+    "percent_open": 20
+  },
+  {
+    "date": "2022-09-19",
+    "time": 10,
+    "sash": 3,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-09-20",
+    "time": 20,
+    "sash": 10,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-09-21",
+    "time": 1,
+    "sash": 9,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-09-22",
+    "time": 23,
+    "sash": 9,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-09-23",
+    "time": 24,
+    "sash": 7,
+    "percent_open": 36
+  },
+  {
+    "date": "2022-09-24",
+    "time": 13,
+    "sash": 1,
+    "percent_open": 53
+  },
+  {
+    "date": "2022-09-25",
+    "time": 22,
+    "sash": 4,
+    "percent_open": 52
+  },
+  {
+    "date": "2022-09-26",
+    "time": 15,
+    "sash": 5,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-09-27",
+    "time": 2,
+    "sash": 1,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-09-28",
+    "time": 3,
+    "sash": 7,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-09-29",
+    "time": 22,
+    "sash": 6,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-09-30",
+    "time": 13,
+    "sash": 2,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-10-01",
+    "time": 16,
+    "sash": 6,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-10-02",
+    "time": 17,
+    "sash": 4,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-10-03",
+    "time": 11,
+    "sash": 4,
+    "percent_open": 16
+  },
+  {
+    "date": "2022-10-04",
+    "time": 13,
+    "sash": 4,
+    "percent_open": 1
+  },
+  {
+    "date": "2022-10-05",
+    "time": 19,
+    "sash": 1,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-10-06",
+    "time": 8,
+    "sash": 1,
+    "percent_open": 43
+  },
+  {
+    "date": "2022-10-07",
+    "time": 20,
+    "sash": 10,
+    "percent_open": 30
+  },
+  {
+    "date": "2022-10-08",
+    "time": 11,
+    "sash": 3,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-10-09",
+    "time": 7,
+    "sash": 3,
+    "percent_open": 33
+  },
+  {
+    "date": "2022-10-10",
+    "time": 3,
+    "sash": 9,
+    "percent_open": 34
+  },
+  {
+    "date": "2022-10-11",
+    "time": 8,
+    "sash": 3,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-10-12",
+    "time": 12,
+    "sash": 5,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-10-13",
+    "time": 22,
+    "sash": 9,
+    "percent_open": 56
+  },
+  {
+    "date": "2022-10-14",
+    "time": 1,
+    "sash": 3,
+    "percent_open": 2
+  },
+  {
+    "date": "2022-10-15",
+    "time": 13,
+    "sash": 4,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-10-16",
+    "time": 22,
+    "sash": 7,
+    "percent_open": 24
+  },
+  {
+    "date": "2022-10-17",
+    "time": 8,
+    "sash": 1,
+    "percent_open": 42
+  },
+  {
+    "date": "2022-10-18",
+    "time": 5,
+    "sash": 5,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-10-19",
+    "time": 12,
+    "sash": 3,
+    "percent_open": 47
+  },
+  {
+    "date": "2022-10-20",
+    "time": 21,
+    "sash": 5,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-10-21",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-10-22",
+    "time": 12,
+    "sash": 1,
+    "percent_open": 46
+  },
+  {
+    "date": "2022-10-23",
+    "time": 19,
+    "sash": 4,
+    "percent_open": 40
+  },
+  {
+    "date": "2022-10-24",
+    "time": 5,
+    "sash": 6,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-10-25",
+    "time": 14,
+    "sash": 5,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-10-26",
+    "time": 19,
+    "sash": 4,
+    "percent_open": 54
+  },
+  {
+    "date": "2022-10-27",
+    "time": 2,
+    "sash": 6,
+    "percent_open": 37
+  },
+  {
+    "date": "2022-10-28",
+    "time": 24,
+    "sash": 3,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-10-29",
+    "time": 8,
+    "sash": 3,
+    "percent_open": 31
+  },
+  {
+    "date": "2022-10-30",
+    "time": 0,
+    "sash": 10,
+    "percent_open": 44
+  },
+  {
+    "date": "2022-10-31",
+    "time": 12,
+    "sash": 4,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-11-01",
+    "time": 8,
+    "sash": 4,
+    "percent_open": 0
+  },
+  {
+    "date": "2022-11-02",
+    "time": 6,
+    "sash": 2,
+    "percent_open": 9
+  },
+  {
+    "date": "2022-11-03",
+    "time": 10,
+    "sash": 7,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-11-04",
+    "time": 10,
+    "sash": 3,
+    "percent_open": 48
+  },
+  {
+    "date": "2022-11-05",
+    "time": 21,
+    "sash": 10,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-11-06",
+    "time": 17,
+    "sash": 4,
+    "percent_open": 43
+  },
+  {
+    "date": "2022-11-07",
+    "time": 9,
+    "sash": 8,
+    "percent_open": 2
+  },
+  {
+    "date": "2022-11-08",
+    "time": 22,
+    "sash": 2,
+    "percent_open": 39
+  },
+  {
+    "date": "2022-11-09",
+    "time": 6,
+    "sash": 3,
+    "percent_open": 58
+  },
+  {
+    "date": "2022-11-10",
+    "time": 20,
+    "sash": 5,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-11-11",
+    "time": 15,
+    "sash": 2,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-11-12",
+    "time": 18,
+    "sash": 5,
+    "percent_open": 50
+  },
+  {
+    "date": "2022-11-13",
+    "time": 0,
+    "sash": 6,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-11-14",
+    "time": 11,
+    "sash": 4,
+    "percent_open": 38
+  },
+  {
+    "date": "2022-11-15",
+    "time": 13,
+    "sash": 7,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-11-16",
+    "time": 1,
+    "sash": 3,
+    "percent_open": 43
+  },
+  {
+    "date": "2022-11-17",
+    "time": 2,
+    "sash": 10,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-11-18",
+    "time": 14,
+    "sash": 10,
+    "percent_open": 7
+  },
+  {
+    "date": "2022-11-19",
+    "time": 9,
+    "sash": 3,
+    "percent_open": 5
+  },
+  {
+    "date": "2022-11-20",
+    "time": 12,
+    "sash": 2,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-11-21",
+    "time": 6,
+    "sash": 9,
+    "percent_open": 29
+  },
+  {
+    "date": "2022-11-22",
+    "time": 23,
+    "sash": 5,
+    "percent_open": 22
+  },
+  {
+    "date": "2022-11-23",
+    "time": 17,
+    "sash": 9,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-11-24",
+    "time": 21,
+    "sash": 2,
+    "percent_open": 12
+  },
+  {
+    "date": "2022-11-25",
+    "time": 5,
+    "sash": 5,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-11-26",
+    "time": 24,
+    "sash": 4,
+    "percent_open": 41
+  },
+  {
+    "date": "2022-11-27",
+    "time": 5,
+    "sash": 2,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-11-28",
+    "time": 24,
+    "sash": 8,
+    "percent_open": 52
+  },
+  {
+    "date": "2022-11-29",
+    "time": 5,
+    "sash": 5,
+    "percent_open": 11
+  },
+  {
+    "date": "2022-11-30",
+    "time": 18,
+    "sash": 5,
+    "percent_open": 51
+  },
+  {
+    "date": "2022-12-01",
+    "time": 18,
+    "sash": 3,
+    "percent_open": 8
+  },
+  {
+    "date": "2022-12-02",
+    "time": 24,
+    "sash": 6,
+    "percent_open": 35
+  },
+  {
+    "date": "2022-12-03",
+    "time": 16,
+    "sash": 5,
+    "percent_open": 23
+  },
+  {
+    "date": "2022-12-04",
+    "time": 0,
+    "sash": 3,
+    "percent_open": 44
+  },
+  {
+    "date": "2022-12-05",
+    "time": 23,
+    "sash": 5,
+    "percent_open": 18
+  },
+  {
+    "date": "2022-12-06",
+    "time": 7,
+    "sash": 1,
+    "percent_open": 59
+  },
+  {
+    "date": "2022-12-07",
+    "time": 20,
+    "sash": 6,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-12-08",
+    "time": 10,
+    "sash": 2,
+    "percent_open": 4
+  },
+  {
+    "date": "2022-12-09",
+    "time": 4,
+    "sash": 1,
+    "percent_open": 19
+  },
+  {
+    "date": "2022-12-10",
+    "time": 23,
+    "sash": 9,
+    "percent_open": 45
+  },
+  {
+    "date": "2022-12-11",
+    "time": 16,
+    "sash": 7,
+    "percent_open": 25
+  },
+  {
+    "date": "2022-12-12",
+    "time": 2,
+    "sash": 3,
+    "percent_open": 31
+  },
+  {
+    "date": "2022-12-13",
+    "time": 2,
+    "sash": 9,
+    "percent_open": 17
+  },
+  {
+    "date": "2022-12-14",
+    "time": 23,
+    "sash": 5,
+    "percent_open": 26
+  },
+  {
+    "date": "2022-12-15",
+    "time": 22,
+    "sash": 9,
+    "percent_open": 49
+  },
+  {
+    "date": "2022-12-16",
+    "time": 6,
+    "sash": 5,
+    "percent_open": 55
+  },
+  {
+    "date": "2022-12-17",
+    "time": 16,
+    "sash": 8,
+    "percent_open": 13
+  },
+  {
+    "date": "2022-12-18",
+    "time": 21,
+    "sash": 8,
+    "percent_open": 6
+  }
+]
