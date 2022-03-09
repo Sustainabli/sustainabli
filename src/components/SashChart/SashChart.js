@@ -9,7 +9,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import data from '../../HVAC_Mock_Data.json';
+import data from '../../mock-data/mock-sash.json';
+import { CHART_COLORS } from '../../utils/Constants.js';
 
 ChartJS.register(
   CategoryScale,
@@ -22,19 +23,25 @@ ChartJS.register(
 
 class SashChart extends React.Component {
   render() {
-    // For now we are using the dates in the mock data as labels. We need to aggregate this over months e.g. January
-    const labels = data.map(datum => datum.date);
+    const labels = data.map(datum => new Date(datum.time).toLocaleString());
+
+    // For now we are extracting keys from first entry. Likely first data entry might NOT have all keys so we need a better solution down the line
+    // We also want to remove 'time' from the list of data keys (this simplifies looping through line graph keys)
+    const dataKeys = Object.keys(data[0]).filter(key => key !== 'time');
+
     const sashData = {
       labels,
-      datasets: [
-        {
-          label: "Sash Data",
-          data: data.map(datum => datum.sash),
-          borderColor: 'rgb(53, 162, 235)',
-          backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        }
-      ]
+      datasets: dataKeys.map(key => {
+        const colorIndex = dataKeys.indexOf(key);
+        return {
+          label: key,
+          data: data.map(datum => datum[key]),
+          borderColor:  CHART_COLORS[colorIndex],
+          backgroundColor: `${CHART_COLORS[colorIndex]}80`,
+        };
+      })
     };
+
     const options = {
       responsive: true,
       plugins: {
