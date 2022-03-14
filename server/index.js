@@ -47,7 +47,6 @@ db.serialize(() => {
 db.all("SELECT * FROM mytable", (err, rows) => {
     if(err) return err.message
     rows.forEach((row) => {
-        console.log(row)
     })
 })
 
