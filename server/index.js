@@ -7,7 +7,6 @@ const port = 3000
 
 /**TODO
  * 
- * -Fix Datetime from '01-Oct-18 12:00:00 AM EDT' to ISO
  * -Add endpoints for SQL Queries
  * -Add params for SQL Queries
  * -Watch for SQL Injection, terminate all queries
@@ -18,11 +17,13 @@ const port = 3000
 app.get('/', (req, res) => {
     res.send('Hello Me')
 })
-
+/*
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`)
-})
+})*/
 
+
+//The following populates database
 sqldata = fs.readFileSync('./static/mock-sash.sql').toString().split(';')
 
 db = new sqlite3.Database(':memory:', (err) => {
@@ -36,6 +37,12 @@ db.serialize(() => {
     sqldata.forEach((elm, idx) => {
         if(elm) {
             elm += ';'
+            if(idx > 0) {
+                rx = new RegExp("\'.*?\'")
+                date_val = elm.match(rx)
+                iso_date = "\"" + (new Date(date_val[0]).toISOString()) + "\""
+                elm = elm.replace(date_val[0], iso_date)
+            }
             db.run(elm, (err) => {
                 if(err) console.error(err.message)
             })
@@ -44,13 +51,15 @@ db.serialize(() => {
     db.run('COMMIT;')
 })
 
-db.all("SELECT * FROM mytable", (err, rows) => {
-    if(err) return err.message
-    rows.forEach((row) => {
-    })
-})
-
 db.close((err) => {
     if (err) return console.error(err.message)
     console.log('Closed in-memory db')
 })
+
+/*
+db.all("SELECT time FROM mytable WHERE time BETWEEN \'2018-10-16\' AND \'2018-10-18\'", (err, rows) => {
+    if(err) return err.message
+    rows.forEach((row) => {
+        console.log(row)
+    })
+})*/
