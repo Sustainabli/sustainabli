@@ -5,6 +5,10 @@ const fs = require('fs')
 const app = express()
 const port = 3000
 
+function buildSQL(gran) {
+    "SELECT * FROM mytable"
+}
+
 /**TODO
  * 
  * -Add endpoints for SQL Queries
@@ -13,14 +17,24 @@ const port = 3000
  * 
  */
 
+/**
+ * /?granularity=???&
+ * Granularity:
+ *      None = all relevant data
+ *      Day
+ *      Week
+ *      Month
+ *      Year
+ */
+app.get('data/:granularity', (req, res) => {
+    res.send(req.params)
+    console.log(req.params)
 
-app.get('/', (req, res) => {
-    res.send('Hello Me')
 })
-/*
+
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`)
-})*/
+})
 
 
 //The following populates database
