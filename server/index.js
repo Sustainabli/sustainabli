@@ -48,9 +48,9 @@ db.serialize(() => {
     db.run('COMMIT;')
 })
 
-app.get('/data/:gran', (req, res) => {
+app.get('/:gran', (req, res) => {
     gran = req.params.gran.toLocaleLowerCase()
-    group_map = {"none": null, "day": "%d", "month": "%d", "year": "%y"}
+    group_map = {"none": null, "day": "%d", "month": "%m", "year": "%y"}
 
     if(!Object.keys(group_map).includes(gran)){
         res.status(405)
