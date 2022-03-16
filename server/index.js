@@ -5,18 +5,6 @@ const fs = require('fs')
 const app = express()
 const port = 3000
 
-function buildSQL(gran) {
-    "SELECT * FROM mytable"
-}
-
-/**TODO
- * 
- * -Add endpoints for SQL Queries
- * -Add params for SQL Queries
- * -Watch for SQL Injection, terminate all queries
- * 
- */
-
 /**
  * /?granularity=???&
  * Granularity:
@@ -26,16 +14,11 @@ function buildSQL(gran) {
  *      Month
  *      Year
  */
-app.get('data/:granularity', (req, res) => {
-    res.send(req.params)
-    console.log(req.params)
 
-})
 
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`)
 })
-
 
 //The following populates database
 sqldata = fs.readFileSync('./static/mock-sash.sql').toString().split(';')
@@ -65,15 +48,55 @@ db.serialize(() => {
     db.run('COMMIT;')
 })
 
+app.get('/data/:gran', (req, res) => {
+    gran = req.params.gran.toLocaleLowerCase()
+    group_map = {"none": null, "day": "%d", "month": "%d", "year": "%y"}
+
+    if(!Object.keys(group_map).includes(gran)){
+        res.status(405)
+        return res.send("Argument is incorrect")
+    }
+    db.all("PRAGMA table_info(mytable)", (err, rows) => {
+        if (err) {
+            console.error(err.message)
+            res.status(400)
+            return res.send(err.message)
+        }
+
+        sql = "SELECT "
+        param = []
+
+        col_names = rows.map((x) => x['name'])
+        col_names.shift()
+
+        if(gran === "none") {
+            sql += "*, "
+        } else {
+            param = [group_map[gran]]
+            col_names.forEach((val) => {
+                sql += "avg(\"" + val + "\") as " + val + ", "
+            })
+        }
+        sql += "time FROM mytable"
+        if(!(gran === "none")) {
+            sql += " group by strftime(?, time);"
+        } else {
+            sql += ";"
+        }
+        db.all(sql, param, (err, rows) => {
+            if(err) {
+                console.log(err.message)
+                res.status(400)
+                return res.send(err.message)
+            }
+            res.send(rows)
+        })
+    })
+})
+
+
+/*
 db.close((err) => {
     if (err) return console.error(err.message)
     console.log('Closed in-memory db')
-})
-
-/*
-db.all("SELECT time FROM mytable WHERE time BETWEEN \'2018-10-16\' AND \'2018-10-18\'", (err, rows) => {
-    if(err) return err.message
-    rows.forEach((row) => {
-        console.log(row)
-    })
 })*/
