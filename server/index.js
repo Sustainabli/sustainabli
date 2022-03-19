@@ -1,9 +1,10 @@
 const express = require('express')
 const sqlite3 = require('sqlite3')
+const path = require('path')
 const fs = require('fs')
 
 const app = express()
-const port = 3000
+const port = 5000
 
 /**
  * /?granularity=???&
@@ -21,7 +22,7 @@ app.listen(port, (req, res) => {
 })
 
 //The following populates database
-sqldata = fs.readFileSync('./static/mock-sash.sql').toString().split(';')
+sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-sash.sql')).toString().split(';')
 
 db = new sqlite3.Database(':memory:', (err) => {
     if (err) return console.error(err.message)
