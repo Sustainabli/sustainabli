@@ -1,12 +1,13 @@
 {
   "files": {
-    "main.css": "/sustainabli/static/css/main.31d6cfe0.css",
-    "main.js": "/sustainabli/static/js/main.7c5d1872.js",
+    "main.css": "/sustainabli/static/css/main.f1b9fb01.css",
+    "main.js": "/sustainabli/static/js/main.bf1891c6.js",
     "index.html": "/sustainabli/index.html",
-    "main.7c5d1872.js.map": "/sustainabli/static/js/main.7c5d1872.js.map"
+    "main.f1b9fb01.css.map": "/sustainabli/static/css/main.f1b9fb01.css.map",
+    "main.bf1891c6.js.map": "/sustainabli/static/js/main.bf1891c6.js.map"
   },
   "entrypoints": [
-    "static/css/main.31d6cfe0.css",
-    "static/js/main.7c5d1872.js"
+    "static/css/main.f1b9fb01.css",
+    "static/js/main.bf1891c6.js"
   ]
 }
