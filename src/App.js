@@ -9,10 +9,10 @@ import "react-toggle/style.css"
 import SashChart from './components/SashChart/SashChart';
 import {
   NONE,
-  DAY,
-  WEEK,
-  MONTH,
-  YEAR,
+  // DAY,
+  // WEEK,
+  // MONTH,
+  // YEAR,
   TIME_GRANULARITIES,
 } from './utils/Constants.js';
 import {fetchFilteredData} from './utils/Utils.js';

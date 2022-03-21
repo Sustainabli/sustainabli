@@ -2,9 +2,10 @@ const express = require('express')
 const sqlite3 = require('sqlite3')
 const path = require('path')
 const fs = require('fs')
+const { clear } = require('console')
 
 const app = express()
-const port = 5000
+const port = process.env.PORT || 5000
 
 /**
  * /?granularity=???&
@@ -16,6 +17,7 @@ const port = 5000
  *      Year
  */
 
+app.use(express.static(path.resolve(__dirname, '../build')));
 
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`)
@@ -95,6 +97,9 @@ app.get('/:gran', (req, res) => {
     })
 })
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+});
 
 /*
 db.close((err) => {
