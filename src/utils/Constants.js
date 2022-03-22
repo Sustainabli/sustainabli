@@ -78,7 +78,7 @@ export const TIME_GRANULARITIES = [NONE, DAY, MONTH, YEAR];
 export const ONE_DAY = "1day"
 export const THREE_DAYS = "3day"
 export const ONE_WEEK = "7day"
-export const ONE_MONTH = "3month"
+export const ONE_MONTH = "1month"
 export const ONE_YEAR = "1year"
 
 

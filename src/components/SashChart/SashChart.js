@@ -143,7 +143,7 @@ class SashChart extends React.Component {
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">Filter Data</Modal.Title>
+            <Modal.Title id="contained-modal-title-vcenter">Filter Sash Data</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <span> Look at Past
@@ -151,10 +151,10 @@ class SashChart extends React.Component {
                 {TIME_RANGES.map((range, idx) => (
                   <ToggleButton
                     key={idx}
-                    id={`time-range-${idx}`}
+                    id={`time-ranges-${idx}`}
                     type="radio"
                     variant="primary"
-                    name="radio"
+                    name="time-ranges-radio"
                     value={range}
                     checked={tempFilters.timeRange === range}
                     onChange={e => this.onChangeTimeRange(e.currentTarget.value)}
@@ -170,10 +170,10 @@ class SashChart extends React.Component {
                 {TIME_GRANULARITIES.map((granularity, idx) => (
                   <ToggleButton
                     key={idx}
-                    id={`time-granularity-${idx}`}
+                    id={`time-granularities-${idx}`}
                     type="radio"
                     variant="primary"
-                    name="radio"
+                    name="time-granularities-radio"
                     value={granularity}
                     checked={tempFilters.granularity === granularity}
                     onChange={e => this.onChangeTempGranularity(e.currentTarget.value)}
@@ -196,7 +196,7 @@ class SashChart extends React.Component {
             <Button variant="primary" onClick={this.onSubmitUpdateFilters}>Update Filters</Button>
           </Modal.Body>
         </Modal>
-        <Button variant="primary" onClick={this.onShowFilterModal}>Filter Data</Button>
+        <Button variant="primary" onClick={this.onShowFilterModal}>Filter Sash Data</Button>
         <Line options={options} data={sashData}/>
       </div>
     );
