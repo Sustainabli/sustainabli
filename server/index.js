@@ -1,6 +1,7 @@
 const express = require('express')
 const sqlite3 = require('sqlite3')
 const fs = require('fs')
+const { Router } = require('express')
 
 const app = express()
 const port = 3000
@@ -50,12 +51,22 @@ db.serialize(() => {
 
 app.get('/:gran', (req, res) => {
     gran = req.params.gran.toLocaleLowerCase()
+    relative = req.query.relative ? req.query.relative.toLocaleLowerCase() : null
+    offset = req.query.offset ? req.query.offset.toLocaleLowerCase() : null
+
     group_map = {"none": null, "day": "%d", "month": "%m", "year": "%y"}
+    relative_map = {"1day":"-1 days", "3day": "-3 days", "7day": "-7 days", "1month": "-1 month", "1year": "-1 year"}
 
     if(!Object.keys(group_map).includes(gran)){
         res.status(405)
         return res.send("Argument is incorrect")
     }
+    if(relative != null && !Object.keys(relative_map).includes(relative)){
+        console.log("Error")
+        res.status(405)
+        return res.send("Argument is incorrect")
+    }
+
     db.all("PRAGMA table_info(mytable)", (err, rows) => {
         if (err) {
             console.error(err.message)
@@ -72,17 +83,28 @@ app.get('/:gran', (req, res) => {
         if(gran === "none") {
             sql += "*, "
         } else {
-            param = [group_map[gran]]
             col_names.forEach((val) => {
-                sql += "avg(\"" + val + "\") as " + val + ", "
+                sql += "round(avg(\"" + val + "\"), 3) as " + val + ", "
             })
         }
         sql += "time FROM mytable"
-        if(!(gran === "none")) {
-            sql += " group by strftime(?, time);"
-        } else {
-            sql += ";"
+
+        //Insert date relative
+        if(relative) {
+            sql += " WHERE time BETWEEN datetime(?, ?) AND datetime(?)"
+            curr_date = offset ? new Date(offset).toISOString() : (new Date()).toISOString()
+            param.push(curr_date)
+            param.push(relative_map[relative])
+            param.push(curr_date)
         }
+
+        //Insert groupby
+        if(!(gran === "none")) {
+            sql += " group by strftime(?, time)"
+            param.push(group_map[gran])
+        }
+        sql += ";"
+
         db.all(sql, param, (err, rows) => {
             if(err) {
                 console.log(err.message)
@@ -93,8 +115,10 @@ app.get('/:gran', (req, res) => {
         })
     })
 })
-
-
+"SELECT *, time FROM mytable WHERE time BETWEEN datetime(?, '-7 days') AND datetime(?) GROUP BY strftime(?, time);"
+db.all("SELECT *, time FROM mytable WHERE time BETWEEN datetime(?, ?) AND datetime(?);", ['2018-10-15T00:00:00.000Z', '-3 days','2018-10-15T00:00:00.000Z'], (err, rows) => {
+    console.log(rows)
+})
 /*
 db.close((err) => {
     if (err) return console.error(err.message)
