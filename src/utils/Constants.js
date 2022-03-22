@@ -72,10 +72,14 @@ export const WEEK = "week";
 export const MONTH = "month";
 export const YEAR = "year";
 
-export const TIME_GRANULARITIES = {
-  none: 0,
-  day: 1,
-  week: 2,
-  month: 3,
-  year: 4,
-};
+export const TIME_GRANULARITIES = [NONE, DAY, MONTH, YEAR];
+// export const TIME_GRANULARITIES = [NONE, DAY, WEEK, MONTH, YEAR];
+
+export const ONE_DAY = "1day"
+export const THREE_DAYS = "3day"
+export const ONE_WEEK = "7day"
+export const ONE_MONTH = "3month"
+export const ONE_YEAR = "1year"
+
+
+export const TIME_RANGES = [ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MONTH, ONE_YEAR];
