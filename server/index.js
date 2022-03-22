@@ -115,10 +115,7 @@ app.get('/:gran', (req, res) => {
         })
     })
 })
-"SELECT *, time FROM mytable WHERE time BETWEEN datetime(?, '-7 days') AND datetime(?) GROUP BY strftime(?, time);"
-db.all("SELECT *, time FROM mytable WHERE time BETWEEN datetime(?, ?) AND datetime(?);", ['2018-10-15T00:00:00.000Z', '-3 days','2018-10-15T00:00:00.000Z'], (err, rows) => {
-    console.log(rows)
-})
+
 /*
 db.close((err) => {
     if (err) return console.error(err.message)
