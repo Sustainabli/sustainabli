@@ -1,10 +1,11 @@
 const express = require('express')
 const sqlite3 = require('sqlite3')
+const path = require('path')
 const fs = require('fs')
 const { Router } = require('express')
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 5000
 
 /**
  * /?granularity=???&
@@ -16,13 +17,14 @@ const port = 3000
  *      Year
  */
 
+app.use(express.static(path.resolve(__dirname, '../build')));
 
 app.listen(port, (req, res) => {
     console.log(`Listening on port ${port}`)
 })
 
 //The following populates database
-sqldata = fs.readFileSync('./static/mock-sash.sql').toString().split(';')
+sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-sash.sql')).toString().split(';')
 
 db = new sqlite3.Database(':memory:', (err) => {
     if (err) return console.error(err.message)
@@ -115,6 +117,10 @@ app.get('/:gran', (req, res) => {
         })
     })
 })
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+});
 
 /*
 db.close((err) => {

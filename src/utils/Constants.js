@@ -66,16 +66,16 @@ export const CHART_COLORS = [
   '#E85EBE',
 ]
 
-export const NONE = "NONE";
-export const DAY = "DAY";
-export const WEEK = "WEEK";
-export const MONTH = "MONTH";
-export const YEAR = "YEAR";
+export const NONE = "none";
+export const DAY = "day";
+export const WEEK = "week";
+export const MONTH = "month";
+export const YEAR = "year";
 
-export const TIME_GRANULARITY = {
-  NONE: 0,
-  DAY: 1,
-  WEEK: 2,
-  MONTH: 3,
-  YEAR: 4,
-}
+export const TIME_GRANULARITIES = {
+  none: 0,
+  day: 1,
+  week: 2,
+  month: 3,
+  year: 4,
+};
