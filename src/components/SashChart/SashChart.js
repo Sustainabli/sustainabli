@@ -20,7 +20,8 @@ import "react-toggle/style.css";
 import {
   NONE,
   TIME_GRANULARITIES,
-  TIME_RANGES,
+  ALL,
+  RELATIVE_TIME_RANGES,
 } from '../../utils/Constants.js';
 import {fetchFilteredData} from '../../utils/Utils.js';
 import {CHART_COLORS} from '../../utils/Constants.js';
@@ -42,14 +43,14 @@ class SashChart extends React.Component {
       showFilterModal: false,
       filters: {
         granularity: NONE,
-        showDayData: false,
-        timeRange: "",
+        showDayData: true,
+        relativeTimeRange: ALL,
       },
       // These are the filters the user has SELECTED but hasn't SUBMITTED on the filter modal
       tempFilters: {
         granularity: NONE,
-        showDayData: false,
-        timeRange: "",
+        showDayData: true,
+        relativeTimeRange: ALL,
       },
       filteredData: [],
     };
@@ -72,7 +73,7 @@ class SashChart extends React.Component {
   // This fxn only updates tempFilters
   onChangeTimeRange = range => {
     const {tempFilters} = this.state;
-    tempFilters.timeRange = range;
+    tempFilters.relativeTimeRange = range;
     this.setState({tempFilters: {...tempFilters}});
   }
 
@@ -151,7 +152,7 @@ class SashChart extends React.Component {
           <Modal.Body>
             <span> Look at Past
               <ButtonGroup className="mb-2" aria-label="Average Over">
-                {TIME_RANGES.map((range, idx) => (
+                {RELATIVE_TIME_RANGES.map((range, idx) => (
                   <ToggleButton
                     key={idx}
                     id={`time-ranges-${idx}`}
@@ -159,7 +160,7 @@ class SashChart extends React.Component {
                     variant="primary"
                     name="time-ranges-radio"
                     value={range}
-                    checked={tempFilters.timeRange === range}
+                    checked={tempFilters.relativeTimeRange === range}
                     onChange={e => this.onChangeTimeRange(e.currentTarget.value)}
                   >
                     {range}
@@ -187,13 +188,14 @@ class SashChart extends React.Component {
               </ButtonGroup>
             </span>
             <br/>
-            <Toggle
-              id='show-day-data'
-              defaultChecked={tempFilters.showDayData}
-              onChange={this.onChangeTempShowDayData}
-            />
-            <br/>
-            <label htmlFor='show-day-data'>Show Day Data</label>
+            <span>
+              <label htmlFor='show-day-data'>Show Day Data</label>
+              <Toggle
+                id='show-day-data'
+                defaultChecked={tempFilters.showDayData}
+                onChange={this.onChangeTempShowDayData}
+              />
+            </span>
             <br/>
             <br/>
             <Button variant="primary" onClick={this.onSubmitUpdateFilters}>Update Filters</Button>
