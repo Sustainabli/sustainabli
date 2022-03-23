@@ -73,6 +73,7 @@ app.get('/:gran', (req, res) => {
         res.status(405)
         return res.send("Argument is incorrect")
     }
+
     db.all("PRAGMA table_info(mytable)", (err, rows) => {
         if (err) {
             console.error(err.message)
@@ -100,7 +101,7 @@ app.get('/:gran', (req, res) => {
 
         //Insert date relative
         if(relative) {
-            sql += " (time(time) BETWEEN datetime(?, ?) AND datetime(?))"
+            sql += " (datetime(time) BETWEEN datetime(?, ?) AND datetime(?))"
             curr_date = offset ? new Date(offset).toISOString() : (new Date()).toISOString()
             param.push(curr_date)
             param.push(relative_map[relative])
@@ -116,7 +117,7 @@ app.get('/:gran', (req, res) => {
             param.push(time_map[time][0])
             param.push(time_map[time][1])
         } else if(time === "night") {
-            sql += " (time(time) BETWEEN time(?) AND time(?)) OR (time(time) BETWEEN time(?) AND time(?))"
+            sql += " (time(time) BETWEEN time(?) AND time(?) OR time(time) BETWEEN time(?) AND time(?))"
             param.push(time_map[time][0])
             param.push("23:59:59")
             param.push("00:00:00")
@@ -130,7 +131,6 @@ app.get('/:gran', (req, res) => {
         }
         
         sql += ";"
-        //return res.send({"SQL": sql, "PARAMS": param})
         db.all(sql, param, (err, rows) => {
             if(err) {
                 console.log(err.message)
