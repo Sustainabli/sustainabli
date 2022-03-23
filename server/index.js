@@ -117,7 +117,7 @@ app.get('/:gran', (req, res) => {
             param.push(time_map[time][0])
             param.push(time_map[time][1])
         } else if(time === "night") {
-            sql += " (time(time) BETWEEN time(?) AND time(?) OR time(time) BETWEEN time(?) AND time(?))"
+            sql += " ((time(time) BETWEEN time(?) AND time(?)) OR (time(time) BETWEEN time(?) AND time(?)))"
             param.push(time_map[time][0])
             param.push("23:59:59")
             param.push("00:00:00")
