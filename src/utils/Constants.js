@@ -72,9 +72,9 @@ export const WEEK = "week";
 export const MONTH = "month";
 export const YEAR = "year";
 
-export const TIME_GRANULARITIES = [NONE, DAY, MONTH, YEAR];
-// export const TIME_GRANULARITIES = [NONE, DAY, WEEK, MONTH, YEAR];
+export const TIME_GRANULARITIES = [NONE, DAY, WEEK, MONTH, YEAR];
 
+export const ALL = "all";
 export const ONE_DAY = "1day"
 export const THREE_DAYS = "3day"
 export const ONE_WEEK = "7day"
@@ -82,4 +82,4 @@ export const ONE_MONTH = "1month"
 export const ONE_YEAR = "1year"
 
 
-export const TIME_RANGES = [ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MONTH, ONE_YEAR];
+export const RELATIVE_TIME_RANGES = [ALL, ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MONTH, ONE_YEAR];
