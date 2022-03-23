@@ -131,6 +131,9 @@ class SashChart extends React.Component {
           text: 'Sash Data',
         },
       },
+      // animation: {
+      //   duration: 0,
+      // }
     };
 
     return (

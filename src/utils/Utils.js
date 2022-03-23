@@ -12,7 +12,7 @@ export const fetchFilteredData = async (filters, category?=null) => {
     fetchURL += `?relative=${timeRange}`
   }
   if (timeRange && useOffset) {
-    fetchURL += `&offset=2018-10-11`
+    fetchURL += `&offset=2018-10-25`
   }
   return fetch(fetchURL)
     .then(res => res.json())
