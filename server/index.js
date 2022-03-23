@@ -55,20 +55,24 @@ app.get('/:gran', (req, res) => {
     gran = req.params.gran.toLocaleLowerCase()
     relative = req.query.relative ? req.query.relative.toLocaleLowerCase() : null
     offset = req.query.offset ? req.query.offset.toLocaleLowerCase() : null
+    time = req.query.time ? req.query.time.toLocaleLowerCase() : null
 
-    group_map = {"none": null, "day": "%d", "month": "%m", "year": "%y"}
+    group_map = {"none": null, "day": "%d", "week":"%W", "month": "%m", "year": "%y"}
     relative_map = {"1day":"-1 days", "3day": "-3 days", "7day": "-7 days", "1month": "-1 month", "1year": "-1 year"}
+    time_map = {"day": ["06:00:00", "18:00:00"], "night": ["18:00:00", "06:00:00"]}
 
-    if(!Object.keys(group_map).includes(gran)){
+    if(!Object.keys(group_map).includes(gran)) {
         res.status(405)
         return res.send("Argument is incorrect")
     }
-    if(relative != null && !Object.keys(relative_map).includes(relative)){
-        console.log("Error")
+    if(relative != null && !Object.keys(relative_map).includes(relative)) {
         res.status(405)
         return res.send("Argument is incorrect")
     }
-
+    if(time != null && !Object.keys(time_map).includes(time)) {
+        res.status(405)
+        return res.send("Argument is incorrect")
+    }
     db.all("PRAGMA table_info(mytable)", (err, rows) => {
         if (err) {
             console.error(err.message)
@@ -91,13 +95,32 @@ app.get('/:gran', (req, res) => {
         }
         sql += "time FROM mytable"
 
+        if(relative || time)
+            sql += " WHERE"
+
         //Insert date relative
         if(relative) {
-            sql += " WHERE time BETWEEN datetime(?, ?) AND datetime(?)"
+            sql += " (time(time) BETWEEN datetime(?, ?) AND datetime(?))"
             curr_date = offset ? new Date(offset).toISOString() : (new Date()).toISOString()
             param.push(curr_date)
             param.push(relative_map[relative])
             param.push(curr_date)
+        }
+
+        if(relative && time)
+            sql += " AND"
+
+        //Insert AM/PM time
+        if(time === "day") {
+            sql += " (time(time) BETWEEN time(?) AND time(?))"
+            param.push(time_map[time][0])
+            param.push(time_map[time][1])
+        } else if(time === "night") {
+            sql += " (time(time) BETWEEN time(?) AND time(?)) OR (time(time) BETWEEN time(?) AND time(?))"
+            param.push(time_map[time][0])
+            param.push("23:59:59")
+            param.push("00:00:00")
+            param.push(time_map[time][1])
         }
 
         //Insert groupby
@@ -105,8 +128,9 @@ app.get('/:gran', (req, res) => {
             sql += " group by strftime(?, time)"
             param.push(group_map[gran])
         }
+        
         sql += ";"
-
+        //return res.send({"SQL": sql, "PARAMS": param})
         db.all(sql, param, (err, rows) => {
             if(err) {
                 console.log(err.message)
@@ -122,8 +146,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
 });
 
-/*
-db.close((err) => {
-    if (err) return console.error(err.message)
-    console.log('Closed in-memory db')
-})*/
+app.post("/close", (req, res) => {
+    db.close((err) => {
+        if (err) {
+            res.status(400)
+            return res.send(err.message)
+        }
+        res.send('Closed in-memory db')
+        console.log('Closed in-memory db')
+    })
+})
