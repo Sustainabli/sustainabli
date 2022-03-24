@@ -17,8 +17,7 @@ export const fetchFilteredData = async (filters, category?= null) => {
   if (useOffset) {
     fetchURL += `&offset=2018-10-19`
   }
-  return fetch(fetchURL)
-    .then(res => res.json())
+  return fetch(fetchURL).then(res => res.json());
 }
 
 // Formats the date label on the charts based on the granularity we are looking at
@@ -26,16 +25,15 @@ export const fetchFilteredData = async (filters, category?= null) => {
 //   - DAY:   mm/dd/yyyy
 //   - WEEK:  mm/dd/yyyy - mm/dd/yyyy
 //   - MONTH: mm/yyyy
-//   - YEAR:  yyyy - yyyy
+//   - YEAR:  yyyy
 // Data from backend is stored as UTC. We may need to update this later on
 export const formatDateLabel = (date, granularity) => {
   const dateMonth = date.getUTCMonth() + 1;
   const dateDay = date.getUTCDate();
   const dateYear = date.getUTCFullYear();
   let dateHours = date.getUTCHours();
-  if (dateHours < 10) {
-    dateHours = `0${dateHours}`;
-  }
+  const ampm = dateHours >= 12 ? 'PM' : 'AM';
+  dateHours = dateHours % 12 === 0 ? 12 : dateHours % 12;
   let dateMinutes = date.getUTCMinutes();
   if (dateMinutes < 10) {
     dateMinutes = `0${dateMinutes}`;
@@ -53,7 +51,7 @@ export const formatDateLabel = (date, granularity) => {
   const endWeekYear = endWeekDate.getUTCFullYear();
   switch (granularity) {
     case NONE:
-      return `${dateMonth}/${dateDay}/${dateYear}   ${dateHours}:${dateMinutes}`;
+      return `${dateMonth}/${dateDay}/${dateYear}   ${dateHours}:${dateMinutes} ${ampm}`;
     case DAY:
       return `${dateMonth}/${dateDay}/${dateYear}`;
     case WEEK:
