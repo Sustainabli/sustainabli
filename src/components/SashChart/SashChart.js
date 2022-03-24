@@ -23,7 +23,7 @@ import {
   ALL,
   RELATIVE_TIME_RANGES,
 } from '../../utils/Constants.js';
-import { fetchFilteredData } from '../../utils/Utils.js';
+import { fetchFilteredData, formatDateLabel } from '../../utils/Utils.js';
 import { CHART_COLORS } from '../../utils/Constants.js';
 
 ChartJS.register(
@@ -102,8 +102,8 @@ class SashChart extends React.Component {
   }
 
   render() {
-    const { showFilterModal, tempFilters, filteredData } = this.state;
-    const labels = filteredData.map(datum => new Date(datum.time).toLocaleString());
+    const { showFilterModal, filters, tempFilters, filteredData } = this.state;
+    const labels = filteredData.map(datum => formatDateLabel(new Date(datum.time), filters.granularity));
 
     // First check if the data has been loaded yet. If it hasn't either filteredData will be null or filteredData.length will be 0
     // We also want to remove 'time' from the list of data keys (this simplifies looping through line graph keys)
