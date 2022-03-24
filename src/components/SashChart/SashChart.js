@@ -12,7 +12,7 @@ import {
   Title,
   Legend,
 } from 'chart.js';
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 
@@ -23,8 +23,8 @@ import {
   ALL,
   RELATIVE_TIME_RANGES,
 } from '../../utils/Constants.js';
-import {fetchFilteredData} from '../../utils/Utils.js';
-import {CHART_COLORS} from '../../utils/Constants.js';
+import { fetchFilteredData } from '../../utils/Utils.js';
+import { CHART_COLORS } from '../../utils/Constants.js';
 
 ChartJS.register(
   CategoryScale,
@@ -57,51 +57,52 @@ class SashChart extends React.Component {
   }
 
   async componentDidMount() {
-    const {filters} = this.state;
-    this.setState({filteredData: await fetchFilteredData(filters)})
+    const { filters } = this.state;
+    this.setState({ filteredData: await fetchFilteredData(filters) })
   }
 
   onShowFilterModal = () => {
-    this.setState({showFilterModal: true})
+    this.setState({ showFilterModal: true })
   }
 
   onHideFilterModal = () => {
-    const {filters} = this.state;
-    this.setState({tempFilters: {...filters}, showFilterModal: false})
+    const { filters } = this.state;
+    this.setState({ tempFilters: { ...filters }, showFilterModal: false })
   }
 
   // This fxn only updates tempFilters
   onChangeTimeRange = range => {
-    const {tempFilters} = this.state;
+    const { tempFilters } = this.state;
     tempFilters.relativeTimeRange = range;
-    this.setState({tempFilters: {...tempFilters}});
+    this.setState({ tempFilters: { ...tempFilters } });
   }
 
   // This fxn only updates tempFilters
   onChangeTempGranularity = granularity => {
-    const {tempFilters} = this.state;
+    const { tempFilters } = this.state;
     tempFilters.granularity = granularity;
-    this.setState({tempFilters: {...tempFilters}});
+    this.setState({ tempFilters: { ...tempFilters } });
   }
 
   // This fxn only updates tempFilters
   onChangeTempShowDayData = () => {
-    const {tempFilters} = this.state;
+    const { tempFilters } = this.state;
     tempFilters.showDayData = !tempFilters.showDayData;
-    this.setState({tempFilters: {...tempFilters}});
+    this.setState({ tempFilters: { ...tempFilters } });
   }
 
   // This fxn will update the actual filters
   onSubmitUpdateFilters = async () => {
-    const {tempFilters} = this.state;
+    const { tempFilters } = this.state;
     this.setState({
       showFilterModal: false,
-      filters: {...tempFilters},
-      filteredData: await fetchFilteredData(tempFilters)});
+      filters: { ...tempFilters },
+      filteredData: await fetchFilteredData(tempFilters)
+    });
   }
 
   render() {
-    const {showFilterModal, tempFilters, filteredData} = this.state;
+    const { showFilterModal, tempFilters, filteredData } = this.state;
     const labels = filteredData.map(datum => new Date(datum.time).toLocaleString());
 
     // First check if the data has been loaded yet. If it hasn't either filteredData will be null or filteredData.length will be 0
@@ -115,7 +116,7 @@ class SashChart extends React.Component {
         return {
           label: key,
           data: filteredData.map(datum => datum[key]),
-          borderColor:  CHART_COLORS[colorIndex],
+          borderColor: CHART_COLORS[colorIndex],
           backgroundColor: `${CHART_COLORS[colorIndex]}80`,
         };
       })
@@ -168,7 +169,7 @@ class SashChart extends React.Component {
                 ))}
               </ButtonGroup>
             </span>
-            <br/>
+            <br />
             <span> Average Over
               <ButtonGroup className="mb-2" aria-label="Average Over">
                 {TIME_GRANULARITIES.map((granularity, idx) => (
@@ -187,7 +188,7 @@ class SashChart extends React.Component {
                 ))}
               </ButtonGroup>
             </span>
-            <br/>
+            <br />
             <span>
               <label htmlFor='show-day-data'>Show Day Data</label>
               <Toggle
@@ -196,13 +197,13 @@ class SashChart extends React.Component {
                 onChange={this.onChangeTempShowDayData}
               />
             </span>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Button variant="primary" onClick={this.onSubmitUpdateFilters}>Update Filters</Button>
           </Modal.Body>
         </Modal>
         <Button variant="primary" onClick={this.onShowFilterModal}>Filter Sash Data</Button>
-        <Line options={options} data={sashData}/>
+        <Line options={options} data={sashData} />
       </div>
     );
   }
