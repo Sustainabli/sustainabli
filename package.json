@@ -25,7 +25,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "concurrently \"nodemon server/index.js\" && \"react-scripts start\"",
+    "dev": "concurrently \"nodemon server/index.js\" \"react-scripts start\"",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "npm install; node server/index.js",
