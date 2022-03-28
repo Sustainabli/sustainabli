@@ -10,6 +10,10 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import data from '../../mock-data/cpm.json';
+import {
+  NONE,
+} from '../../utils/Constants.js';
+import { formatDateLabel } from '../../utils/Utils.js';
 
 ChartJS.register(
     CategoryScale,
@@ -23,7 +27,7 @@ ChartJS.register(
 class CPMChart extends React.Component {
     render() {
         // For now we are using the dates in the mock data as labels. We need to aggregate this over months e.g. January
-        const labels = data.map(datum => datum.Date);
+        const labels = data.map(datum => formatDateLabel(new Date(datum.Date), NONE));
         const CPMData = {
             labels,
             datasets: [

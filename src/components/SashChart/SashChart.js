@@ -16,7 +16,6 @@ import { Line } from 'react-chartjs-2';
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 
-
 import {
   NONE,
   TIME_GRANULARITIES,
@@ -25,6 +24,8 @@ import {
 } from '../../utils/Constants.js';
 import { fetchFilteredData, formatDateLabel } from '../../utils/Utils.js';
 import { CHART_COLORS } from '../../utils/Constants.js';
+
+import './SashChart.scss';
 
 ChartJS.register(
   CategoryScale,
@@ -151,7 +152,8 @@ class SashChart extends React.Component {
             <Modal.Title id="contained-modal-title-vcenter">Filter Sash Data</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <span> Look at Past
+            <div>
+              <span className="modal-label">Look at Past</span>
               <ButtonGroup className="mb-2" aria-label="Average Over">
                 {RELATIVE_TIME_RANGES.map((range, idx) => (
                   <ToggleButton
@@ -168,9 +170,10 @@ class SashChart extends React.Component {
                   </ToggleButton>
                 ))}
               </ButtonGroup>
-            </span>
+            </div>
             <br />
-            <span> Average Over
+            <div>
+              <span className="modal-label">Average Over</span>
               <ButtonGroup className="mb-2" aria-label="Average Over">
                 {TIME_GRANULARITIES.map((granularity, idx) => (
                   <ToggleButton
@@ -187,7 +190,7 @@ class SashChart extends React.Component {
                   </ToggleButton>
                 ))}
               </ButtonGroup>
-            </span>
+            </div>
             <br />
             <span>
               <label htmlFor='show-day-data'>Show Day Data</label>
@@ -202,7 +205,7 @@ class SashChart extends React.Component {
             <Button variant="primary" onClick={this.onSubmitUpdateFilters}>Update Filters</Button>
           </Modal.Body>
         </Modal>
-        <Button variant="primary" onClick={this.onShowFilterModal}>Filter Sash Data</Button>
+        <Button onClick={this.onShowFilterModal}>Filter Sash Data</Button>
         <Line options={options} data={sashData} />
       </div>
     );
