@@ -24,10 +24,16 @@ app.listen(port, (req, res) => {
 })
 
 //The following populates database
-//sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-sash.sql')).toString().split(';')
-sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-cfm.sql')).toString().split(';')
-//sqldata = sqldata_sash + sqldata_cfm
-//sqldata = sqldata.split(";")
+sqldata_sash = fs.readFileSync(path.resolve(__dirname, './static/mock-sash.sql')).toString().split(";")
+sqldata_cfm = fs.readFileSync(path.resolve(__dirname, './static/mock-cfm.sql')).toString().split(";")
+createsash = sqldata_sash[0]
+insertsash = sqldata_sash.slice(1)
+createcfm = sqldata_cfm[0]
+insertcfm = sqldata_cfm.slice(1)
+allinserts = insertsash.concat(insertcfm)
+sqldata = [].concat(createsash, createcfm, ...(allinserts))
+
+
 db = new sqlite3.Database(':memory:', (err) => {
     if (err) return console.error(err.message)
     console.log('Connected to in-memory')
@@ -39,7 +45,7 @@ db.serialize(() => {
     sqldata.forEach((elm, idx) => {
         if(elm) {
             elm += ';'
-            if(idx > 0) {
+            if(idx > 1) {
                 rx = new RegExp("\'.*?\'")
                 date_val = elm.match(rx)
                 date_val_new = date_val[0].replaceAll("'", "")
