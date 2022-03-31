@@ -24,8 +24,10 @@ app.listen(port, (req, res) => {
 })
 
 //The following populates database
-sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-sash.sql')).toString().split(';')
-
+//sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-sash.sql')).toString().split(';')
+sqldata = fs.readFileSync(path.resolve(__dirname, './static/mock-cfm.sql')).toString().split(';')
+//sqldata = sqldata_sash + sqldata_cfm
+//sqldata = sqldata.split(";")
 db = new sqlite3.Database(':memory:', (err) => {
     if (err) return console.error(err.message)
     console.log('Connected to in-memory')
@@ -40,7 +42,8 @@ db.serialize(() => {
             if(idx > 0) {
                 rx = new RegExp("\'.*?\'")
                 date_val = elm.match(rx)
-                iso_date = "\"" + (new Date(date_val[0]).toISOString()) + "\""
+                date_val_new = date_val[0].replaceAll("'", "")
+                iso_date = "\"" +  (new Date(date_val_new).toISOString()) + "\""
                 elm = elm.replace(date_val[0], iso_date)
             }
             db.run(elm, (err) => {
@@ -50,18 +53,19 @@ db.serialize(() => {
     })
     db.run('COMMIT;')
 })
-
-app.get('/:gran', (req, res) => {
+app.get('/:db/:gran', (req, res) => {
+    db_query = req.params.db.toLocaleLowerCase()
     gran = req.params.gran.toLocaleLowerCase()
     relative = req.query.relative ? req.query.relative.toLocaleLowerCase() : null
     offset = req.query.offset ? req.query.offset.toLocaleLowerCase() : null
     time = req.query.time ? req.query.time.toLocaleLowerCase() : null
-
+    
+    db_map = ["cfm", "sash"]
     group_map = {"none": null, "day": "%d", "week":"%W", "month": "%m", "year": "%y"}
     relative_map = {"1day":"-1 days", "3day": "-3 days", "7day": "-7 days", "1month": "-1 month", "1year": "-1 year"}
     time_map = {"day": ["06:00:00", "18:00:00"], "night": ["18:00:00", "06:00:00"]}
 
-    if(!Object.keys(group_map).includes(gran)) {
+    if(!Object.keys(group_map).includes(gran) || !db_map.includes(db_query)) {
         res.status(405)
         return res.send("Argument is incorrect")
     }
@@ -74,7 +78,7 @@ app.get('/:gran', (req, res) => {
         return res.send("Argument is incorrect")
     }
 
-    db.all("PRAGMA table_info(mytable)", (err, rows) => {
+    db.all("PRAGMA table_info(" + db_query + ")", (err, rows) => {
         if (err) {
             console.error(err.message)
             res.status(400)
@@ -94,7 +98,7 @@ app.get('/:gran', (req, res) => {
                 sql += "round(avg(\"" + val + "\"), 3) as " + val + ", "
             })
         }
-        sql += "time FROM mytable"
+        sql += "time FROM " + db_query
 
         if(relative || time)
             sql += " WHERE"
