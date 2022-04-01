@@ -1,7 +1,7 @@
 import React from 'react';
-import SashChart from './components/SashChart/SashChart';
 
-import CPMChart from './components/CPMChart/CPMChart';
+import CFMChart from './components/CFMChart/CFMChart';
+import SashChart from './components/SashChart/SashChart';
 import './App.scss';
 
 class App extends React.Component {
@@ -10,7 +10,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <SashChart />
-        <CPMChart />
+        <CFMChart />
       </div>
     );
   }

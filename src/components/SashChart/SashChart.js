@@ -17,13 +17,15 @@ import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 
 import {
+  CHART_COLORS,
   NONE,
   TIME_GRANULARITIES,
   ALL,
   RELATIVE_TIME_RANGES,
+  CFM,
+  CHART_OPTIONS,
 } from '../../utils/Constants.js';
-import { fetchFilteredData, formatDateLabel } from '../../utils/Utils.js';
-import { CHART_COLORS } from '../../utils/Constants.js';
+import { fetchFilteredData, formatDateLabel, convertCFMToSash } from '../../utils/Utils.js';
 
 import './SashChart.scss';
 
@@ -59,7 +61,7 @@ class SashChart extends React.Component {
 
   async componentDidMount() {
     const { filters } = this.state;
-    this.setState({ filteredData: await fetchFilteredData(filters) })
+    this.setState({ filteredData: await fetchFilteredData(filters, CFM) })
   }
 
   onShowFilterModal = () => {
@@ -98,7 +100,7 @@ class SashChart extends React.Component {
     this.setState({
       showFilterModal: false,
       filters: { ...tempFilters },
-      filteredData: await fetchFilteredData(tempFilters)
+      filteredData: await fetchFilteredData(tempFilters, CFM)
     });
   }
 
@@ -108,7 +110,8 @@ class SashChart extends React.Component {
 
     // First check if the data has been loaded yet. If it hasn't either filteredData will be null or filteredData.length will be 0
     // We also want to remove 'time' from the list of data keys (this simplifies looping through line graph keys)
-    const dataKeys = filteredData && filteredData.length ? Object.keys(filteredData[0]).filter(key => key !== 'time') : [];
+    // Limiting to first 10 data columns so we don't overload the app
+    const dataKeys = filteredData && filteredData.length ? Object.keys(filteredData[0]).filter(key => key !== 'time').slice(0, 10) : [];
 
     const sashData = {
       labels,
@@ -116,27 +119,11 @@ class SashChart extends React.Component {
         const colorIndex = dataKeys.indexOf(key);
         return {
           label: key,
-          data: filteredData.map(datum => datum[key]),
+          data: filteredData.map(datum => convertCFMToSash(datum[key])),
           borderColor: CHART_COLORS[colorIndex],
           backgroundColor: `${CHART_COLORS[colorIndex]}80`,
         };
       })
-    };
-
-    const options = {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top'
-        },
-        title: {
-          display: true,
-          text: 'Sash Data',
-        },
-      },
-      // animation: {
-      //   duration: 0,
-      // }
     };
 
     return (
@@ -206,7 +193,7 @@ class SashChart extends React.Component {
           </Modal.Body>
         </Modal>
         <Button onClick={this.onShowFilterModal}>Filter Sash Data</Button>
-        <Line options={options} data={sashData} />
+        <Line options={CHART_OPTIONS} data={sashData} />
       </div>
     );
   }

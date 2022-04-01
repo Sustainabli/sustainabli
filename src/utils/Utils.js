@@ -4,12 +4,12 @@ import { NONE, DAY, WEEK, MONTH, YEAR, ALL } from './Constants.js';
 
 // Fetches filtered data from database based on filters and data category
 // TODO: For now data category will default to null since we only have sash data
-export const fetchFilteredData = async (filters, category?= null) => {
+export const fetchFilteredData = async (filters, category) => {
   // Parse out which fields we want from filters
   const { granularity, showDayData, relativeTimeRange } = filters;
   // We need to add offset for now since data is from 2018
-  const useOffset = true;
-  let fetchURL = `/${granularity}?`;
+  const useOffset = false;
+  let fetchURL = `/${category}/${granularity}?`;
   fetchURL += showDayData ? '&time=day' : '&time=night';
   if (relativeTimeRange && relativeTimeRange !== ALL) {
     fetchURL += `&relative=${relativeTimeRange}`
@@ -62,4 +62,8 @@ export const formatDateLabel = (date, granularity) => {
       return `${dateYear}`;
     default:
   }
+}
+
+export const convertCFMToSash = CFM => {
+  return (CFM - 136) / 11;
 }
