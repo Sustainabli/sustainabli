@@ -66,20 +66,41 @@ export const CHART_COLORS = [
   '#E85EBE',
 ]
 
+// Constants for time granularity
 export const NONE = "none";
 export const DAY = "day";
 export const WEEK = "week";
 export const MONTH = "month";
 export const YEAR = "year";
-
 export const TIME_GRANULARITIES = [NONE, DAY, WEEK, MONTH, YEAR];
 
+// Constants for time range interval
 export const ALL = "all";
 export const ONE_DAY = "1day"
 export const THREE_DAYS = "3day"
 export const ONE_WEEK = "7day"
 export const ONE_MONTH = "1month"
 export const ONE_YEAR = "1year"
-
-
 export const RELATIVE_TIME_RANGES = [ALL, ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MONTH, ONE_YEAR];
+
+// Constants for graph types
+export const SASH = "sash";
+export const CFM = "cfm";
+
+// Chart options
+export const CHART_OPTIONS = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Sash Data',
+      color: '#000000',
+      font: {
+        size: 30,
+      }
+    },
+  },
+}
