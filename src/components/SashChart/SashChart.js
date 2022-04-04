@@ -22,10 +22,15 @@ import {
   TIME_GRANULARITIES,
   ALL,
   RELATIVE_TIME_RANGES,
+  SASH,
   CFM,
-  CHART_OPTIONS,
 } from '../../utils/Constants.js';
-import { fetchFilteredData, formatDateLabel, convertCFMToSash } from '../../utils/Utils.js';
+import {
+  fetchFilteredData,
+  formatDateLabel,
+  convertCFMToSash,
+  generateChartOptions
+} from '../../utils/Utils.js';
 
 import './SashChart.scss';
 
@@ -193,7 +198,7 @@ class SashChart extends React.Component {
           </Modal.Body>
         </Modal>
         <Button onClick={this.onShowFilterModal}>Filter Sash Data</Button>
-        <Line options={CHART_OPTIONS} data={sashData} />
+        <Line options={generateChartOptions(SASH)} data={sashData} />
       </div>
     );
   }

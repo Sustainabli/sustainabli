@@ -86,21 +86,3 @@ export const RELATIVE_TIME_RANGES = [ALL, ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MON
 // Constants for graph types
 export const SASH = "sash";
 export const CFM = "cfm";
-
-// Chart options
-export const CHART_OPTIONS = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Sash Data',
-      color: '#000000',
-      font: {
-        size: 30,
-      }
-    },
-  },
-}

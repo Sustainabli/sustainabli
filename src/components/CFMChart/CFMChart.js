@@ -23,9 +23,12 @@ import {
   ALL,
   RELATIVE_TIME_RANGES,
   CFM,
-  CHART_OPTIONS,
 } from '../../utils/Constants.js';
-import { fetchFilteredData, formatDateLabel } from '../../utils/Utils.js';
+import {
+  fetchFilteredData,
+  formatDateLabel,
+  generateChartOptions
+} from '../../utils/Utils.js';
 
 import './CFMChart.scss';
 
@@ -193,7 +196,7 @@ class CFMChart extends React.Component {
                   </Modal.Body>
                 </Modal>
                 <Button onClick={this.onShowFilterModal}>Filter CFM Data</Button>
-                <Line options={CHART_OPTIONS} data={CFMData} />
+                <Line options={generateChartOptions(CFM)} data={CFMData} />
             </div>
         );
     }
