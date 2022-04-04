@@ -1,4 +1,4 @@
-import { NONE, DAY, WEEK, MONTH, YEAR, ALL } from './Constants.js';
+import { NONE, DAY, WEEK, MONTH, YEAR, ALL, SASH, CFM } from './Constants.js';
 
 // File contains several helper functions
 
@@ -65,5 +65,36 @@ export const formatDateLabel = (date, granularity) => {
 }
 
 export const convertCFMToSash = CFM => {
-  return (CFM - 136) / 11;
+  return (CFM - 136) / 110;
+}
+
+export const generateChartOptions = chartType => {
+  let chartTypeString = "";
+
+  switch(chartType) {
+    case SASH:
+      chartTypeString = "Sash";
+      break;
+    case CFM:
+      chartTypeString = "CFM";
+      break;
+    default:
+  }
+
+  return {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: `${chartTypeString} Data`,
+        color: '#000000',
+        font: {
+          size: 30,
+        }
+      },
+    },
+  }
 }
