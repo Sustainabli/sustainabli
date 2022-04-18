@@ -86,3 +86,17 @@ export const RELATIVE_TIME_RANGES = [ALL, ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MON
 // Constants for graph types
 export const SASH = "sash";
 export const CFM = "cfm";
+
+export const ROOM_FILTERS = {
+  all: "all",
+  issacs: ["3336"],
+  rodriguez: ["2360", "2364", "2368"],
+  falvey: ["3356"],
+  wang: ["1302", "1308"],
+}
+
+export const ALL_ROOMS = Object.values(ROOM_FILTERS).reduce((prev, curr) => prev.concat(curr), []);
+
+export const DAY_DATA = "day";
+export const NIGHT_DATA = "night";
+export const ALL_DAY_DATA = "";

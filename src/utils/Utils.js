@@ -6,11 +6,13 @@ import { NONE, DAY, WEEK, MONTH, YEAR, ALL, SASH, CFM } from './Constants.js';
 // TODO: For now data category will default to null since we only have sash data
 export const fetchFilteredData = async (filters, category) => {
   // Parse out which fields we want from filters
-  const { granularity, showDayData, relativeTimeRange } = filters;
+  const { granularity, timeOfDay, relativeTimeRange } = filters;
   // We need to add offset for now since data is from 2018
   const useOffset = false;
   let fetchURL = `/${category}/${granularity}?`;
-  fetchURL += showDayData ? '&time=day' : '&time=night';
+  if (timeOfDay !== "all") {
+    fetchURL += timeOfDay === "day" ? '&time=day' : '&time=night';
+  }
   if (relativeTimeRange && relativeTimeRange !== ALL) {
     fetchURL += `&relative=${relativeTimeRange}`
   }
