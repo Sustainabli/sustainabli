@@ -15,6 +15,7 @@ import {
   CHART_COLORS,
   CFM,
   ROOM_FILTERS,
+  NUM_FUMEHOODS,
   ALL_ROOMS,
 } from '../../utils/Constants.js';
 import {
@@ -81,7 +82,7 @@ class CFMChart extends React.Component {
       // dataKeys.push("Rodriquez Lab");
       // filteredData["Rodriquez Lab"] = rodriquezVal;
     }
-    rodriquezVals = rodriquezVals.map(val => val / ROOM_FILTERS.rodriguez.length);
+    rodriquezVals = rodriquezVals.map(val => val / NUM_FUMEHOODS.rodriguez);
 
     let wangVals = [];
     if (filters.selectedLab === "all") {
@@ -92,7 +93,7 @@ class CFMChart extends React.Component {
         }, 0));
       });
     }
-    wangVals = wangVals.map(val => val / ROOM_FILTERS.wang.length);
+    wangVals = wangVals.map(val => val / NUM_FUMEHOODS.wang);
     // if (filters.selectedLab === "all") {
     //   dataKeys.reduce((prev, curr) => {
     //     if ((curr.includes("Total") && (curr.includes("1302") || curr.includes("1308")))) {
@@ -110,16 +111,19 @@ class CFMChart extends React.Component {
       datasets: dataKeys.map(key => {
         const colorIndex = dataKeys.indexOf(key);
         let label = key;
+        let data = filteredData.map(datum => datum[key]);
         if (filters.selectedLab === "all") {
           if (key.includes("3336")) {
             label = "Issacs Lab";
+            data = data.map(val => val / NUM_FUMEHOODS.issacs);
           } else if (key.includes("3356")) {
             label = "Falvey Lab";
+            data = data.map(val => val / NUM_FUMEHOODS.falvey);
           }
         }
         return {
           label: label,
-          data: filteredData.map(datum => datum[key]),
+          data: data,
           borderColor: CHART_COLORS[colorIndex],
           backgroundColor: `${CHART_COLORS[colorIndex]}80`,
         };

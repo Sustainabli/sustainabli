@@ -95,6 +95,13 @@ export const ROOM_FILTERS = {
   wang: ["1302", "1308"],
 }
 
+export const NUM_FUMEHOODS = {
+  issacs: 4,
+  rodriguez: 10,
+  falvey: 4,
+  wang: 17,
+}
+
 export const ALL_ROOMS = Object.values(ROOM_FILTERS).reduce((prev, curr) => prev.concat(curr), []);
 
 export const DAY_DATA = "day";
