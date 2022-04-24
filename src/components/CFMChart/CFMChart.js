@@ -81,6 +81,7 @@ class CFMChart extends React.Component {
       // dataKeys.push("Rodriquez Lab");
       // filteredData["Rodriquez Lab"] = rodriquezVal;
     }
+    rodriquezVals = rodriquezVals.map(val => val / ROOM_FILTERS.rodriguez.length);
 
     let wangVals = [];
     if (filters.selectedLab === "all") {
@@ -91,6 +92,7 @@ class CFMChart extends React.Component {
         }, 0));
       });
     }
+    wangVals = wangVals.map(val => val / ROOM_FILTERS.wang.length);
     // if (filters.selectedLab === "all") {
     //   dataKeys.reduce((prev, curr) => {
     //     if ((curr.includes("Total") && (curr.includes("1302") || curr.includes("1308")))) {
