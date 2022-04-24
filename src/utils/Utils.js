@@ -70,7 +70,7 @@ export const convertCFMToSash = CFM => {
   return (CFM - 136) / 110;
 }
 
-export const generateChartOptions = chartType => {
+export const generateChartOptions = (chartType, all) => {
   let chartTypeString = "";
 
   switch(chartType) {
@@ -78,7 +78,7 @@ export const generateChartOptions = chartType => {
       chartTypeString = "Sash";
       break;
     case CFM:
-      chartTypeString = "CFM";
+      chartTypeString = all ? "Average CFM/Fumehood" : "CFM";
       break;
     default:
   }

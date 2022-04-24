@@ -148,7 +148,7 @@ class CFMChart extends React.Component {
 
     return (
       <div className="CFM-Chart">
-        <Line options={generateChartOptions(CFM)} data={CFMData} />
+        <Line options={generateChartOptions(CFM, filters.selectedLab === "all")} data={CFMData} />
       </div>
     );
   }
