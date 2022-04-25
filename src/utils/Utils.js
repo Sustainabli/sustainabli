@@ -19,6 +19,7 @@ export const fetchFilteredData = async (filters, category) => {
   if (useOffset) {
     fetchURL += `&offset=2018-10-19`
   }
+  console.log(fetchURL);
   return fetch(fetchURL).then(res => res.json());
 }
 

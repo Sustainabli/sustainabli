@@ -60,8 +60,9 @@ class App extends React.Component {
     if (pathname) {
       filters.selectedLab = pathname;
     }
+    console.log(filters);
     // Might need to update filter state as well in the case where we isolate a specific lab url
-    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname })
+    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname, filters: filters, tempFilters: filters })
   }
 
   onChangeTempSelectedLab = lab => {
