@@ -15,6 +15,7 @@ class FilterOptions extends React.Component {
       onChangeTempTimePeriod,
       onChangeTempTimeOfDay,
       onSubmitUpdateFilters,
+      includeFilterLab,
     } = this.props;
 
     const labs = [
@@ -44,10 +45,12 @@ class FilterOptions extends React.Component {
 
     return (
       <Container className="FilterOptions">
-        <Row>
-          Select Individual Lab Data
-          <Select options={labs} onChange={options => onChangeTempSelectedLab(options.value)} defaultValue={labs[0]}/>
-        </Row>
+        {includeFilterLab &&
+          <Row>
+            Select Individual Lab Data
+            <Select options={labs} onChange={options => onChangeTempSelectedLab(options.value)} defaultValue={labs[0]}/>
+          </Row>
+        }
         <Row>
           Select a Granularity
           <Select options={granuliarities} onChange={options => onChangeTempGranularity(options.value)} defaultValue={{value: 'day', label: 'day'}}/>

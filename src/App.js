@@ -34,12 +34,34 @@ class App extends React.Component {
         timeOfDay: "all",
       },
       filteredData: [],
+      pathname: "",
     }
   }
 
   async componentDidMount() {
     const { filters } = this.state;
-    this.setState({ filteredData: await fetchFilteredData(filters, CFM) })
+    let pathname = "";
+    switch(window.location.pathname) {
+      case "/issacs":
+        pathname = "issacs";
+        break;
+      case "/rodriguez":
+        pathname = "rodriguez";
+        break;
+      case "/falvey":
+        pathname = "falvey";
+        break;
+      case "/wang":
+        pathname = "wang";
+        break;
+      default:
+        pathname = "";
+    }
+    if (pathname) {
+      filters.selectedLab = pathname;
+    }
+    // Might need to update filter state as well in the case where we isolate a specific lab url
+    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname })
   }
 
   onChangeTempSelectedLab = lab => {
@@ -79,7 +101,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { filters, filteredData } = this.state;
+    const { filters, filteredData, pathname } = this.state;
+
     return (
       <Container className="App" fluid>
         <Row>
@@ -91,6 +114,7 @@ class App extends React.Component {
               onChangeTempTimePeriod={this.onChangeTempTimePeriod}
               onChangeTempTimeOfDay={this.onChangeTempTimeOfDay}
               onSubmitUpdateFilters={this.onSubmitUpdateFilters}
+              includeFilterLab={pathname === ""}
             />
           </Col>
           <Col md={9}>
