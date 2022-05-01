@@ -67,7 +67,7 @@ app.get('/:db/:gran', (req, res) => {
     time = req.query.time ? req.query.time.toLocaleLowerCase() : null
     
     db_map = ["cfm", "sash"]
-    group_map = {"none": null, "day": "%d", "week":"%W", "month": "%m", "year": "%y"}
+    group_map = {"none": null, "day": "%d-%m-%Y", "week":"%W-%Y", "month": "%m-$Y  ", "year": "%y"}
     relative_map = {"1day":"-1 days", "3day": "-3 days", "7day": "-7 days", "1month": "-1 month", "1year": "-1 year"}
     time_map = {"day": ["06:00:00", "18:00:00"], "night": ["18:00:00", "06:00:00"]}
 
