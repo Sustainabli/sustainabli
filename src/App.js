@@ -1,125 +1,128 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
-import Modal from 'react-bootstrap/Modal';
-import Toggle from 'react-toggle'
-import "react-toggle/style.css"
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
+import FillerOptions from './components/FilterOptions/FilterOptions';
+import CFMChart from './components/CFMChart/CFMChart';
 import SashChart from './components/SashChart/SashChart';
 import {
-  NONE,
-  // DAY,
-  // WEEK,
-  // MONTH,
-  // YEAR,
-  TIME_GRANULARITIES,
+  DAY,
+  ALL,
+  CFM,
 } from './utils/Constants.js';
-import {fetchFilteredData} from './utils/Utils.js';
+import {
+  fetchFilteredData,
+} from './utils/Utils.js';
 import './App.scss';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showFilterModal: false,
       filters: {
-        granularity: NONE,
-        showDayData: false,
+        selectedLab: "all",
+        granularity: DAY,
+        timePeriod: ALL,
+        timeOfDay: "all",
       },
       // These are the filters the user has SELECTED but hasn't SUBMITTED on the filter modal
       tempFilters: {
-        granularity: NONE,
-        showDayData: false,
+        selectedLab: "all",
+        granularity: DAY,
+        timePeriod: ALL,
+        timeOfDay: "all",
       },
       filteredData: [],
-    };
+      pathname: "",
+    }
   }
 
   async componentDidMount() {
-    const {filters} = this.state;
-    this.setState({filteredData: await fetchFilteredData(filters)})
+    const { filters } = this.state;
+    let pathname = "";
+    switch(window.location.pathname) {
+      case "/issacs":
+        pathname = "issacs";
+        break;
+      case "/rodriguez":
+        pathname = "rodriguez";
+        break;
+      case "/falvey":
+        pathname = "falvey";
+        break;
+      case "/wang":
+        pathname = "wang";
+        break;
+      default:
+        pathname = "";
+    }
+    if (pathname) {
+      filters.selectedLab = pathname;
+    }
+    console.log(filters);
+    // Might need to update filter state as well in the case where we isolate a specific lab url
+    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname, filters: filters, tempFilters: filters })
   }
 
-  onShowFilterModal = () => {
-    this.setState({showFilterModal: true})
-  }
-
-  onHideFilterModal = () => {
-    const {filters} = this.state;
-    this.setState({tempFilters: {...filters}, showFilterModal: false})
+  onChangeTempSelectedLab = lab => {
+    const { tempFilters } = this.state;
+    tempFilters.selectedLab = lab;
+    this.setState({ tempFilters: { ...tempFilters } });
   }
 
   // This fxn only updates tempFilters
   onChangeTempGranularity = granularity => {
-    const {tempFilters} = this.state;
+    const { tempFilters } = this.state;
     tempFilters.granularity = granularity;
-    this.setState({tempFilters: {...tempFilters}});
+    this.setState({ tempFilters: { ...tempFilters } });
   }
 
   // This fxn only updates tempFilters
-  onChangeTempShowDayData = () => {
-    const {tempFilters} = this.state;
-    tempFilters.showDayData = !tempFilters.showDayData;
-    this.setState({tempFilters: {...tempFilters}});
+  onChangeTempTimePeriod = period => {
+    const { tempFilters } = this.state;
+    tempFilters.timePeriod = period;
+    this.setState({ tempFilters: { ...tempFilters } });
+  }
+
+  // This fxn only updates tempFilters
+  onChangeTempTimeOfDay = timeOfDay => {
+    const { tempFilters } = this.state;
+    tempFilters.timeOfDay = timeOfDay;
+    this.setState({ tempFilters: { ...tempFilters } });
   }
 
   // This fxn will update the actual filters
   onSubmitUpdateFilters = async () => {
-    const {tempFilters} = this.state;
+    const { tempFilters } = this.state;
     this.setState({
-      showFilterModal: false,
-      filters: {...tempFilters},
-      filteredData: await fetchFilteredData(tempFilters)});
+      filters: { ...tempFilters },
+      filteredData: await fetchFilteredData(tempFilters, CFM)
+    });
   }
 
   render() {
-    const {showFilterModal, tempFilters, filteredData} = this.state;
+    const { filters, filteredData, pathname } = this.state;
+
     return (
-      <div className="App">
-        <Modal
-          show={showFilterModal}
-          onHide={this.onHideFilterModal}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">Filter Data</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ButtonGroup className="mb-2">
-              {Object.keys(TIME_GRANULARITIES).map((granularity, idx) => (
-                <ToggleButton
-                  key={idx}
-                  id={`radio-${idx}`}
-                  type="radio"
-                  variant="primary"
-                  name="radio"
-                  value={granularity}
-                  checked={tempFilters.granularity === granularity}
-                  onChange={e => this.onChangeTempGranularity(e.currentTarget.value)}
-                >
-                  {granularity}
-                </ToggleButton>
-              ))}
-            </ButtonGroup>
-            <br/>
-            <Toggle
-              id='show-day-data'
-              defaultChecked={tempFilters.showDayData}
-              onChange={this.onChangeTempShowDayData}
+      <Container className="App" fluid>
+        <Row>
+          {/*<SashChart />*/}
+          <Col md={2}>
+            <FillerOptions
+              onChangeTempSelectedLab={this.onChangeTempSelectedLab}
+              onChangeTempGranularity={this.onChangeTempGranularity}
+              onChangeTempTimePeriod={this.onChangeTempTimePeriod}
+              onChangeTempTimeOfDay={this.onChangeTempTimeOfDay}
+              onSubmitUpdateFilters={this.onSubmitUpdateFilters}
+              includeFilterLab={pathname === ""}
             />
-            <br/>
-            <label htmlFor='show-day-data'>Show Day Data</label>
-            <br/>
-            <br/>
-            <Button variant="primary" onClick={this.onSubmitUpdateFilters}>Update Filters</Button>
-          </Modal.Body>
-        </Modal>
-        <Button variant="primary" onClick={this.onShowFilterModal}>Filter Data</Button>
-        {filteredData.length && <SashChart filteredData={filteredData}/>}
-      </div>
+          </Col>
+          <Col md={9}>
+            <CFMChart filteredData={filteredData} filters={filters}/>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
