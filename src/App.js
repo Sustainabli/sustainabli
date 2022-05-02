@@ -103,6 +103,8 @@ class App extends React.Component {
 
   render() {
     const { filters, filteredData, pathname } = this.state;
+    const sortedFilteredData = filteredData.sort((a, b) => new Date(a.time) - new Date(b.time));
+    console.log(sortedFilteredData);
 
     return (
       <Container className="App" fluid>
@@ -119,7 +121,7 @@ class App extends React.Component {
             />
           </Col>
           <Col md={9}>
-            <CFMChart filteredData={filteredData} filters={filters}/>
+            <CFMChart filteredData={sortedFilteredData} filters={filters}/>
           </Col>
         </Row>
         <br/>
