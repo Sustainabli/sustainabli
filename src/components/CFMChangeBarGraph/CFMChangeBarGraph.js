@@ -66,7 +66,7 @@ class CFMChangeBarGraph extends React.Component {
         },
         title: {
           display: true,
-          text: 'Changes in CFM Averages Over the Competition',
+          text: 'Changes in CFM Averages Before and During the Competition',
           color: '#000000',
           font: {
             size: 30,
@@ -74,17 +74,17 @@ class CFMChangeBarGraph extends React.Component {
         },
       },
     };
-    const labels = ['Issacs Lab', 'Falvey Lab', 'Rodriquez Lab', 'Wang Lab'];
+    const labels = ['Issacs Lab', 'Falvey Lab', 'Rodriguez Lab', 'Wang Lab'];
     const oldDataForChart = [];
     const newDataForChart = [];
     if (oldData[0]) {
       oldDataForChart.push(oldData[0].FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
-      oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
       oldDataForChart.push(oldData[0].FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
+      oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
       oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHoodAll_TotalExhaustCFM_Tridium) / 17);
       newDataForChart.push(newData[0].FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
-      newDataForChart.push((newData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
       newDataForChart.push(newData[0].FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
+      newDataForChart.push((newData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
       newDataForChart.push((newData[0].FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHoodAll_TotalExhaustCFM_Tridium) / 17);
     }
     const data = {
@@ -108,19 +108,19 @@ class CFMChangeBarGraph extends React.Component {
         <br/>
         <br/>
         <div>
-          Issacs Lab has saved {((oldDataForChart[0] - newDataForChart[0]) * 35.71).toFixed(2)} kwh/year
+          Issacs Lab has saved {((oldDataForChart[0] - newDataForChart[0]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
         </div>
         <br/>
         <div>
-          Falvey Lab has saved {((oldDataForChart[1] - newDataForChart[1]) * 35.71).toFixed(2)} kwh/year
+          Falvey Lab has saved {((oldDataForChart[1] - newDataForChart[1]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
         </div>
         <br/>
         <div>
-          Rodriquez Lab has saved {((oldDataForChart[2] - newDataForChart[2]) * 35.71).toFixed(2)} kwh/year
+          Rodriguez Lab has saved {((oldDataForChart[2] - newDataForChart[2]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
         </div>
         <br/>
         <div>
-          Wang Lab has saved {((oldDataForChart[3] - newDataForChart[3]) * 35.71).toFixed(2)} kwh/year
+          Wang Lab has saved {((oldDataForChart[3] - newDataForChart[3]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
         </div>
         <br/>
       </div>

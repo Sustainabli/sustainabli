@@ -63,10 +63,10 @@ class CFMChart extends React.Component {
       }
     }) : [];
 
-    let rodriquezVals = [];
+    let rodriguezVals = [];
     if (filters.selectedLab === "all") {
       filteredData.forEach(datum => {
-        rodriquezVals.push(Object.keys(datum).filter(key => (key.includes("Total") && (key.includes("2360") || key.includes("2364") || key.includes("2368")))).reduce((prev, curr) => {
+        rodriguezVals.push(Object.keys(datum).filter(key => (key.includes("Total") && (key.includes("2360") || key.includes("2364") || key.includes("2368")))).reduce((prev, curr) => {
           dataKeys = dataKeys.filter(key => key !== curr);
           return prev += datum[curr]
         }, 0));
@@ -82,7 +82,7 @@ class CFMChart extends React.Component {
       // dataKeys.push("Rodriquez Lab");
       // filteredData["Rodriquez Lab"] = rodriquezVal;
     }
-    rodriquezVals = rodriquezVals.map(val => val / NUM_FUMEHOODS.rodriguez);
+    rodriguezVals = rodriguezVals.map(val => val / NUM_FUMEHOODS.rodriguez);
 
     let wangVals = [];
     if (filters.selectedLab === "all") {
@@ -132,8 +132,8 @@ class CFMChart extends React.Component {
 
     if (filters.selectedLab === "all") {
       CFMData.datasets.push({
-        label: "Rodriquez Lab",
-        data: rodriquezVals,
+        label: "Rodriguez Lab",
+        data: rodriguezVals,
         borderColor: CHART_COLORS[2],
         backgroundColor: `${CHART_COLORS[2]}80`,
       });
