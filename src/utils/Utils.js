@@ -8,18 +8,16 @@ export const fetchFilteredData = async (filters, category) => {
   // Parse out which fields we want from filters
   const { granularity, timeOfDay, relativeTimeRange } = filters;
   // We need to add offset for now since data is from 2018
-  const useOffset = false;
   let fetchURL = `/${category}/${granularity}?`;
   if (timeOfDay !== "all") {
     fetchURL += timeOfDay === "day" ? '&time=day' : '&time=night';
   }
-  if (relativeTimeRange && relativeTimeRange !== ALL) {
-    fetchURL += `&relative=${relativeTimeRange}`
+  if (filters.timePeriod && filters.timePeriod !== ALL) {
+    fetchURL += `&relative=${filters.timePeriod}`
   }
-  if (useOffset) {
-    fetchURL += `&offset=2018-10-19`
+  if (filters.dateOffset) {
+    fetchURL += `&offset=${filters.dateOffset}`
   }
-  console.log(fetchURL);
   return fetch(fetchURL).then(res => res.json());
 }
 

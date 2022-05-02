@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import FillerOptions from './components/FilterOptions/FilterOptions';
 import CFMChart from './components/CFMChart/CFMChart';
 import SashChart from './components/SashChart/SashChart';
+import CFMChangeBarGraph from './components/CFMChangeBarGraph/CFMChangeBarGraph';
 import {
   DAY,
   ALL,
@@ -60,9 +61,8 @@ class App extends React.Component {
     if (pathname) {
       filters.selectedLab = pathname;
     }
-    console.log(filters);
     // Might need to update filter state as well in the case where we isolate a specific lab url
-    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname, filters: filters, tempFilters: filters })
+    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname, filters: filters, tempFilters: {...filters} })
   }
 
   onChangeTempSelectedLab = lab => {
@@ -122,6 +122,17 @@ class App extends React.Component {
             <CFMChart filteredData={filteredData} filters={filters}/>
           </Col>
         </Row>
+        <br/>
+        <br/>
+        {filters.selectedLab === "all" &&
+          <Row>
+            <Col md={2}>
+            </Col>
+            <Col md={9}>
+              <CFMChangeBarGraph/>
+            </Col>
+          </Row>
+        }
       </Container>
     );
   }
