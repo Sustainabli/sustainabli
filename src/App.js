@@ -65,6 +65,8 @@ class App extends React.Component {
     this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname, filters: filters, tempFilters: {...filters} })
   }
 
+
+
   onChangeTempSelectedLab = lab => {
     const { tempFilters } = this.state;
     tempFilters.selectedLab = lab;
@@ -104,7 +106,6 @@ class App extends React.Component {
   render() {
     const { filters, filteredData, pathname } = this.state;
     const sortedFilteredData = filteredData.sort((a, b) => new Date(a.time) - new Date(b.time));
-    console.log(sortedFilteredData);
 
     return (
       <Container className="App" fluid>
@@ -131,7 +132,7 @@ class App extends React.Component {
             <Col md={2}>
             </Col>
             <Col md={9}>
-              <CFMChangeBarGraph/>
+              <CFMChangeBarGraph pathname={pathname}/>
             </Col>
           </Row>
         }

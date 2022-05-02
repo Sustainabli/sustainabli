@@ -51,7 +51,8 @@ class CFMChangeBarGraph extends React.Component {
       timeOfDay: "all",
       dateOffset: "2022-04-30",
     }
-    this.setState({ oldData: await fetchFilteredData(oldFilters, CFM), newData: await fetchFilteredData(newFilters, CFM) });
+    fetchFilteredData(oldFilters, CFM).then(data => this.setState({oldData: data}));
+    fetchFilteredData(newFilters, CFM).then(data => this.setState({newData: data}));
   }
   render() {
     const {
@@ -82,6 +83,8 @@ class CFMChangeBarGraph extends React.Component {
       oldDataForChart.push(oldData[0].FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
       oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
       oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHoodAll_TotalExhaustCFM_Tridium) / 17);
+    }
+    if (newData[0]) {
       newDataForChart.push(newData[0].FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
       newDataForChart.push(newData[0].FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
       newDataForChart.push((newData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
