@@ -27,7 +27,7 @@ export const convertCFMToSash = CFM => {
 // Also assume that the chartData weeks are sorted correctly, so the last key should be the latest week
 export const calculateAmtEnergySaved = (chartData, index) => {
   const keys = Object.keys(chartData);
-  return (chartData.beginning[index] - chartData[keys[keys.length - 1]][index]).toFixed(2);
+  return ((chartData.beginning[index] - chartData[keys[keys.length - 1]][index]) * 357.1 / 52).toFixed(2);
 }
 
 // Fetches filtered data from database based on filters and data category

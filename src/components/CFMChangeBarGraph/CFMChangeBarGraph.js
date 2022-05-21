@@ -87,7 +87,6 @@ class CFMChangeBarGraph extends React.Component {
         }
       }),
     };
-    console.log(labels);
 
     return (
       <div className="CFM-Change-Bar-Graph">
