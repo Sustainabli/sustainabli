@@ -17,6 +17,19 @@ export const convertCFMToSash = CFM => {
   return (CFM - 136) / 110;
 }
 
+// Calculate how much energy has been saved based on the given chartData
+// chartData will come in the form of
+//  - <Before competition>: <array of data points per lab>
+//  - <Week 1 of competition>: <array of data points per lab>
+//  - <Week 2 of competition>: <array of data points per lab>
+//  - ...
+// Assume that the array fo data points are in the correct order so we can index into it to retrieve data from a specific lab
+// Also assume that the chartData weeks are sorted correctly, so the last key should be the latest week
+export const calculateAmtEnergySaved = (chartData, index) => {
+  const keys = Object.keys(chartData);
+  return (chartData.beginning[index] - chartData[keys[keys.length - 1]][index]).toFixed(2);
+}
+
 // Fetches filtered data from database based on filters and data category
 export const fetchFilteredData = async (filters, category) => {
   // Parse out which fields we want from filters

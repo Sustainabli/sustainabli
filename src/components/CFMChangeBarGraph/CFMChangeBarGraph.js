@@ -22,11 +22,13 @@ import {
   NUM_OF_COMPETITION_WEEKS,
 } from '../../utils/Constants.js';
 import {
+  calculateAmtEnergySaved,
   capitalizeString,
   fetchFilteredData,
   formatDateLabel,
   generateChartOptions,
 } from '../../utils/Utils.js';
+import './CFMChangeBarGraph.scss';
 
 ChartJS.register(
   CategoryScale,
@@ -85,30 +87,18 @@ class CFMChangeBarGraph extends React.Component {
         }
       }),
     };
+    console.log(labels);
 
     return (
       <div className="CFM-Change-Bar-Graph">
         <Bar options={options} data={CFMBarData}/>
         <br/>
         <br/>
-      {/*
-        <div>
-          Issacs Lab has saved {((oldDataForChart[0] - newDataForChart[0]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
-        </div>
-        <br/>
-        <div>
-          Falvey Lab has saved {((oldDataForChart[1] - newDataForChart[1]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
-        </div>
-        <br/>
-        <div>
-          Rodriguez Lab has saved {((oldDataForChart[2] - newDataForChart[2]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
-        </div>
-        <br/>
-        <div>
-          Wang Lab has saved {((oldDataForChart[3] - newDataForChart[3]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
-        </div>
-        <br/>
-        */}
+        {
+          labels.map((lab, index) => <div className="energy-saved-div" key={lab}> {`${lab} has saved ${calculateAmtEnergySaved(chartData, index)} kwh of energy this competition so far`}
+            </div>
+          )
+        }
       </div>
     );
   }
