@@ -5,12 +5,15 @@ import Col from 'react-bootstrap/Col';
 
 import FillerOptions from './components/FilterOptions/FilterOptions';
 import CFMChart from './components/CFMChart/CFMChart';
-import SashChart from './components/SashChart/SashChart';
+// import SashChart from './components/SashChart/SashChart';
 import CFMChangeBarGraph from './components/CFMChangeBarGraph/CFMChangeBarGraph';
 import {
-  DAY,
-  ALL,
-  CFM,
+  CHART_TYPES,
+  LAB_ROOM_FILTERS,
+  LAB_NAMES,
+  RELATIVE_TIME_RANGES,
+  TIME_GRANULARITIES,
+  TIME_OF_DAY,
 } from './utils/Constants.js';
 import {
   fetchFilteredData,
@@ -22,51 +25,44 @@ class App extends React.Component {
     super(props);
     this.state = {
       filters: {
-        selectedLab: "all",
-        granularity: DAY,
-        timePeriod: ALL,
-        timeOfDay: "all",
+        selectedLab: LAB_ROOM_FILTERS.all,
+        granularity: TIME_GRANULARITIES.day,
+        timePeriod: RELATIVE_TIME_RANGES.all,
+        timeOfDay: TIME_OF_DAY.all,
       },
       // These are the filters the user has SELECTED but hasn't SUBMITTED on the filter modal
       tempFilters: {
-        selectedLab: "all",
-        granularity: DAY,
-        timePeriod: ALL,
-        timeOfDay: "all",
+        selectedLab: LAB_ROOM_FILTERS.all,
+        granularity: TIME_GRANULARITIES.day,
+        timePeriod: RELATIVE_TIME_RANGES.all,
+        timeOfDay: TIME_OF_DAY.all,
       },
-      filteredData: [],
-      pathname: "",
+      filteredData: [], // For CFM Line Graph
+      weekData: [],     // For CFM Bar Graph
+      pathname: null,   // Need to default null here otherwise the title for the bar graph shows up for a split second when looking at a specific lab URL
     }
   }
 
   async componentDidMount() {
     const { filters } = this.state;
-    let pathname = "";
-    switch(window.location.pathname) {
-      case "/issacs":
-        pathname = "issacs";
-        break;
-      case "/rodriguez":
-        pathname = "rodriguez";
-        break;
-      case "/falvey":
-        pathname = "falvey";
-        break;
-      case "/wang":
-        pathname = "wang";
-        break;
-      default:
-        pathname = "";
+
+    // Pathname will used to determine the specific lab url for the arduino display
+    const pathname = Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).reduce((acc, lab) => window.location.pathname === `/${lab}` ? lab : acc, '');
+
+    const weekFilters = {
+      granularity: TIME_GRANULARITIES.week,
+      timePeriod: RELATIVE_TIME_RANGES.all,
+      timeOfDay: TIME_OF_DAY.all,
     }
-    if (pathname) {
-      filters.selectedLab = pathname;
-    }
-    // Might need to update filter state as well in the case where we isolate a specific lab url
-    this.setState({ filteredData: await fetchFilteredData(filters, CFM), pathname: pathname, filters: filters, tempFilters: {...filters} })
+
+    this.setState({
+      filteredData: await fetchFilteredData(filters, CHART_TYPES.cfm),
+      weekData: await fetchFilteredData(weekFilters, CHART_TYPES.cfm),
+      pathname: pathname,
+    });
   }
 
-
-
+  // This fxn only updates tempFilters
   onChangeTempSelectedLab = lab => {
     const { tempFilters } = this.state;
     tempFilters.selectedLab = lab;
@@ -99,16 +95,18 @@ class App extends React.Component {
     const { tempFilters } = this.state;
     this.setState({
       filters: { ...tempFilters },
-      filteredData: await fetchFilteredData(tempFilters, CFM)
+      filteredData: await fetchFilteredData(tempFilters, CHART_TYPES.cfm)
     });
   }
 
   render() {
-    const { filters, filteredData, pathname } = this.state;
+    const { filters, filteredData, weekData, pathname } = this.state;
+    // TODO sort data in backend
     const sortedFilteredData = filteredData.sort((a, b) => new Date(a.time) - new Date(b.time));
+    const sortedWeekData = weekData.sort((a, b) => new Date(a.time) - new Date(b.time));
 
     return (
-      <Container className="App" fluid>
+      <Container className='App' fluid>
         <Row>
           {/*<SashChart />*/}
           <Col md={2}>
@@ -118,7 +116,7 @@ class App extends React.Component {
               onChangeTempTimePeriod={this.onChangeTempTimePeriod}
               onChangeTempTimeOfDay={this.onChangeTempTimeOfDay}
               onSubmitUpdateFilters={this.onSubmitUpdateFilters}
-              includeFilterLab={pathname === ""}
+              includeFilterLab={pathname === ''}
             />
           </Col>
           <Col md={9}>
@@ -127,12 +125,12 @@ class App extends React.Component {
         </Row>
         <br/>
         <br/>
-        {filters.selectedLab === "all" &&
+        {pathname === '' && filters.selectedLab === LAB_ROOM_FILTERS.all &&
           <Row>
             <Col md={2}>
             </Col>
             <Col md={9}>
-              <CFMChangeBarGraph pathname={pathname}/>
+              <CFMChangeBarGraph weekData={weekData}/>
             </Col>
           </Row>
         }

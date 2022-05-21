@@ -4,7 +4,16 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Select from 'react-select'
 
-import { TIME_GRANULARITIES, RELATIVE_TIME_RANGES } from '../../utils/Constants';
+import {
+  LAB_NAMES,
+  // RELATIVE_TIME_RANGES,
+  TIME_GRANULARITIES,
+  TIME_OF_DAY,
+} from '../../utils/Constants';
+
+import {
+  capitalizeString,
+} from '../../utils/Utils';
 
 class FilterOptions extends React.Component {
 
@@ -12,36 +21,36 @@ class FilterOptions extends React.Component {
     const {
       onChangeTempSelectedLab,
       onChangeTempGranularity,
-      onChangeTempTimePeriod,
+      // onChangeTempTimePeriod,
       onChangeTempTimeOfDay,
       onSubmitUpdateFilters,
       includeFilterLab,
     } = this.props;
 
-    const labs = [
-      { value: 'all', label: "All Labs" },
-      { value: 'issacs', label: 'Issacs Lab' },
-      { value: 'rodriguez', label: 'Rodriguez Lab' },
-      { value: 'falvey', label: 'Falvey Lab' },
-      { value: 'wang', label: 'Wang Lab' },
-    ];
-
-    const granuliarities = TIME_GRANULARITIES.map(granularity => {
-      return { value: granularity, label: granularity }
-    });
-
-    const timePeriods = RELATIVE_TIME_RANGES.map(period => {
+    const labs = Object.keys(LAB_NAMES).map(lab => {
       return {
-        value: period,
-        label: `Last ${period}`
-      }
+        value: LAB_NAMES[lab],
+        label: `${capitalizeString(LAB_NAMES[lab])} ${lab === LAB_NAMES.all ? 'Labs' : 'Lab'}`,
+      };
     });
 
-    const timeOfDays = [
-      {value: 'day', label: 'Day'},
-      {value: 'night', label: 'Night'},
-      {value: 'all', label: 'All'}
-    ];
+    const granuliarities = Object.values(TIME_GRANULARITIES).map(granularity => {
+      return { value: granularity, label: capitalizeString(granularity) }
+    });
+
+    // const timePeriods = Object.values(RELATIVE_TIME_RANGES).map(period => {
+    //   return {
+    //     value: period,
+    //     label: `Last ${period}`
+    //   }
+    // });
+
+    const timeOfDays = Object.values(TIME_OF_DAY).map(time => {
+      return {
+        value: time,
+        label: capitalizeString(time),
+      };
+    });
 
     return (
       <Container className="FilterOptions">
@@ -53,7 +62,7 @@ class FilterOptions extends React.Component {
         }
         <Row>
           Select a Granularity
-          <Select options={granuliarities} onChange={options => onChangeTempGranularity(options.value)} defaultValue={{value: 'day', label: 'day'}}/>
+          <Select options={granuliarities} onChange={options => onChangeTempGranularity(options.value)} defaultValue={{value: TIME_GRANULARITIES.day, label: capitalizeString(TIME_GRANULARITIES.day)}}/>
         </Row>
         {/*
         <Row>
@@ -63,7 +72,7 @@ class FilterOptions extends React.Component {
           */}
         <Row>
           Select Time of Day Data
-          <Select options={timeOfDays} onChange={options => onChangeTempTimeOfDay(options.value)} defaultValue={{value: 'all', label: 'All'}}/>
+          <Select options={timeOfDays} onChange={options => onChangeTempTimeOfDay(options.value)} defaultValue={{value: TIME_OF_DAY.all, label: capitalizeString(TIME_OF_DAY.all)}}/>
         </Row>
         <br/>
         <Row>

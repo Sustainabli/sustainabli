@@ -1,23 +1,41 @@
-import { NONE, DAY, WEEK, MONTH, YEAR, ALL, SASH, CFM } from './Constants.js';
+import {
+  CHART_TYPES,
+  RELATIVE_TIME_RANGES,
+  TIME_GRANULARITIES
+} from './Constants.js';
 
 // File contains several helper functions
 
+
+// Capitalizes the first letter of a string
+export const capitalizeString = str => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Calculation for converting CFM data to Sash data
+export const convertCFMToSash = CFM => {
+  return (CFM - 136) / 110;
+}
+
 // Fetches filtered data from database based on filters and data category
-// TODO: For now data category will default to null since we only have sash data
 export const fetchFilteredData = async (filters, category) => {
   // Parse out which fields we want from filters
-  const { granularity, timeOfDay, relativeTimeRange } = filters;
-  // We need to add offset for now since data is from 2018
+  const {
+    granularity,
+    timeOfDay,
+    relativeTimeRange
+  } = filters;
+
   let fetchURL = `/${category}/${granularity}?`;
   if (timeOfDay !== "all") {
     fetchURL += timeOfDay === "day" ? '&time=day' : '&time=night';
   }
-  if (filters.timePeriod && filters.timePeriod !== ALL) {
+  if (filters.timePeriod && filters.timePeriod !== RELATIVE_TIME_RANGES.all) {
     fetchURL += `&relative=${filters.timePeriod}`
   }
-  if (filters.dateOffset) {
-    fetchURL += `&offset=${filters.dateOffset}`
-  }
+  // if (filters.dateOffset) {
+  //   fetchURL += `&offset=${filters.dateOffset}`
+  // }
   return fetch(fetchURL).then(res => res.json());
 }
 
@@ -51,37 +69,22 @@ export const formatDateLabel = (date, granularity) => {
   const endWeekDay = endWeekDate.getUTCDate();
   const endWeekYear = endWeekDate.getUTCFullYear();
   switch (granularity) {
-    case NONE:
+    case TIME_GRANULARITIES.none:
       return `${dateMonth}/${dateDay}/${dateYear}   ${dateHours}:${dateMinutes} ${ampm}`;
-    case DAY:
+    case TIME_GRANULARITIES.day:
       return `${dateMonth}/${dateDay}/${dateYear}`;
-    case WEEK:
+    case TIME_GRANULARITIES.week:
       return `${startWeekMonth}/${startWeekDay}/${startWeekYear} - ${endWeekMonth}/${endWeekDay}/${endWeekYear}`;
-    case MONTH:
+    case TIME_GRANULARITIES.month:
       return `${dateMonth}/${dateYear}`;
-    case YEAR:
+    case TIME_GRANULARITIES.year:
       return `${dateYear}`;
     default:
   }
 }
 
-export const convertCFMToSash = CFM => {
-  return (CFM - 136) / 110;
-}
-
-export const generateChartOptions = (chartType, all) => {
-  let chartTypeString = "";
-
-  switch(chartType) {
-    case SASH:
-      chartTypeString = "Sash";
-      break;
-    case CFM:
-      chartTypeString = all ? "Average CFM/Fumehood" : "CFM";
-      break;
-    default:
-  }
-
+// Generate default chart options
+export const generateChartOptions = (title) => {
   return {
     responsive: true,
     plugins: {
@@ -90,7 +93,7 @@ export const generateChartOptions = (chartType, all) => {
       },
       title: {
         display: true,
-        text: `${chartTypeString} Data`,
+        text: title,
         color: '#000000',
         font: {
           size: 30,

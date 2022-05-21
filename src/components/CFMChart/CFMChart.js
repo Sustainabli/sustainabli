@@ -10,19 +10,19 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import "react-toggle/style.css";
-
 import {
+  ALL_LAB_ROOMS,
   CHART_COLORS,
-  CFM,
-  ROOM_FILTERS,
-  NUM_FUMEHOODS,
-  ALL_ROOMS,
+  CHART_TYPES,
+  LAB_NAMES,
+  LAB_NUM_FUMEHOODS,
+  LAB_ROOM_FILTERS,
 } from '../../utils/Constants.js';
 import {
   formatDateLabel,
-  generateChartOptions
+  generateChartOptions,
+  capitalizeString,
 } from '../../utils/Utils.js';
-
 import './CFMChart.scss';
 
 ChartJS.register(
@@ -35,120 +35,68 @@ ChartJS.register(
 );
 
 class CFMChart extends React.Component {
-
   render() {
-    const { filters, filteredData } = this.props;
+    const {
+      filters,
+      filteredData
+    } = this.props;
+
+    // X-axis labels
     const labels = filteredData.map(datum => formatDateLabel(new Date(datum.time), filters.granularity));
 
+    // dataKeys will contain the fumehood names we want to look at
     // First check if the data has been loaded yet. If it hasn't either filteredData will be null or filteredData.length will be 0
     // We also want to remove 'time' from the list of data keys (this simplifies looping through line graph keys)
-    // Limiting to first 10 data columns so we don't overload the app
-    let dataKeys = filteredData && filteredData.length ? Object.keys(filteredData[0]).filter(key => key !== 'time').filter(key => {
-      if (filters.selectedLab === "all") {
-        let toFilter = false;
-        ALL_ROOMS.forEach(room => {
-          if (key.includes(room) && key.includes("Total")) {
-            toFilter = true;
-          }
-        });
-        return toFilter;
+    // Also filter to only include data keys we're interested in (i.e. room numbers)
+    let dataKeys = filteredData && filteredData.length ? Object.keys(filteredData[0]).filter(key => {
+      if (key === 'time') {
+        return false;
+      }
+      if (filters.selectedLab === LAB_NAMES.all) {
+        // When filtering across all lab averages, only look at total room data
+        return ALL_LAB_ROOMS.reduce((acc, room) => acc || (key.includes(room) && key.includes("Total")), false);
       } else {
-        let toFilter = false;
-        ROOM_FILTERS[filters.selectedLab].forEach(room => {
-          if (key.includes(room) && (!key.includes("Total"))) {
-            toFilter = true;
-          }
-        });
-        return toFilter;
+        // When filtering across a specific lab average, do not look at total room data
+        return LAB_ROOM_FILTERS[filters.selectedLab].reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
       }
     }) : [];
 
-    let rodriguezVals = [];
-    if (filters.selectedLab === "all") {
-      filteredData.forEach(datum => {
-        rodriguezVals.push(Object.keys(datum).filter(key => (key.includes("Total") && (key.includes("2360") || key.includes("2364") || key.includes("2368")))).reduce((prev, curr) => {
-          dataKeys = dataKeys.filter(key => key !== curr);
-          return prev += datum[curr]
-        }, 0));
+    // Organize data into chartData. Format will look like
+    //  - <key>: <array of data for each granularity point>
+    const chartData = {};
+    // When look at all labs, we need to take the average of all fumehood totals for each respective lab
+    if (filters.selectedLab === LAB_NAMES.all) {
+      Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
+        const toRet = [];
+        filteredData.forEach(datum => {
+          toRet.push(Object.keys(datum)
+            .filter(key => key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
+            .reduce((prev, curr) => prev + datum[curr], 0) / LAB_NUM_FUMEHOODS[lab]);
+        });
+        chartData[lab] = toRet;
       });
-      // dataKeys.reduce((prev, curr) => {
-      //   if ((curr.includes("Total") && (curr.includes("2360") || curr.includes("2364") || curr.includes("2368")))) {
-      //     console.log(prev, filteredData[curr], curr, filteredData['FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium'], filteredData);
-      //     prev += filteredData[curr];
-      //     dataKeys.filter(key => key !== curr);
-      //   }
-      //   return prev;
-      // }, 0);
-      // dataKeys.push("Rodriquez Lab");
-      // filteredData["Rodriquez Lab"] = rodriquezVal;
-    }
-    rodriguezVals = rodriguezVals.map(val => val / NUM_FUMEHOODS.rodriguez);
-
-    let wangVals = [];
-    if (filters.selectedLab === "all") {
-      filteredData.forEach(datum => {
-        wangVals.push(Object.keys(datum).filter(key => (key.includes("Total") && (key.includes("1302") || key.includes("1308")))).reduce((prev, curr) => {
-          dataKeys = dataKeys.filter(key => key !== curr);
-          return prev += datum[curr]
-        }, 0));
+    // When looking at an individual lab, we can just take the granularity data points
+    } else {
+      dataKeys.forEach(key => {
+        chartData[key] = filteredData.map(datum => datum[key]);
       });
     }
-    wangVals = wangVals.map(val => val / NUM_FUMEHOODS.wang);
-    // if (filters.selectedLab === "all") {
-    //   dataKeys.reduce((prev, curr) => {
-    //     if ((curr.includes("Total") && (curr.includes("1302") || curr.includes("1308")))) {
-    //       prev += filteredData[curr];
-    //       dataKeys.filter(key => key !== curr);
-    //     }
-    //     return prev;
-    //   }, 0);
-    //   dataKeys.push("Wang Lab");
-    //   filteredData["Wang Lab"] = rodriquezVal;
-    // }
 
     const CFMData = {
       labels,
-      datasets: dataKeys.map(key => {
-        const colorIndex = dataKeys.indexOf(key);
-        let label = key;
-        let data = filteredData.map(datum => datum[key]);
-        if (filters.selectedLab === "all") {
-          if (key.includes("3336")) {
-            label = "Issacs Lab";
-            data = data.map(val => val / NUM_FUMEHOODS.issacs);
-          } else if (key.includes("3356")) {
-            label = "Falvey Lab";
-            data = data.map(val => val / NUM_FUMEHOODS.falvey);
-          }
-        }
+      datasets: Object.keys(chartData).map((key, index) => {
         return {
-          label: label,
-          data: data,
-          borderColor: CHART_COLORS[colorIndex],
-          backgroundColor: `${CHART_COLORS[colorIndex]}80`,
+          label: capitalizeString(key),
+          data: chartData[key],
+          borderColor: CHART_COLORS[index],
+          backgroundColor: `${CHART_COLORS[index]}80`,
         };
       })
     };
 
-    if (filters.selectedLab === "all") {
-      CFMData.datasets.push({
-        label: "Rodriguez Lab",
-        data: rodriguezVals,
-        borderColor: CHART_COLORS[2],
-        backgroundColor: `${CHART_COLORS[2]}80`,
-      });
-
-      CFMData.datasets.push({
-        label: "Wang Lab",
-        data: wangVals,
-        borderColor: CHART_COLORS[3],
-        backgroundColor: `${CHART_COLORS[3]}80`,
-      });
-    }
-
     return (
       <div className="CFM-Chart">
-        <Line options={generateChartOptions(CFM, filters.selectedLab === "all")} data={CFMData} />
+        <Line options={generateChartOptions('Average CFM/Fumehood Data')} data={CFMData}/>
       </div>
     );
   }

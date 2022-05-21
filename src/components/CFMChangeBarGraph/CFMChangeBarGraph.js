@@ -11,13 +11,21 @@ import {
 import { Bar } from 'react-chartjs-2';
 import "react-toggle/style.css";
 import {
-  YEAR,
-  ALL,
-  CFM,
-  ONE_WEEK,
+  CHART_COLORS,
+  CHART_TYPES,
+  LAB_NAMES,
+  LAB_NUM_FUMEHOODS,
+  LAB_ROOM_FILTERS,
+  RELATIVE_TIME_RANGES,
+  TIME_GRANULARITIES,
+  TIME_OF_DAY,
+  NUM_OF_COMPETITION_WEEKS,
 } from '../../utils/Constants.js';
 import {
+  capitalizeString,
   fetchFilteredData,
+  formatDateLabel,
+  generateChartOptions,
 } from '../../utils/Utils.js';
 
 ChartJS.register(
@@ -32,84 +40,58 @@ ChartJS.register(
 class CFMChangeBarGraph extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      oldData: [],
-      newData: []
-    }
   }
 
-  async componentDidMount() {
-    const oldFilters = {
-      granularity: YEAR,
-      timePeriod: ALL,
-      timeOfDay: "all",
-      dateOffset: "2022-03-31",
-    }
-    const newFilters = {
-      granularity: YEAR,
-      timePeriod: ONE_WEEK,
-      timeOfDay: "all",
-      dateOffset: "2022-04-30",
-    }
-    fetchFilteredData(oldFilters, CFM).then(data => this.setState({oldData: data}));
-    fetchFilteredData(newFilters, CFM).then(data => this.setState({newData: data}));
-  }
   render() {
-    const {
-      oldData,
-      newData,
-    } = this.state;
-    const options = {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top'
-        },
-        title: {
-          display: true,
-          text: 'Changes in CFM Averages Before and During the Competition',
-          color: '#000000',
-          font: {
-            size: 30,
-          }
-        },
-      },
-    };
-    const labels = ['Issacs Lab', 'Falvey Lab', 'Rodriguez Lab', 'Wang Lab'];
-    const oldDataForChart = [];
-    const newDataForChart = [];
-    if (oldData[0]) {
-      oldDataForChart.push(oldData[0].FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
-      oldDataForChart.push(oldData[0].FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
-      oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
-      oldDataForChart.push((oldData[0].FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHoodAll_TotalExhaustCFM_Tridium + oldData[0].FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHoodAll_TotalExhaustCFM_Tridium) / 17);
+    const { weekData } = this.props;
+    const options = generateChartOptions('Changes in CFM Averages Before and During the Competition');
+    const labels = Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).map(lab => `${capitalizeString(lab)} Lab`);
+    const labData = {};
+    Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
+      const toRet = [];
+      weekData.forEach(datum => {
+        toRet.push(Object.keys(datum)
+          .filter(key => key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
+          .reduce((prev, curr) => prev + datum[curr], 0) / LAB_NUM_FUMEHOODS[lab]);
+      });
+      labData[lab] = toRet;
+    });
+
+    const chartData = {};
+    if (weekData.length > 0) {
+      chartData.beginning = Object.keys(labData)
+        .map(lab => labData[lab]
+          .slice(0, labData[lab].length - NUM_OF_COMPETITION_WEEKS)
+          .reduce((prev, curr) => prev + curr, 0) / (labData[lab].length - NUM_OF_COMPETITION_WEEKS));
+      for (let i = NUM_OF_COMPETITION_WEEKS; i >= 1; i--) {
+        const chartDatum = [];
+        let chartKey = '';
+        Object.values(labData).forEach(labDatum => {
+          chartKey = weekData[weekData.length - i].time;
+          chartDatum.push(labDatum[labDatum.length - i]);
+        });
+        chartData[chartKey] = chartDatum;
+      }
     }
-    if (newData[0]) {
-      newDataForChart.push(newData[0].FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
-      newDataForChart.push(newData[0].FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHoodAll_TotalExhaustCFM_Tridium / 4);
-      newDataForChart.push((newData[0].FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHoodAll_TotalExhaustCFM_Tridium) / 10);
-      newDataForChart.push((newData[0].FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHoodAll_TotalExhaustCFM_Tridium + newData[0].FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHoodAll_TotalExhaustCFM_Tridium) / 17);
-    }
-    const data = {
+    const CFMBarData = {
       labels,
-      datasets: [
-        {
-          label: 'January-March CFM Average',
-          data: oldDataForChart,
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-          label: 'April 24-30 CFM Average',
-          data: newDataForChart,
-          backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-      ],
+      datasets: Object.keys(chartData).map((key, index) => {
+        const label = key === "beginning" ? "January-March CFM Averages" : formatDateLabel(new Date(key), TIME_GRANULARITIES.week)
+        return {
+          label: label,
+          data: chartData[key],
+          borderColor: CHART_COLORS[index],
+          backgroundColor: `${CHART_COLORS[index]}80`,
+        }
+      }),
     };
+
     return (
       <div className="CFM-Change-Bar-Graph">
-        <Bar options={options} data={data}/>
+        <Bar options={options} data={CFMBarData}/>
         <br/>
         <br/>
+      {/*
         <div>
           Issacs Lab has saved {((oldDataForChart[0] - newDataForChart[0]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
         </div>
@@ -126,6 +108,7 @@ class CFMChangeBarGraph extends React.Component {
           Wang Lab has saved {((oldDataForChart[3] - newDataForChart[3]) * 35.71 / 52).toFixed(2)} kwh of energy this competition so far
         </div>
         <br/>
+        */}
       </div>
     );
   }

@@ -64,46 +64,59 @@ export const CHART_COLORS = [
   '#FFB167',
   '#009BFF',
   '#E85EBE',
-]
+];
 
-// Constants for time granularity
-export const NONE = "none";
-export const DAY = "day";
-export const WEEK = "week";
-export const MONTH = "month";
-export const YEAR = "year";
-export const TIME_GRANULARITIES = [NONE, DAY, WEEK, MONTH, YEAR];
+export const CHART_TYPES = {
+  sash: 'sash',
+  cfm: 'cfm',
+};
 
-// Constants for time range interval
-export const ALL = "all";
-export const ONE_DAY = "1day"
-export const THREE_DAYS = "3day"
-export const ONE_WEEK = "7day"
-export const ONE_MONTH = "1month"
-export const ONE_YEAR = "1year"
-export const RELATIVE_TIME_RANGES = [ALL, ONE_DAY, THREE_DAYS, ONE_WEEK, ONE_MONTH, ONE_YEAR];
-
-// Constants for graph types
-export const SASH = "sash";
-export const CFM = "cfm";
-
-export const ROOM_FILTERS = {
-  all: "all",
-  issacs: ["3336"],
-  rodriguez: ["2360", "2364", "2368"],
-  falvey: ["3356"],
-  wang: ["1302", "1308"],
+export const LAB_NAMES = {
+  all: 'all',
+  issacs: 'issacs',
+  falvey: 'falvey',
+  rodriguez: 'rodriguez',
+  wang: 'wang',
 }
 
-export const NUM_FUMEHOODS = {
+export const LAB_ROOM_FILTERS = {
+  all: 'all',
+  issacs: ['3336'],
+  falvey: ['3356'],
+  rodriguez: ['2360', '2364', '2368'],
+  wang: ['1302', '1308'],
+};
+
+export const ALL_LAB_ROOMS = Object.values(LAB_ROOM_FILTERS).reduce((prev, curr) => prev.concat(curr), []);
+
+export const LAB_NUM_FUMEHOODS = {
   issacs: 4,
-  rodriguez: 10,
   falvey: 4,
+  rodriguez: 10,
   wang: 17,
-}
+};
 
-export const ALL_ROOMS = Object.values(ROOM_FILTERS).reduce((prev, curr) => prev.concat(curr), []);
+export const RELATIVE_TIME_RANGES = {
+  all: 'all',
+  one_day: '1day',
+  three_days: '3day',
+  one_week: '7day',
+  one_month: '1month',
+  one_year: '1year',
+};
 
-export const DAY_DATA = "day";
-export const NIGHT_DATA = "night";
-export const ALL_DAY_DATA = "";
+export const TIME_GRANULARITIES = {
+  none: 'none',
+  day: 'day',
+  week: 'week',
+  month: 'month',
+  year: 'year',
+};
+
+export const TIME_OF_DAY = {
+  all: 'all',
+  day: 'day',
+  night: 'night'
+};
+
+export const NUM_OF_COMPETITION_WEEKS = 2;
