@@ -53,7 +53,7 @@ class FilterOptions extends React.Component {
     });
 
     return (
-      <Container className="FilterOptions">
+      <Container className="FilterOptions" fluid>
         {includeFilterLab &&
           <Row>
             Select Individual Lab Data

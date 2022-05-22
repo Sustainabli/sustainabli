@@ -19,9 +19,10 @@ import {
   LAB_ROOM_FILTERS,
 } from '../../utils/Constants.js';
 import {
+  capitalizeString,
+  extractFumehoodName,
   formatDateLabel,
   generateChartOptions,
-  capitalizeString,
 } from '../../utils/Utils.js';
 import './CFMChart.scss';
 
@@ -85,8 +86,9 @@ class CFMChart extends React.Component {
     const CFMData = {
       labels,
       datasets: Object.keys(chartData).map((key, index) => {
+        const label = filters.selectedLab === LAB_NAMES.all ? capitalizeString(key) : extractFumehoodName(key);
         return {
-          label: capitalizeString(key),
+          label: label,
           data: chartData[key],
           borderColor: CHART_COLORS[index],
           backgroundColor: `${CHART_COLORS[index]}80`,
@@ -94,9 +96,11 @@ class CFMChart extends React.Component {
       })
     };
 
+    const chartTitle = filters.selectedLab === LAB_NAMES.all ? 'Average CFM per Lab' : `Fumehood CFM Data for ${capitalizeString(filters.selectedLab)} Lab`;
+
     return (
       <div className="CFM-Chart">
-        <Line options={generateChartOptions('Average CFM/Fumehood Data')} data={CFMData}/>
+        <Line options={generateChartOptions(chartTitle, 'CO2 Emissions CFM', 'Dates')} data={CFMData}/>
       </div>
     );
   }

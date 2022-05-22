@@ -1,5 +1,5 @@
 import {
-  CHART_TYPES,
+  // CHART_TYPES,
   RELATIVE_TIME_RANGES,
   TIME_GRANULARITIES
 } from './Constants.js';
@@ -30,13 +30,20 @@ export const calculateAmtEnergySaved = (chartData, index) => {
   return ((chartData.beginning[index] - chartData[keys[keys.length - 1]][index]) * 357.1 / 52).toFixed(2);
 }
 
+// Extracts the fumehood name from a given string
+// e.g. FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium becomes Room1302_FumeHood4
+export const extractFumehoodName = name => {
+  const regMatch = name.match(/(Room.*FumeHood\d)/);
+  return regMatch[1];
+}
+
 // Fetches filtered data from database based on filters and data category
 export const fetchFilteredData = async (filters, category) => {
   // Parse out which fields we want from filters
   const {
     granularity,
     timeOfDay,
-    relativeTimeRange
+    // relativeTimeRange
   } = filters;
 
   let fetchURL = `/${category}/${granularity}?`;
@@ -97,9 +104,9 @@ export const formatDateLabel = (date, granularity) => {
 }
 
 // Generate default chart options
-export const generateChartOptions = (title) => {
+// Accepts the chart ttile, y axis label, and x axis label
+export const generateChartOptions = (title, yLabel, xLabel) => {
   return {
-    responsive: true,
     plugins: {
       legend: {
         position: 'top',
@@ -113,5 +120,20 @@ export const generateChartOptions = (title) => {
         }
       },
     },
+    scales: {
+      x: {
+        title: {
+          display: 'true',
+          text: xLabel,
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: 'true',
+          text: yLabel,
+        }
+      }
+    }
   }
 }

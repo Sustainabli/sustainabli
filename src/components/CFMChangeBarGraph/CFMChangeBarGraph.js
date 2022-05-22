@@ -46,7 +46,7 @@ class CFMChangeBarGraph extends React.Component {
 
   render() {
     const { weekData } = this.props;
-    const options = generateChartOptions('Changes in CFM Averages Before and During the Competition');
+    const options = generateChartOptions('Changes in CFM Averages Before and During the Competition', 'CO2 Emissions CFM', 'Labs');
     const labels = Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).map(lab => `${capitalizeString(lab)} Lab`);
     const labData = {};
     Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
