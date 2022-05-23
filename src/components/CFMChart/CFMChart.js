@@ -54,8 +54,9 @@ class CFMChart extends React.Component {
         return false;
       }
       if (filters.selectedLab === LAB_NAMES.all) {
-        // When filtering across all lab averages, only look at total room data
-        return ALL_LAB_ROOMS.reduce((acc, room) => acc || (key.includes(room) && key.includes("Total")), false);
+        // Look at all individual fumehood data. For some reason the Total ones are inaccurate
+        // TODO we can simplify this logic by removing all Total keys in the original data
+        return ALL_LAB_ROOMS.reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
       } else {
         // When filtering across a specific lab average, do not look at total room data
         return LAB_ROOM_FILTERS[filters.selectedLab].reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);

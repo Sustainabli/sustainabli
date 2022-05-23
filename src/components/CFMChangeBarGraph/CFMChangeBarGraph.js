@@ -53,7 +53,7 @@ class CFMChangeBarGraph extends React.Component {
       const toRet = [];
       weekData.forEach(datum => {
         toRet.push(Object.keys(datum)
-          .filter(key => key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
+          .filter(key => !key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
           .reduce((prev, curr) => prev + datum[curr], 0) / LAB_NUM_FUMEHOODS[lab]);
       });
       labData[lab] = toRet;
