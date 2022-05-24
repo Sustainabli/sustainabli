@@ -106,8 +106,9 @@ app.get('/:db/:gran', (req, res) => {
         }
         sql += "time FROM " + db_query
 
+        sql += " WHERE cast(strftime('%m', time) as INTEGER) >= 4"
         if(relative || time)
-            sql += " WHERE"
+            sql += " and"
 
         //Insert date relative
         if(relative) {
