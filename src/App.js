@@ -48,6 +48,7 @@ class App extends React.Component {
 
     // Pathname will used to determine the specific lab url for the arduino display
     const pathname = Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).reduce((acc, lab) => window.location.pathname === `/${lab}` ? lab : acc, '');
+    filters.selectedLab = pathname === '' ? LAB_NAMES.all : pathname;
 
     const weekFilters = {
       granularity: TIME_GRANULARITIES.week,
@@ -58,6 +59,7 @@ class App extends React.Component {
     this.setState({
       filteredData: await fetchFilteredData(filters, CHART_TYPES.cfm),
       weekData: await fetchFilteredData(weekFilters, CHART_TYPES.cfm),
+      filters: {...filters},
       pathname: pathname,
     });
   }

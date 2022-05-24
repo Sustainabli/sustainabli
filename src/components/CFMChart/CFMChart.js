@@ -55,7 +55,6 @@ class CFMChart extends React.Component {
       }
       if (filters.selectedLab === LAB_NAMES.all) {
         // Look at all individual fumehood data. For some reason the Total ones are inaccurate
-        // TODO we can simplify this logic by removing all Total keys in the original data
         return ALL_LAB_ROOMS.reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
       } else {
         // When filtering across a specific lab average, do not look at total room data
@@ -72,7 +71,7 @@ class CFMChart extends React.Component {
         const toRet = [];
         filteredData.forEach(datum => {
           toRet.push(Object.keys(datum)
-            .filter(key => key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
+            .filter(key => !key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
             .reduce((prev, curr) => prev + datum[curr], 0) / LAB_NUM_FUMEHOODS[lab]);
         });
         chartData[lab] = toRet;
