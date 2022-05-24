@@ -133,14 +133,14 @@ app.get('/:db/:gran', (req, res) => {
             param.push("00:00:00")
             param.push(time_map[time][1])
         }
-
+        
         //Insert groupby
         if(!(gran === "none")) {
             sql += " group by strftime(?, time)"
             param.push(group_map[gran])
         }
         
-        sql += ";"
+        sql += " order by time;"
         db.all(sql, param, (err, rows) => {
             if(err) {
                 console.log(err.message)
