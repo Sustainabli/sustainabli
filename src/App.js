@@ -103,9 +103,6 @@ class App extends React.Component {
 
   render() {
     const { filters, filteredData, weekData, pathname } = this.state;
-    // TODO sort data in backend
-    const sortedFilteredData = filteredData.sort((a, b) => new Date(a.time) - new Date(b.time));
-    const sortedWeekData = weekData.sort((a, b) => new Date(a.time) - new Date(b.time));
 
     return (
       <Container className='App' fluid>
@@ -122,7 +119,7 @@ class App extends React.Component {
             />
           </Col>
           <Col md={9}>
-            <CFMChart filteredData={sortedFilteredData} filters={filters}/>
+            <CFMChart filteredData={filteredData} filters={filters}/>
           </Col>
         </Row>
         <br/>
