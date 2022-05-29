@@ -13,7 +13,6 @@ import "react-toggle/style.css";
 import {
   ALL_LAB_ROOMS,
   CHART_COLORS,
-  CHART_TYPES,
   LAB_NAMES,
   LAB_NUM_FUMEHOODS,
   LAB_ROOM_FILTERS,

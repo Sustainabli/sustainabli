@@ -1,5 +1,4 @@
 import {
-  // CHART_TYPES,
   RELATIVE_TIME_RANGES,
   TIME_GRANULARITIES
 } from './Constants.js';

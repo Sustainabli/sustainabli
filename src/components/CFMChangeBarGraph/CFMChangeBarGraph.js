@@ -8,29 +8,27 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { BarWithErrorBarsController, BarWithErrorBar } from 'chartjs-chart-error-bars';
 import "react-toggle/style.css";
 import {
   CHART_COLORS,
-  CHART_TYPES,
   LAB_NAMES,
   LAB_NUM_FUMEHOODS,
   LAB_ROOM_FILTERS,
-  RELATIVE_TIME_RANGES,
   TIME_GRANULARITIES,
-  TIME_OF_DAY,
   NUM_OF_COMPETITION_WEEKS,
 } from '../../utils/Constants.js';
 import {
   calculateAmtEnergySaved,
   capitalizeString,
-  fetchFilteredData,
   formatDateLabel,
   generateChartOptions,
 } from '../../utils/Utils.js';
 import './CFMChangeBarGraph.scss';
 
 ChartJS.register(
+  BarWithErrorBarsController,
+  BarWithErrorBar,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -42,11 +40,15 @@ ChartJS.register(
 class CFMChangeBarGraph extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      barGraphRef: null,
+      chartData: {},
+      labels: [],
+    }
   }
 
-  render() {
+  componentDidMount() {
     const { weekData } = this.props;
-    const options = generateChartOptions('Changes in CFM Averages Before and During the Competition', 'CO2 Emissions CFM', 'Labs');
     const labels = Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).map(lab => `${capitalizeString(lab)} Lab`);
     const labData = {};
     Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
@@ -75,22 +77,53 @@ class CFMChangeBarGraph extends React.Component {
         chartData[chartKey] = chartDatum;
       }
     }
-    const CFMBarData = {
-      labels,
-      datasets: Object.keys(chartData).map((key, index) => {
-        const label = key === "beginning" ? "January-March CFM Averages" : formatDateLabel(new Date(key), TIME_GRANULARITIES.week)
-        return {
-          label: label,
-          data: chartData[key],
-          borderColor: CHART_COLORS[index],
-          backgroundColor: `${CHART_COLORS[index]}80`,
-        }
-      }),
-    };
 
+    this.setState({
+      labels: labels,
+      chartData: chartData,
+    });
+  }
+
+  onRefChange = node => {
+    const { chartData, labels } = this.state;
+
+    let newBarGraph = node;
+    if (node && node.getContext('2d')) {
+      const options = generateChartOptions('Changes in CFM Averages Before and During the Competition', 'CO2 Emissions CFM', 'Labs');
+      const CFMBarData = {
+        type: 'barWithErrorBars',
+        data: {
+          labels,
+          datasets: Object.keys(chartData).map((key, index) => {
+            const label = key === "beginning" ? "January-March CFM Averages" : formatDateLabel(new Date(key), TIME_GRANULARITIES.week)
+            return {
+              label: label,
+              data: chartData[key].map(yVal => {
+                return {
+                  y: yVal,
+                  yMin: [yVal - 100, yVal - 50],
+                  yMax: [yVal + 100, yVal + 50],
+                }
+              }),
+              borderColor: CHART_COLORS[index],
+              backgroundColor: `${CHART_COLORS[index]}80`,
+            }
+          }),
+        },
+        options: options,
+      };
+      newBarGraph = new ChartJS(node.getContext('2d'), CFMBarData);
+    }
+    this.setState({ barGraphRef: newBarGraph });
+  }
+
+  render() {
+    const { labels, chartData } = this.state;
     return (
       <div className="CFM-Change-Bar-Graph">
-        <Bar options={options} data={CFMBarData}/>
+        {chartData && Object.keys(chartData).length > 0 &&
+          <canvas ref={this.onRefChange}/>
+        }
         <br/>
         <br/>
         {
@@ -102,6 +135,5 @@ class CFMChangeBarGraph extends React.Component {
     );
   }
 }
-
 
 export default CFMChangeBarGraph;

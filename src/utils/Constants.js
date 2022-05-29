@@ -1,4 +1,4 @@
-// distinct color hexes. If we need more look at https://stackoverflow.com/questions/1168260/algorithm-for-generating-unique-colors
+// Distinct color hexes. If we need more look at https://stackoverflow.com/questions/1168260/algorithm-for-generating-unique-colors
 export const CHART_COLORS = [
   '#000000',
   '#00FF00',
@@ -119,4 +119,4 @@ export const TIME_OF_DAY = {
   night: 'night'
 };
 
-export const NUM_OF_COMPETITION_WEEKS = 2;
+export const NUM_OF_COMPETITION_WEEKS = 3;
