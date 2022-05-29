@@ -65,6 +65,8 @@ app.get('/:db/:gran', (req, res) => {
     relative = req.query.relative ? req.query.relative.toLocaleLowerCase() : null
     offset = req.query.offset ? req.query.offset.toLocaleLowerCase() : null
     time = req.query.time ? req.query.time.toLocaleLowerCase() : null
+    start_slice = req.query.start_slice ? req.query.start_slice : "1970-01-01"
+    end_slice = req.query.end_slice ? req.query.end_slice : "now"
     
     db_map = ["cfm", "sash"]
     group_map = {"none": null, "day": "%d-%m-%Y", "week":"%W-%Y", "month": "%m-$Y  ", "year": "%y"}
@@ -106,7 +108,9 @@ app.get('/:db/:gran', (req, res) => {
         }
         sql += "time FROM " + db_query
 
-        sql += " WHERE cast(strftime('%m', time) as INTEGER) >= 4"
+        sql += " WHERE (datetime(time) BETWEEN datetime(?) AND datetime(?))"
+        param.push(start_slice)
+        param.push(end_slice)
         if(relative || time)
             sql += " and"
 
