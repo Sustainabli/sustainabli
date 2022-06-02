@@ -1,3 +1,19 @@
 .App {
-  margin-top: 50px;
+  height: 100%;
+  padding-left: 0px;
+
+  .root-row {
+    height: 100%;
+
+    .react-bootstrap-drawer {
+      height: 100%;
+      background-color: #171b26;
+      color: white;
+    }
+
+    .root-right-col {
+      margin-top: 50px;
+    }
+  }
 }
+
