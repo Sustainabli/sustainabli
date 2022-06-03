@@ -115,7 +115,7 @@ class App extends React.Component {
       <Container className='App' fluid>
         <Row className="root-row">
           <Col as={NavDrawer} md={2}/>
-          <Col md={9} className="root-right-col">
+          <Col md={10} className="root-right-col">
             <Router>
               <Routes>
                 <Route exact path="/" element={<HomePage/>}/>

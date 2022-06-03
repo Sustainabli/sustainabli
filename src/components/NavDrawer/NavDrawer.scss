@@ -2,6 +2,19 @@
   color: white;
 }
 
-.nav-item .nav-link {
-  color: white !important;
+.react-bootstrap-drawer-toc {
+  padding-right: 0px;
+
+  .nav-item .nav-link {
+    color: white !important;
+    font-size: 17px;
+  }
+
+  hr {
+    height: 2px;
+  }
+
+  .labs-header {
+    padding: .5rem 1rem;
+  }
 }
