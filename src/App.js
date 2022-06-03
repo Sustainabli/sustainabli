@@ -2,11 +2,18 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
-import FillerOptions from './components/FilterOptions/FilterOptions';
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 import CFMChart from './components/CFMChart/CFMChart';
-// import SashChart from './components/SashChart/SashChart';
 import CFMChangeBarGraph from './components/CFMChangeBarGraph/CFMChangeBarGraph';
+import FilterOptions from './components/FilterOptions/FilterOptions';
+import HomePage from './components/HomePage/HomePage';
+import { NavDrawer } from './components/NavDrawer/NavDrawer';
+// import SashChart from './components/SashChart/SashChart';
 import {
   CHART_TYPES,
   LAB_ROOM_FILTERS,
@@ -106,9 +113,18 @@ class App extends React.Component {
 
     return (
       <Container className='App' fluid>
-        <Row>
-          {/*<SashChart />*/}
-          <Col md={2}>
+        <Row className="root-row">
+          <Col as={NavDrawer} md={2}/>
+          <Col md={10} className="root-right-col">
+            <Router>
+              <Routes>
+                <Route exact path="/" element={<HomePage/>}/>
+              </Routes>
+            </Router>
+          </Col>
+        </Row>
+                {/*<SashChart />*/}
+      {/* <Col md={2}>
             <FillerOptions
               onChangeTempSelectedLab={this.onChangeTempSelectedLab}
               onChangeTempGranularity={this.onChangeTempGranularity}
@@ -118,10 +134,10 @@ class App extends React.Component {
               includeFilterLab={pathname === ''}
             />
           </Col>
-          <Col md={9}>
+          <Col md={4}>
             <CFMChart filteredData={filteredData} filters={filters}/>
-          </Col>
-        </Row>
+          </Col> */}
+      {/*
         <br/>
         <br/>
         {pathname === '' && filters.selectedLab === LAB_ROOM_FILTERS.all &&
@@ -132,7 +148,7 @@ class App extends React.Component {
               <CFMChangeBarGraph weekData={weekData}/>
             </Col>
           </Row>
-        }
+        } */}
       </Container>
     );
   }
