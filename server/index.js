@@ -2,6 +2,7 @@ const express = require('express')
 const sqlite3 = require('sqlite3')
 const path = require('path')
 const fs = require('fs')
+const math = require('mathjs')
 const { Router } = require('express')
 
 const app = express()
@@ -152,7 +153,39 @@ app.get('/:db/:gran', (req, res) => {
                 res.status(400)
                 return res.send(err.message)
             }
-            res.send(rows)
+            statistics = {}
+            
+            col_names.forEach((val, _) => {
+                if(val != "time") {
+                    datapoints = rows.map((data) => data[val])
+                    round = 3
+                    statistics[val] = {
+                        "stdev": math.round(math.std(datapoints), round), 
+                        "stderror": math.round(math.std(datapoints)/math.sqrt(datapoints.length), round),
+                        "n": datapoints.length,
+                        "avg": math.round(math.mean(datapoints), round)
+                    }
+                }
+
+            })
+            res.send({stats: statistics,data: rows})
+            /*
+            rows.forEach((val, _) => {
+                Object.keys(val).forEach((hood_id, _) => {
+                    if(hood_id != "time") {
+                        temp = statistics[hood_id] || {"n": 0, "val": 0, "avg": 0}
+                        temp["val"] = temp["n"] + val[hood_id]
+                        temp["n"] += 1
+                        statistics[hood_id] = temp
+
+                    }
+                })
+            })
+            //Compute statistics
+            Object.keys(statistics).forEach((val, _) => {
+                statistics[val]["avg"] = Math.round((statistics[val]["val"]/statistics[val]["n"]))
+            })
+            */
         })
     })
 })
