@@ -31,18 +31,22 @@ export const NavDrawer = forwardRef((props, ref) => {
             <Nav.Item>
               <Nav.Link href="/">Home</Nav.Link>
             </Nav.Item>
+          {/*
             <Nav.Item>
               <Nav.Link href="/impact">Impact</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link href="/goals">Goals</Nav.Link>
             </Nav.Item>
+            */}
             <Nav.Item>
               <Nav.Link href="/team">Our Team</Nav.Link>
             </Nav.Item>
+          {/*
             <Nav.Item>
               <Nav.Link href="/notices">Notices</Nav.Link>
             </Nav.Item>
+            */}
             <hr/>
             <h4 className="labs-header"> Labs </h4>
               {Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).map(lab =>

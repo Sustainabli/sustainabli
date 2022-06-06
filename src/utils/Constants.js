@@ -97,12 +97,30 @@ export const LAB_NUM_FUMEHOODS = {
 };
 
 export const RELATIVE_TIME_RANGES = {
-  all: 'all',
-  one_day: '1day',
-  three_days: '3day',
-  one_week: '7day',
-  one_month: '1month',
-  one_year: '1year',
+  all: {
+    value: 'all',
+    label: 'All Data',
+  },
+  one_day: {
+    value: '1day',
+    label: 'Past Day',
+  },
+  three_days: {
+    value: '3day',
+    label: 'Past 3 Days'
+  },
+  one_week: {
+    value: '7day',
+    label: 'Past Week',
+  },
+  one_month: {
+    value: '1month',
+    label: 'Past Month',
+  },
+  one_year: {
+    value: '1year',
+    label: 'Past Year',
+  },
 };
 
 export const TIME_GRANULARITIES = {

@@ -2,7 +2,35 @@
   padding-left: 0px;
   padding-right: 0px;
 
-  hr {
+  .header-content {
+    padding-left: var(--bs-gutter-x,.75rem);
 
+    .header-title {
+      display: flex;
+      margin-bottom: 20px;
+
+      svg {
+        height: 75px;
+        width: 75px;
+      }
+
+      h1 {
+        font-size: 50px;
+        margin-left: 20px;
+        margin-top: auto;
+        margin-bottoM: auto;
+      }
+    }
+
+
+    .nav-tabs .nav-item {
+      font-size: 18px;
+    }
+  }
+
+  hr {
+    margin-right: calc(var(--bs-gutter-x,.75rem) * -1);
+    margin-top: 0px;
+    height: 2px;
   }
 }

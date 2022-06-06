@@ -1,19 +1,21 @@
 import {
+  LAB_NAMES,
+  LAB_NUM_FUMEHOODS,
+  LAB_ROOM_FILTERS,
+  NUM_OF_COMPETITION_WEEKS,
   RELATIVE_TIME_RANGES,
-  TIME_GRANULARITIES
+  TIME_GRANULARITIES,
+  TIME_OF_DAY,
 } from './Constants.js';
 
-// File contains several helper functions
+/*
+ ** File contains several helper functions
+*/
 
 
 // Capitalizes the first letter of a string
 export const capitalizeString = str => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// Calculation for converting CFM data to Sash data
-export const convertCFMToSash = CFM => {
-  return (CFM - 136) / 110;
 }
 
 // Calculate how much energy has been saved based on the given chartData
@@ -29,6 +31,11 @@ export const calculateAmtEnergySaved = (chartData, index) => {
   return ((chartData.beginning[index] - chartData[keys[keys.length - 1]][index]) * 357.1 / 52).toFixed(2);
 }
 
+// Calculation for converting CFM data to Sash data
+export const convertCFMToSash = CFM => {
+  return (CFM - 136) / 110;
+}
+
 // Extracts the fumehood name from a given string
 // e.g. FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium becomes Room1302_FumeHood4
 export const extractFumehoodName = name => {
@@ -37,20 +44,19 @@ export const extractFumehoodName = name => {
 }
 
 // Fetches filtered data from database based on filters and data category
-export const fetchFilteredData = async (filters, category) => {
+export const fetchFilteredData = async (granularity, filters, category) => {
   // Parse out which fields we want from filters
   const {
-    granularity,
+    timeRange,
     timeOfDay,
-    // relativeTimeRange
   } = filters;
 
   let fetchURL = `/${category}/${granularity}?`;
-  if (timeOfDay !== "all") {
-    fetchURL += timeOfDay === "day" ? '&time=day' : '&time=night';
+  if (timeOfDay !== TIME_OF_DAY.all) {
+    fetchURL += `&time=${timeOfDay}`;
   }
-  if (filters.timePeriod && filters.timePeriod !== RELATIVE_TIME_RANGES.all) {
-    fetchURL += `&relative=${filters.timePeriod}`
+  if (timeRange && timeRange !== RELATIVE_TIME_RANGES.all.value) {
+    fetchURL += `&relative=${timeRange}`
   }
   // if (filters.dateOffset) {
   //   fetchURL += `&offset=${filters.dateOffset}`
@@ -106,6 +112,9 @@ export const formatDateLabel = (date, granularity) => {
 // Accepts the chart ttile, y axis label, and x axis label
 export const generateChartOptions = (title, yLabel, xLabel) => {
   return {
+    animation: {
+      duration: 0
+    },
     plugins: {
       legend: {
         position: 'top',
@@ -133,6 +142,51 @@ export const generateChartOptions = (title, yLabel, xLabel) => {
           text: yLabel,
         }
       }
-    }
+    },
   }
+}
+
+// Extracts bar graph data
+export const getBarGraphData = barGraphFetchResponse => {
+  const barGraphData = barGraphFetchResponse.data;
+  const labData = {};
+  Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
+    const toRet = [];
+    barGraphData.forEach(datum => {
+      toRet.push(Object.keys(datum)
+        .filter(key => !key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
+        .reduce((prev, curr) => prev + datum[curr], 0) / LAB_NUM_FUMEHOODS[lab]);
+    });
+    labData[lab] = toRet;
+  });
+
+
+  const barGraphStats = barGraphFetchResponse.stats;
+  const labStats = {};
+  Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
+    const toRet = [];
+    Object.keys(barGraphStats)
+      .filter(key => !key.includes("Total") && LAB_ROOM_FILTERS[lab].reduce((prev, curr) => prev || key.includes(curr), false))
+      .forEach(key => {
+        toRet.push(barGraphStats[key]);
+    });
+    labStats[lab] = toRet;
+  });
+  console.log(labStats);
+
+  const chartData = {};
+  chartData.beginning = Object.keys(labData)
+    .map(lab => labData[lab]
+      .slice(0, labData[lab].length - NUM_OF_COMPETITION_WEEKS)
+      .reduce((prev, curr) => prev + curr, 0) / (labData[lab].length - NUM_OF_COMPETITION_WEEKS));
+  for (let i = NUM_OF_COMPETITION_WEEKS; i >= 1; i--) {
+    const chartDatum = [];
+    let chartKey = '';
+    Object.values(labData).forEach(labDatum => {
+      chartKey = barGraphData[barGraphData.length - i].time;
+      chartDatum.push(labDatum[labDatum.length - i].toFixed(2));
+    });
+    chartData[chartKey] = chartDatum;
+  }
+  return chartData;
 }

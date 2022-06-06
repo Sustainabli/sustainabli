@@ -16,6 +16,7 @@ import {
   LAB_NAMES,
   LAB_NUM_FUMEHOODS,
   LAB_ROOM_FILTERS,
+  TIME_GRANULARITIES,
 } from '../../utils/Constants.js';
 import {
   capitalizeString,
@@ -23,7 +24,7 @@ import {
   formatDateLabel,
   generateChartOptions,
 } from '../../utils/Utils.js';
-import './CFMChart.scss';
+import './CFMLineGraph.scss';
 
 ChartJS.register(
   CategoryScale,
@@ -34,15 +35,15 @@ ChartJS.register(
   Legend
 );
 
-class CFMChart extends React.Component {
+class CFMLineGraph extends React.Component {
   render() {
     const {
-      filters,
+      lab,
       filteredData
     } = this.props;
 
     // X-axis labels
-    const labels = filteredData.map(datum => formatDateLabel(new Date(datum.time), filters.granularity));
+    const labels = filteredData.map(datum => formatDateLabel(new Date(datum.time), TIME_GRANULARITIES.day));
 
     // dataKeys will contain the fumehood names we want to look at
     // First check if the data has been loaded yet. If it hasn't either filteredData will be null or filteredData.length will be 0
@@ -52,12 +53,12 @@ class CFMChart extends React.Component {
       if (key === 'time') {
         return false;
       }
-      if (filters.selectedLab === LAB_NAMES.all) {
+      if (lab === LAB_NAMES.all) {
         // Look at all individual fumehood data. For some reason the Total ones are inaccurate
         return ALL_LAB_ROOMS.reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
       } else {
         // When filtering across a specific lab average, do not look at total room data
-        return LAB_ROOM_FILTERS[filters.selectedLab].reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
+        return LAB_ROOM_FILTERS[lab].reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
       }
     }) : [];
 
@@ -65,7 +66,7 @@ class CFMChart extends React.Component {
     //  - <key>: <array of data for each granularity point>
     const chartData = {};
     // When look at all labs, we need to take the average of all fumehood totals for each respective lab
-    if (filters.selectedLab === LAB_NAMES.all) {
+    if (lab === LAB_NAMES.all) {
       Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {
         const toRet = [];
         filteredData.forEach(datum => {
@@ -85,7 +86,7 @@ class CFMChart extends React.Component {
     const CFMData = {
       labels,
       datasets: Object.keys(chartData).map((key, index) => {
-        const label = filters.selectedLab === LAB_NAMES.all ? capitalizeString(key) : extractFumehoodName(key);
+        const label = lab === LAB_NAMES.all ? capitalizeString(key) : extractFumehoodName(key);
         return {
           label: label,
           data: chartData[key],
@@ -95,7 +96,7 @@ class CFMChart extends React.Component {
       })
     };
 
-    const chartTitle = filters.selectedLab === LAB_NAMES.all ? 'Average CFM per Lab' : `Fumehood CFM Data for ${capitalizeString(filters.selectedLab)} Lab`;
+    const chartTitle = lab === LAB_NAMES.all ? 'Average CFM per Lab' : `Fumehood CFM Data for ${capitalizeString(lab)} Lab`;
 
     return (
       <div className="CFM-Chart">
@@ -105,4 +106,4 @@ class CFMChart extends React.Component {
   }
 }
 
-export default CFMChart;
+export default CFMLineGraph;

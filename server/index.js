@@ -68,7 +68,7 @@ app.get('/:db/:gran', (req, res) => {
     time = req.query.time ? req.query.time.toLocaleLowerCase() : null
     start_slice = req.query.start_slice ? req.query.start_slice : "1970-01-01"
     end_slice = req.query.end_slice ? req.query.end_slice : "now"
-    
+
     db_map = ["cfm", "sash"]
     group_map = {"none": null, "day": "%d-%m-%Y", "week":"%W-%Y", "month": "%m-$Y  ", "year": "%y"}
     relative_map = {"1day":"-1 days", "3day": "-3 days", "7day": "-7 days", "1month": "-1 month", "1year": "-1 year"}
@@ -139,13 +139,13 @@ app.get('/:db/:gran', (req, res) => {
             param.push("00:00:00")
             param.push(time_map[time][1])
         }
-        
+
         //Insert groupby
         if(!(gran === "none")) {
             sql += " group by strftime(?, time)"
             param.push(group_map[gran])
         }
-        
+
         sql += " order by time;"
         db.all(sql, param, (err, rows) => {
             if(err) {
@@ -154,13 +154,13 @@ app.get('/:db/:gran', (req, res) => {
                 return res.send(err.message)
             }
             statistics = {}
-            
+
             col_names.forEach((val, _) => {
                 if(val != "time") {
                     datapoints = rows.map((data) => data[val])
                     round = 3
                     statistics[val] = {
-                        "stdev": math.round(math.std(datapoints), round), 
+                        "stdev": math.round(math.std(datapoints), round),
                         "stderror": math.round(math.std(datapoints)/math.sqrt(datapoints.length), round),
                         "n": datapoints.length,
                         "avg": math.round(math.mean(datapoints), round)
@@ -168,6 +168,7 @@ app.get('/:db/:gran', (req, res) => {
                 }
 
             })
+          console.log('after');
             res.send({stats: statistics,data: rows})
         })
     })
