@@ -2,6 +2,7 @@ const express = require('express')
 const sqlite3 = require('sqlite3')
 const path = require('path')
 const fs = require('fs')
+const math = require('mathjs')
 const { Router } = require('express')
 
 const app = express()
@@ -152,7 +153,22 @@ app.get('/:db/:gran', (req, res) => {
                 res.status(400)
                 return res.send(err.message)
             }
-            res.send(rows)
+            statistics = {}
+            
+            col_names.forEach((val, _) => {
+                if(val != "time") {
+                    datapoints = rows.map((data) => data[val])
+                    round = 3
+                    statistics[val] = {
+                        "stdev": math.round(math.std(datapoints), round), 
+                        "stderror": math.round(math.std(datapoints)/math.sqrt(datapoints.length), round),
+                        "n": datapoints.length,
+                        "avg": math.round(math.mean(datapoints), round)
+                    }
+                }
+
+            })
+            res.send({stats: statistics,data: rows})
         })
     })
 })
