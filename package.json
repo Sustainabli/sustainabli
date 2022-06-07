@@ -32,6 +32,7 @@
   },
   "scripts": {
     "dev": "concurrently \"nodemon server/index.js\" \"react-scripts start\"",
+    "install": "cd server; npm install; cd ..",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "npm install; node server/index.js",
