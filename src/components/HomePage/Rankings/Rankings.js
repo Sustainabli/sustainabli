@@ -8,12 +8,14 @@ class Rankings extends React.Component {
     const weekKeys = Object.keys(barGraphData);
     const currWeekKey = weekKeys[weekKeys.length - 1];
 
-    const percentChangeList = barGraphData.beginning.map((datum, index) => (datum - barGraphData[currWeekKey][index]) / datum);
-    const sortedPercentChangeIndices = Array.from(Array(percentChangeList.length).keys()).sort((a, b) => percentChangeList[a] < percentChangeList[b] ? -1 : (percentChangeList[b] < percentChangeList[a]) | 0);
+    const percentChangeList = barGraphData.beginning.map((datum, index) => ({
+      lab: barGraphLabels[index],
+      stat: (datum - barGraphData[currWeekKey][index]) / datum,
+    }));
+    percentChangeList.sort((a, b) => a.stat - b.stat);
     const mostImprovedRankings = [];
-    for (let i = 1; i <= 3; i++) {
-      const datumIndex = sortedPercentChangeIndices.findIndex(index => index === percentChangeList.length - i);
-      mostImprovedRankings.push(`${barGraphLabels[datumIndex]} - ${(percentChangeList[datumIndex] * 100).toFixed(2)}% reduction`);
+    for (let i = 0; i < 3; i++) {
+      mostImprovedRankings.push(`${percentChangeList[i].lab} - ${(percentChangeList[i].stat * 100).toFixed(2)}% reduction`);
     }
 
     const sortedAvgs = [...barGraphData[currWeekKey]].sort();
