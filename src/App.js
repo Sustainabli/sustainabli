@@ -12,6 +12,7 @@ import CFMChart from './components/CFMChart/CFMChart';
 import CFMChangeBarGraph from './components/CFMChangeBarGraph/CFMChangeBarGraph';
 import FilterOptions from './components/FilterOptions/FilterOptions';
 import HomePage from './components/HomePage/HomePage';
+import AboutUs from './components/AboutUs/AboutUs';
 import { NavDrawer } from './components/NavDrawer/NavDrawer';
 // import SashChart from './components/SashChart/SashChart';
 import {
@@ -119,6 +120,7 @@ class App extends React.Component {
             <Router>
               <Routes>
                 <Route exact path="/" element={<HomePage/>}/>
+                <Route exact path="/team" element={<AboutUs/>}/>
               </Routes>
             </Router>
           </Col>
