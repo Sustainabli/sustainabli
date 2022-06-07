@@ -12,7 +12,7 @@ class Rankings extends React.Component {
       lab: barGraphLabels[index],
       stat: (datum - barGraphData[currWeekKey][index]) / datum,
     }));
-    percentChangeList.sort((a, b) => a.stat - b.stat);
+    percentChangeList.sort((a, b) => b.stat - a.stat);
     const mostImprovedRankings = [];
     for (let i = 0; i < 3; i++) {
       mostImprovedRankings.push(`${percentChangeList[i].lab} - ${(percentChangeList[i].stat * 100).toFixed(2)}% reduction`);

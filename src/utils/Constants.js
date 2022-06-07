@@ -90,7 +90,7 @@ export const LAB_ROOM_FILTERS = {
 export const ALL_LAB_ROOMS = Object.values(LAB_ROOM_FILTERS).reduce((prev, curr) => prev.concat(curr), []);
 
 export const LAB_NUM_FUMEHOODS = {
-  issacs: 4,
+  issacs: 3,
   falvey: 4,
   rodriguez: 10,
   wang: 17,
