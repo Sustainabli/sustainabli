@@ -137,4 +137,4 @@ export const TIME_OF_DAY = {
   night: 'night'
 };
 
-export const NUM_OF_COMPETITION_WEEKS = 3;
+export const NUM_OF_COMPETITION_WEEKS = 4;

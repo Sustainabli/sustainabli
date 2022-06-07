@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CFMBarGraph from '../CFMBarGraph/CFMBarGraph';
 import CFMLineGraph from '../CFMLineGraph/CFMLineGraph';
+import CompetitionStats from '../CompetitionStats/CompetitionStats';
 import FilterOptions from '../FilterOptions/FilterOptions';
 import Header from './Header/Header';
 import Rankings from './Rankings/Rankings';
@@ -76,7 +77,7 @@ class HomePage extends React.Component {
           <React.Fragment>
             <Row className="homepage-row">
               <Col md={5}>
-                Asdf
+                {Object.keys(barGraphData).length > 0 && <CompetitionStats barGraphData={barGraphData}/>}
               </Col>
               <Col md={7}>
                 {Object.keys(barGraphData).length > 0 && <CFMBarGraph barGraphData={barGraphData} barGraphLabels={barGraphLabels}/>}

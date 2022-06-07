@@ -42,7 +42,7 @@ class FilterOptions extends React.Component {
     const { filters } = this.state;
     const { setFilteredLineGraphData } = this.props;
     const filteredLineGraphData = (await fetchFilteredData(TIME_GRANULARITIES.day, filters, CHART_TYPES.cfm));
-    setFilteredLineGraphData(filteredLineGraphData.avg);
+    setFilteredLineGraphData(filteredLineGraphData.data);
   }
 
   render() {

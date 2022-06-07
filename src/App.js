@@ -9,6 +9,7 @@ import {
   Routes,
 } from "react-router-dom";
 import HomePage from './components/HomePage/HomePage';
+import LabPage from './components/LabPage/LabPage';
 import { NavDrawer } from './components/NavDrawer/NavDrawer';
 import { LAB_NAMES } from './utils/Constants';
 import './App.scss';
@@ -25,7 +26,7 @@ class App extends React.Component {
                 <Route exact path="/" element={<HomePage/>}/>
                 <Route path="/*" element={<Navigate to="/"/>}/>
                 {Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).map(lab =>
-                  <Route exact path={`/${lab}`} element={<HomePage/>} key={lab}/>
+                  <Route exact path={`/${lab}`} element={<LabPage lab={lab}/>} key={lab}/>
                 )}
               </Routes>
             </Router>

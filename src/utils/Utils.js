@@ -172,7 +172,6 @@ export const getBarGraphData = barGraphFetchResponse => {
     });
     labStats[lab] = toRet;
   });
-  console.log(labStats);
 
   const chartData = {};
   chartData.beginning = Object.keys(labData)

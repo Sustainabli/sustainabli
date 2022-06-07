@@ -168,7 +168,6 @@ app.get('/:db/:gran', (req, res) => {
                 }
 
             })
-          console.log('after');
             res.send({stats: statistics,data: rows})
         })
     })
