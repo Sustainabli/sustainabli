@@ -160,7 +160,6 @@ export const getBarGraphData = barGraphFetchResponse => {
     labData[lab] = toRet;
   });
 
-
   const barGraphStats = barGraphFetchResponse.stats;
   const labStats = {};
   Object.keys(LAB_NAMES).filter(name => name !== LAB_NAMES.all).forEach(lab => {

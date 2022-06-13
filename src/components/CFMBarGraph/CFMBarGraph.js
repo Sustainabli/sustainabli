@@ -12,15 +12,9 @@ import { BarWithErrorBarsController, BarWithErrorBar } from 'chartjs-chart-error
 import "react-toggle/style.css";
 import {
   CHART_COLORS,
-  LAB_NAMES,
-  LAB_NUM_FUMEHOODS,
-  LAB_ROOM_FILTERS,
   TIME_GRANULARITIES,
-  NUM_OF_COMPETITION_WEEKS,
 } from '../../utils/Constants.js';
 import {
-  calculateAmtEnergySaved,
-  capitalizeString,
   formatDateLabel,
   generateChartOptions,
 } from '../../utils/Utils.js';
@@ -82,11 +76,6 @@ class CFMChangeBarGraph extends React.Component {
     return (
       <div className="CFM-Change-Bar-Graph">
       <canvas ref={this.onRefChange}/>
-      {/*{
-          labels.map((lab, index) => <div className="energy-saved-div" key={lab}> {`${lab} has saved ${calculateAmtEnergySaved(chartData, index)} kwh of energy this competition so far`}
-            </div>
-          )
-        } */}
       </div>
     );
   }

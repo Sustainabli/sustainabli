@@ -28,6 +28,14 @@ import {
 } from '../../utils/Utils.js';
 import './LabPage.scss';
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Legend,
+);
 
 class LabPage extends React.Component {
   constructor() {
