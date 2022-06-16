@@ -14,22 +14,22 @@ class App extends React.Component {
     return (
       <Container className='App' fluid>
         <Row className='root-row'>
-          <Col as={NavDrawer} md={2} />
+          <Col md={2} className='navdrawer-col'>
+            <NavDrawer />
+          </Col>
           <Col md={10} className='root-right-col'>
             <BrowserRouter>
               <Routes>
                 <Route exact path='/' element={<HomePage />} />
                 <Route path='/*' element={<Navigate to='/' />} />
-                {Object.values(LAB_NAMES)
-                  .filter((lab) => lab !== LAB_NAMES.all)
-                  .map((lab) => (
-                    <Route
-                      exact
-                      path={`/${lab}`}
-                      element={<LabPage lab={lab} />}
-                      key={lab}
-                    />
-                  ))}
+                {LAB_NAMES.map((lab) => (
+                  <Route
+                    exact
+                    path={`/${lab}`}
+                    element={<LabPage lab={lab} />}
+                    key={lab}
+                  />
+                ))}
               </Routes>
             </BrowserRouter>
           </Col>

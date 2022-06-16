@@ -10,13 +10,13 @@ import Header from './Header/Header';
 import Rankings from './Rankings/Rankings';
 import {
   CHART_TYPES,
-  LAB_NAMES,
+  LAB_NAME_LABELS,
+  LAB_NAMES_FILTERS,
   RELATIVE_TIME_RANGES,
   TIME_GRANULARITIES,
   TIME_OF_DAY,
 } from '../../utils/Constants.js';
 import {
-  capitalizeString,
   fetchFilteredData,
   getBarGraphData,
 } from '../../utils/Utils.js';
@@ -44,7 +44,7 @@ class HomePage extends React.Component {
     }
 
     const fetchedBarGraphResponse = await fetchFilteredData(TIME_GRANULARITIES.week, barGraphFilters, CHART_TYPES.cfm);
-    const barGraphLabels = Object.values(LAB_NAMES).filter(lab => lab !== LAB_NAMES.all).map(lab => `${capitalizeString(lab)} Lab`);
+    const barGraphLabels = LAB_NAME_LABELS;
     const fetchedLineGraphResponse = (await fetchFilteredData(TIME_GRANULARITIES.day, lineGraphFilters, CHART_TYPES.cfm));
 
     this.setState({
@@ -89,7 +89,7 @@ class HomePage extends React.Component {
                 <FilterOptions setFilteredLineGraphData={this.setFilteredLineGraphData}/>
               </Col>
               <Col md={7}>
-                {lineGraphData.length > 0 && <CFMLineGraph lab={LAB_NAMES.all} filteredData={lineGraphData}/>}
+                {lineGraphData.length > 0 && <CFMLineGraph lab={LAB_NAMES_FILTERS.all} filteredData={lineGraphData}/>}
               </Col>
               <Col md={3}>
                 {Object.keys(barGraphData).length > 0 && <Rankings barGraphData={barGraphData} barGraphLabels={barGraphLabels}/>}

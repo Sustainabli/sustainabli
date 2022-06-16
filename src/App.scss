@@ -8,10 +8,15 @@
     margin-right: 0px;
     margin-left: 0px;
 
-    .react-bootstrap-drawer {
-      height: 100%;
-      background-color: #171b26;
-      color: white;
+    .navdrawer-col {
+      padding-left: 0px;
+      padding-right: 0px;
+
+      .react-bootstrap-drawer {
+        height: 100%;
+        background-color: #171b26;
+        color: white;
+      }
     }
 
     .root-right-col {
@@ -21,4 +26,3 @@
     }
   }
 }
-

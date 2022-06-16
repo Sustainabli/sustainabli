@@ -1,69 +1,27 @@
-// Distinct color hexes. If we need more look at https://stackoverflow.com/questions/1168260/algorithm-for-generating-unique-colors
+import { capitalizeString } from "./Utils";
+
+// Distinct color hexes. If we need more look at https://medialab.github.io/iwanthue/
 export const CHART_COLORS = [
-  '#000000',
-  '#00FF00',
-  '#0000FF',
-  '#FF0000',
-  '#01FFFE',
-  '#FFA6FE',
-  '#FFDB66',
-  '#006401',
-  '#010067',
-  '#95003A',
-  '#007DB5',
-  '#FF00F6',
-  '#FFEEE8',
-  '#774D00',
-  '#90FB92',
-  '#0076FF',
-  '#D5FF00',
-  '#FF937E',
-  '#6A826C',
-  '#FF029D',
-  '#FE8900',
-  '#7A4782',
-  '#7E2DD2',
-  '#85A900',
-  '#FF0056',
-  '#A42400',
-  '#00AE7E',
-  '#683D3B',
-  '#BDC6FF',
-  '#263400',
-  '#BDD393',
-  '#00B917',
-  '#9E008E',
-  '#001544',
-  '#C28C9F',
-  '#FF74A3',
-  '#01D0FF',
-  '#004754',
-  '#E56FFE',
-  '#788231',
-  '#0E4CA1',
-  '#91D0CB',
-  '#BE9970',
-  '#968AE8',
-  '#BB8800',
-  '#43002C',
-  '#DEFF74',
-  '#00FFC6',
-  '#FFE502',
-  '#620E00',
-  '#008F9C',
-  '#98FF52',
-  '#7544B1',
-  '#B500FF',
-  '#00FF78',
-  '#FF6E41',
-  '#005F39',
-  '#6B6882',
-  '#5FAD4E',
-  '#A75740',
-  '#A5FFD2',
-  '#FFB167',
-  '#009BFF',
-  '#E85EBE',
+  '#6e8fce',
+  '#91ba35',
+  '#ac60d5',
+  '#55c365',
+  '#d34699',
+  '#468733',
+  '#606dd1',
+  '#d6a234',
+  '#8b509b',
+  '#a1b161',
+  '#d887c2',
+  '#4aa178',
+  '#d24458',
+  '#42c0c9',
+  '#d5572d',
+  '#6d7027',
+  '#a34a69',
+  '#be9453',
+  '#e08775',
+  '#9f582c',
 ];
 
 export const CHART_TYPES = {
@@ -71,23 +29,31 @@ export const CHART_TYPES = {
   cfm: 'cfm',
 };
 
-export const LAB_NAMES = {
+export const LAB_NAMES_FILTERS = {
   all: 'all',
   issacs: 'issacs',
   falvey: 'falvey',
   rodriguez: 'rodriguez',
   wang: 'wang',
-}
+};
+
+export const LAB_NAMES = Object.values(LAB_NAMES_FILTERS).filter(
+  (name) => name !== LAB_NAMES_FILTERS.all
+);
+
+export const LAB_NAME_LABELS = LAB_NAMES.map(lab => `${capitalizeString(lab)} Lab`);
 
 export const LAB_ROOM_FILTERS = {
-  all: 'all',
   issacs: ['3336'],
   falvey: ['3356'],
   rodriguez: ['2360', '2364', '2368'],
   wang: ['1302', '1308'],
 };
 
-export const ALL_LAB_ROOMS = Object.values(LAB_ROOM_FILTERS).reduce((prev, curr) => prev.concat(curr), []);
+export const ALL_LAB_ROOMS = Object.values(LAB_ROOM_FILTERS).reduce(
+  (prev, curr) => prev.concat(curr),
+  []
+);
 
 export const LAB_NUM_FUMEHOODS = {
   issacs: 3,
@@ -107,7 +73,7 @@ export const RELATIVE_TIME_RANGES = {
   },
   three_days: {
     value: '3day',
-    label: 'Past 3 Days'
+    label: 'Past 3 Days',
   },
   one_week: {
     value: '7day',
@@ -134,7 +100,7 @@ export const TIME_GRANULARITIES = {
 export const TIME_OF_DAY = {
   all: 'all',
   day: 'day',
-  night: 'night'
+  night: 'night',
 };
 
 export const NUM_OF_COMPETITION_WEEKS = 4;

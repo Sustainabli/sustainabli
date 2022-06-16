@@ -13,7 +13,6 @@ import Container from 'react-bootstrap/Container';
 import {
   CHART_TYPES,
   CHART_COLORS,
-  LAB_NAMES,
   LAB_ROOM_FILTERS,
   RELATIVE_TIME_RANGES,
   TIME_GRANULARITIES,
@@ -88,7 +87,7 @@ class LabPage extends React.Component {
     const CFMData = {
       labels,
       datasets: Object.keys(chartData).map((key, index) => {
-        const label = lab === LAB_NAMES.all ? capitalizeString(key) : extractFumehoodName(key);
+        const label = extractFumehoodName(key);
         return {
           label: label,
           data: chartData[key],
