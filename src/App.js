@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage/HomePage';
 import LabPage from './components/LabPage/LabPage';
+import Team from './components/Team/Team'
 import { NavDrawer } from './components/NavDrawer/NavDrawer';
 import { LAB_NAMES } from './utils/Constants';
 import './App.scss';
@@ -30,6 +31,7 @@ class App extends React.Component {
                     key={lab}
                   />
                 ))}
+                <Route exact path="/team" element={<Team/>}/>
               </Routes>
             </BrowserRouter>
           </Col>
