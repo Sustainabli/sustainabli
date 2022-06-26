@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Collapse, Nav } from 'react-bootstrap';
 import {
   Drawer,
@@ -12,13 +12,13 @@ import { capitalizeString } from '../../utils/Utils';
 import 'react-bootstrap-drawer/lib/style.css';
 import './NavDrawer.scss';
 
-export const NavDrawer = forwardRef((props, ref) => {
+function NavDrawer() {
   const [open, setOpen] = useState(true);
 
   const handleToggle = () => setOpen(!open);
 
   return (
-    <Drawer {...props}>
+    <Drawer>
       <DrawerToggle onClick={handleToggle} />
       <Collapse in={open}>
         <DrawerOverflow>
@@ -57,4 +57,6 @@ export const NavDrawer = forwardRef((props, ref) => {
       </Collapse>
     </Drawer>
   );
-});
+}
+
+export default NavDrawer;

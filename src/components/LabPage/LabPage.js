@@ -1,110 +1,103 @@
 import React from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ReactLoading from 'react-loading';
+import CFMLineGraph from '../CFMLineGraph/CFMLineGraph.js';
+import FilterOptions from '../FilterOptions/FilterOptions';
 import {
-  CHART_TYPES,
-  CHART_COLORS,
-  LAB_ROOM_FILTERS,
-  RELATIVE_TIME_RANGES,
+  DATA_FORMATS,
+  DATA_TYPES,
+  GRAPH_TYPES,
+  LAB_FUMEHOOD_MAPPING,
+  LOADING_COLOR,
+  RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
   TIME_OF_DAY,
 } from '../../utils/Constants.js';
 import {
   capitalizeString,
-  extractFumehoodName,
   fetchFilteredData,
-  formatDateLabel,
-  generateChartOptions,
+  getOffsettedStartDate,
 } from '../../utils/Utils.js';
 import './LabPage.scss';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Legend,
-);
 
 class LabPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      lineGraphData: [],
-    }
+      lineGraphData: null,
+      loading: true,
+    };
   }
 
   async componentDidMount() {
-    const lineGraphFilters = {
-      timeRange: RELATIVE_TIME_RANGES.one_month.value,
-      timeOfDay: TIME_OF_DAY.all,
-    }
+    const { lab } = this.props;
 
-    const fetchedLineGraphResponse = (await fetchFilteredData(TIME_GRANULARITIES.day, lineGraphFilters, CHART_TYPES.cfm));
+    const labFumehoodMapping = {};
+    labFumehoodMapping[lab] = LAB_FUMEHOOD_MAPPING[lab];
+    const startDate = getOffsettedStartDate(
+      new Date(),
+      RELATIVE_TIME_RANGES_OPTIONS.one_month.value
+    );
+
+    const response = await fetchFilteredData(
+      DATA_TYPES.cfm,
+      DATA_FORMATS.singleLab,
+      GRAPH_TYPES.line,
+      TIME_GRANULARITIES.day,
+      TIME_OF_DAY.all,
+      labFumehoodMapping,
+      startDate
+    );
 
     this.setState({
-      lineGraphData: fetchedLineGraphResponse.data,
+      lineGraphData: response.data,
+      loading: false,
     });
   }
 
+  setFilteredLineGraphData = (data) => {
+    this.setState({ lineGraphData: data });
+  };
+
   render() {
     const { lab } = this.props;
-    const { lineGraphData } = this.state;
-
-    // X-axis labels
-    const labels = lineGraphData.map(datum => formatDateLabel(new Date(datum.time), TIME_GRANULARITIES.day));
-
-    // dataKeys will contain the fumehood names we want to look at
-    // First check if the data has been loaded yet. If it hasn't either lineGraphData will be null or lineGraphData.length will be 0
-    // We also want to remove 'time' from the list of data keys (this simplifies looping through line graph keys)
-    // Also filter to only include data keys we're interested in (i.e. room numbers)
-    let dataKeys = lineGraphData && lineGraphData.length ? Object.keys(lineGraphData[0]).filter(key => {
-      if (key === 'time') {
-        return false;
-      }
-      // When filtering across a specific lab average, do not look at total room data
-      return LAB_ROOM_FILTERS[lab].reduce((acc, room) => acc || (key.includes(room) && !key.includes("Total")), false);
-    }) : [];
-
-    // Organize data into chartData. Format will look like
-    //  - <key>: <array of data for each granularity point>
-    const chartData = {};
-    // When look at all labs, we need to take the average of all fumehood totals for each respective lab
-    dataKeys.forEach(key => {
-      chartData[key] = lineGraphData.map(datum => datum[key]);
-    });
-
-    const CFMData = {
-      labels,
-      datasets: Object.keys(chartData).map((key, index) => {
-        const label = extractFumehoodName(key);
-        return {
-          label: label,
-          data: chartData[key],
-          borderColor: CHART_COLORS[index],
-          backgroundColor: `${CHART_COLORS[index]}80`,
-        };
-      })
-    };
+    const { lineGraphData, loading } = this.state;
 
     const chartTitle = `Fumehood CFM Data for ${capitalizeString(lab)} Lab`;
 
-
     return (
-      <Container fluid className="LabPage">
-        <h1>{capitalizeString(lab)} Lab</h1>
-        <br/>
-        <Line options={generateChartOptions(chartTitle, 'CO2 Emissions CFM', 'Dates')} data={CFMData}/>
+      <Container fluid className='LabPage'>
+        {!loading ? (
+          <React.Fragment>
+            <h1>{capitalizeString(lab)} Lab</h1>
+            <br />
+            <Row>
+              <Col md={2}>
+                <FilterOptions
+                  lab={lab}
+                  setFilteredLineGraphData={this.setFilteredLineGraphData}
+                />
+              </Col>
+              <Col md={10}>
+                {Object.keys(lineGraphData).length > 0 && (
+                  <CFMLineGraph
+                    lab={lab}
+                    filteredData={lineGraphData}
+                    chartTitle={chartTitle}
+                  />
+                )}
+              </Col>
+            </Row>
+          </React.Fragment>
+        ) : (
+          <ReactLoading
+            type='spin'
+            color={LOADING_COLOR}
+            className='react-loading'
+          />
+        )}
       </Container>
     );
   }

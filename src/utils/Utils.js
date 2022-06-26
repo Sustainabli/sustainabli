@@ -1,21 +1,14 @@
 import {
-  LAB_NAMES,
-  LAB_NUM_FUMEHOODS,
-  LAB_ROOM_FILTERS,
-  NUM_OF_COMPETITION_WEEKS,
-  RELATIVE_TIME_RANGES,
+  FETCH_DATA_URL,
+  MIN_DATE,
+  NUMBER_OF_COMPETITION_WEEKS,
+  RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
-  TIME_OF_DAY,
 } from './Constants.js';
 
 /*
  ** File contains several helper functions
  */
-
-// Capitalizes the first letter of a string
-export const capitalizeString = (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
 
 // Calculate how much energy has been saved based on the given chartData
 // chartData will come in the form of
@@ -34,6 +27,11 @@ export const calculateAmtEnergySaved = (chartData, index) => {
   ).toFixed(2);
 };
 
+// Capitalizes the first letter of a string
+export const capitalizeString = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 // Calculation for converting CFM data to Sash data
 export const convertCFMToSash = (CFM) => {
   return (CFM - 136) / 110;
@@ -46,22 +44,33 @@ export const extractFumehoodName = (name) => {
   return regMatch[1];
 };
 
-// Fetches filtered data from database based on filters and data category
-export const fetchFilteredData = async (granularity, filters, category) => {
-  // Parse out which fields we want from filters
-  const { timeRange, timeOfDay } = filters;
-
-  let fetchURL = `/${category}/${granularity}?`;
-  if (timeOfDay !== TIME_OF_DAY.all) {
-    fetchURL += `&time=${timeOfDay}`;
-  }
-  if (timeRange && timeRange !== RELATIVE_TIME_RANGES.all.value) {
-    fetchURL += `&relative=${timeRange}`;
-  }
-  // if (filters.dateOffset) {
-  //   fetchURL += `&offset=${filters.dateOffset}`
-  // }
-  return fetch(fetchURL).then((res) => res.json());
+// Fetches data from db
+export const fetchFilteredData = async (
+  dataType,
+  dataFormat,
+  graphType,
+  granularity,
+  timeOfDay,
+  labFumehoodMapping,
+  startSlice,
+  endSlice = null
+) => {
+  const reqBody = {
+    data_type: dataType,
+    data_format: dataFormat,
+    graph_type: graphType,
+    granularity: granularity,
+    time_of_day: timeOfDay,
+    lab_fumehood_mapping: labFumehoodMapping,
+    number_of_competition_weeks: NUMBER_OF_COMPETITION_WEEKS,
+    start_slice: startSlice,
+  };
+  reqBody['end_slice'] = endSlice ? endSlice : new Date();
+  return fetch(FETCH_DATA_URL, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then((res) => res.json());
 };
 
 // Formats the date label on the charts based on the granularity we are looking at
@@ -154,47 +163,25 @@ export const generateChartOptions = (title, yLabel, xLabel) => {
   };
 };
 
-// Extracts bar graph data
-export const getBarGraphData = (barGraphFetchResponse) => {
-  const barGraphData = barGraphFetchResponse.data;
-  const labData = {};
-  LAB_NAMES.forEach((lab) => {
-    const toRet = [];
-    barGraphData.forEach((datum) => {
-      toRet.push(
-        Object.keys(datum)
-          .filter(
-            (key) =>
-              !key.includes('Total') &&
-              !key.includes('Room3336_FumeHood1') &&
-              LAB_ROOM_FILTERS[lab].reduce(
-                (prev, curr) => prev || key.includes(curr),
-                false
-              )
-          )
-          .reduce((prev, curr) => prev + datum[curr], 0) /
-          LAB_NUM_FUMEHOODS[lab]
-      );
-    });
-    labData[lab] = toRet;
-  });
-
-  const chartData = {};
-  chartData.beginning = Object.keys(labData).map(
-    (lab) =>
-      labData[lab]
-        .slice(0, labData[lab].length - NUM_OF_COMPETITION_WEEKS)
-        .reduce((prev, curr) => prev + curr, 0) /
-      (labData[lab].length - NUM_OF_COMPETITION_WEEKS)
-  );
-  for (let i = NUM_OF_COMPETITION_WEEKS; i >= 1; i--) {
-    const chartDatum = [];
-    let chartKey = '';
-    Object.values(labData).forEach((labDatum) => {
-      chartKey = barGraphData[barGraphData.length - i].time;
-      chartDatum.push(labDatum[labDatum.length - i].toFixed(2));
-    });
-    chartData[chartKey] = chartDatum;
+export const getOffsettedStartDate = (date, offset) => {
+  switch (offset) {
+    case RELATIVE_TIME_RANGES_OPTIONS.all.value:
+      return MIN_DATE;
+    case RELATIVE_TIME_RANGES_OPTIONS.one_day.value:
+      date.setDate(date.getDate() - 1);
+      break;
+    case RELATIVE_TIME_RANGES_OPTIONS.three_days.value:
+      date.setDate(date.getDate() - 3);
+      break;
+    case RELATIVE_TIME_RANGES_OPTIONS.one_week.value:
+      date.setDate(date.getDate() - 7);
+      break;
+    case RELATIVE_TIME_RANGES_OPTIONS.one_month.value:
+      date.setMonth(date.getMonth() - 1);
+      break;
+    case RELATIVE_TIME_RANGES_OPTIONS.one_year.value:
+      date.setFullYear(date.getFullYear() - 1);
   }
-  return chartData;
+  return date;
 };
+
