@@ -27,6 +27,8 @@ export const CHART_COLORS = [
 
 export const FETCH_DATA_URL = '/api/data';
 
+export const FETCH_SENSORS_DATA_URL = '/api/sensors';
+
 export const LOADING_COLOR = '#171b26';
 
 /** Data and Chart Constants **/

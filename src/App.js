@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import DemoPage from './components/DemoPage/DemoPage';
 import HomePage from './components/HomePage/HomePage';
 import LabPage from './components/LabPage/LabPage';
 import NavDrawer from './components/NavDrawer/NavDrawer';
@@ -31,6 +32,7 @@ class App extends React.Component {
                   />
                 ))}
                 <Route exact path='/team' element={<TeamPage />} />
+                <Route exact path='/demo' element={<DemoPage />} />
                 <Route path='/*' element={<Navigate to='/' />} />
               </Routes>
             </BrowserRouter>

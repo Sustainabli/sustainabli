@@ -1,5 +1,6 @@
 import {
   FETCH_DATA_URL,
+  FETCH_SENSORS_DATA_URL,
   MIN_DATE,
   NUMBER_OF_COMPETITION_WEEKS,
   RELATIVE_TIME_RANGES_OPTIONS,
@@ -185,3 +186,6 @@ export const getOffsettedStartDate = (date, offset) => {
   return date;
 };
 
+export const getSensorsData = async () => {
+  return fetch(FETCH_SENSORS_DATA_URL).then(res => res.json());
+}

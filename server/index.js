@@ -4,6 +4,9 @@ const path = require('path');
 const fs = require('fs');
 const math = require('mathjs');
 const { Router } = require('express');
+const { pool } = require('./sensors-db');
+const format = require('pg-format');
+const { warn } = require('console');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -42,7 +45,7 @@ insertcfm = sqldata_cfm.slice(1);
 allinserts = insertsash.concat(insertcfm);
 sqldata = [].concat(createsash, createcfm, ...allinserts);
 
-db = new sqlite3.Database(':memory:', (err) => {
+db = new sqlite3.Database(':memory:', err => {
   if (err) return console.error(err.message);
   console.log('Connected to in-memory');
 });
@@ -60,7 +63,7 @@ db.serialize(() => {
         iso_date = '"' + new Date(date_val_new).toISOString() + '"';
         elm = elm.replace(date_val[0], iso_date);
       }
-      db.run(elm, (err) => {
+      db.run(elm, err => {
         if (err) console.error(err.message);
       });
     }
@@ -244,14 +247,12 @@ app.post('/api/data', (req, res) => {
       (acc, fumehoods) => acc.concat(fumehoods),
       []
     );
-    col_names = rows
-      .map((x) => x['name'])
-      .filter((x) => all_fumehoods.includes(x));
+    col_names = rows.map(x => x['name']).filter(x => all_fumehoods.includes(x));
 
     if (granularity === 'none') {
       sql += '*, ';
     } else {
-      col_names.forEach((val) => {
+      col_names.forEach(val => {
         sql += 'avg("' + val + '") as ' + val + ', ';
       });
     }
@@ -294,20 +295,20 @@ app.post('/api/data', (req, res) => {
 
       if (graph_type == 'line') {
         if (data_format === 'single_lab') {
-          all_fumehoods.forEach((fumehood) => {
+          all_fumehoods.forEach(fumehood => {
             data[fumehood] = [];
           });
-          rows.forEach((row) => {
-            all_fumehoods.forEach((fumehood) => {
+          rows.forEach(row => {
+            all_fumehoods.forEach(fumehood => {
               data[fumehood].push({ time: row.time, value: row[fumehood] });
             });
           });
         } else if (data_format === 'all_labs') {
-          Object.keys(lab_fumehood_mapping).forEach((lab) => {
+          Object.keys(lab_fumehood_mapping).forEach(lab => {
             data[lab] = [];
           });
-          rows.forEach((row) => {
-            Object.keys(lab_fumehood_mapping).forEach((lab) => {
+          rows.forEach(row => {
+            Object.keys(lab_fumehood_mapping).forEach(lab => {
               data[lab].push({
                 time: row.time,
                 value: math.round(
@@ -328,7 +329,7 @@ app.post('/api/data', (req, res) => {
             0,
             rows.length - number_of_competition_weeks
           );
-          data['beginning'] = Object.keys(lab_fumehood_mapping).map((lab) =>
+          data['beginning'] = Object.keys(lab_fumehood_mapping).map(lab =>
             math.round(
               lab_fumehood_mapping[lab].reduce(
                 (acc, fumehood) =>
@@ -342,7 +343,7 @@ app.post('/api/data', (req, res) => {
           );
           for (let i = number_of_competition_weeks; i >= 1; i--) {
             const dataKey = rows[rows.length - i].time;
-            data[dataKey] = Object.keys(lab_fumehood_mapping).map((lab) =>
+            data[dataKey] = Object.keys(lab_fumehood_mapping).map(lab =>
               math.round(
                 lab_fumehood_mapping[lab].reduce(
                   (acc, fumehood) => acc + rows[rows.length - i][fumehood],
@@ -378,12 +379,48 @@ app.post('/api/data', (req, res) => {
   });
 });
 
+app.get('/api/sensors', async (req, res) => {
+  pool.query(
+    `SELECT time, value, sensor_name FROM sensors ORDER BY time ASC`,
+    (err, results) => {
+      if (err) {
+        res.status(500).send('GET sensors data errored');
+        return;
+      }
+      const toRet = results.rows;
+      res.status(200).json(toRet);
+    }
+  );
+});
+
+app.post('/api/add_sensors_data', async (req, res) => {
+  const client = await pool.connect();
+  const formattedSensorsData = req.body.map(sensor => [sensor.time, sensor.value, sensor.sensor_name]);
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    const insertQuery = format(`INSERT INTO sensors (time, value, sensor_name) VALUES %L`, formattedSensorsData);
+    await client.query(insertQuery);
+    const selectSensorsQuery = `SELECT time, value FROM sensors ORDER BY time ASC`;
+    toRet = (await client.query(selectSensorsQuery)).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.log(err);
+    res.status(500).send('POST add sensors data errored');
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
 });
 
 app.post('/close', (req, res) => {
-  db.close((err) => {
+  db.close(err => {
     if (err) {
       res.status(400);
       return res.send(err.message);
