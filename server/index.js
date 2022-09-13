@@ -395,11 +395,15 @@ app.get('/api/sensors', async (req, res) => {
 
 app.post('/api/add_sensors_data', async (req, res) => {
   const client = await pool.connect();
-  const formattedSensorsData = req.body.map(sensor => [sensor.time, sensor.value, sensor.sensor_name]);
+  const { time, value, sensor_name } = req.body;
+  const formattedSensorsData = [time, value, sensor_name];
   let toRet;
   try {
     await client.query('BEGIN');
-    const insertQuery = format(`INSERT INTO sensors (time, value, sensor_name) VALUES %L`, formattedSensorsData);
+    const insertQuery = format(
+      `INSERT INTO sensors (time, value, sensor_name) VALUES (%L)`,
+      formattedSensorsData
+    );
     await client.query(insertQuery);
     const selectSensorsQuery = `SELECT time, value FROM sensors ORDER BY time ASC`;
     toRet = (await client.query(selectSensorsQuery)).rows;
