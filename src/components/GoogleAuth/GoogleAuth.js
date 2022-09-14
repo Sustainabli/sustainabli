@@ -8,7 +8,7 @@ function GoogleAuth() {
     const clientId = '1036318924538-l0j2rt8c0vi12cmp1d2p186c4io6c8t3.apps.googleusercontent.com';
     useEffect(() => {
         const initClient = () => {
-            gapi.client.init({
+            gapi.auth2.init({
                 clientId: clientId,
                 scope: ''
             });
@@ -34,7 +34,6 @@ function GoogleAuth() {
             {profile && profile.name ? (
                 <div>
                     <h5>Welcome back, {profile.givenName}!</h5>
-                    <br />
                     <GoogleLogout clientId={clientId} buttonText="Log out" onLogoutSuccess={logOut} />
                 </div>
             ) : (
