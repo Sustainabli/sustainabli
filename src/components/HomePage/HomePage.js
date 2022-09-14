@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Header from '../Header/Header';
 import Dashboard from './Dashboard/Dashboard.js';
 import CompetitionRules from './CompetitionRules/CompetitionRules.js';
+import GoogleAuth from '../GoogleAuth/GoogleAuth';
 import {
   COMPETITION_START_DATE,
   DATA_FORMATS,
