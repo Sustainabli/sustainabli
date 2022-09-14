@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, Container, Row, Col} from 'react-bootstrap';
+import { Card, Container, Row, Col } from 'react-bootstrap';
 import Header from '../Header/Header.js';
-
+import GoogleAuth from '../GoogleAuth/GoogleAuth.js';
 
 import kevin_tu_pfp from "./../../assets/kevin_tu_pfp.png"
 import michael_li_pfp from "./../../assets/michael_li_pfp.png"
@@ -59,15 +59,15 @@ function TeamPage() {
 
   return (
     <Container fluid className="TeamPage">
-        <Header
-          pageName='Our Team'
-        />
+      <Header
+        pageName='Our Team'
+      />
       <div className="team_card_holder" pl="25px" pr="25px">
         <Row xs={1} md={3} className="g-4">
           {about_us_input.map((person) => (
             <Col key={person.name}>
-              <Card key = {person.name} border-color="red">
-                <Card.Img variant="top" src={person.image}/>
+              <Card key={person.name} border-color="red">
+                <Card.Img variant="top" src={person.image} />
                 <Card.Body>
                   <Card.Title>{person.name}</Card.Title>
                   <Card.Text>

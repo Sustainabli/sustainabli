@@ -9,6 +9,8 @@ import LabPage from './components/LabPage/LabPage';
 import NavDrawer from './components/NavDrawer/NavDrawer';
 import TeamPage from './components/TeamPage/TeamPage';
 import { LAB_NAMES } from './utils/Constants';
+import Admin from "./components/Admin/Admin";
+
 import './App.scss';
 
 class App extends React.Component {
@@ -33,6 +35,7 @@ class App extends React.Component {
                 ))}
                 <Route exact path='/team' element={<TeamPage />} />
                 <Route exact path='/demo' element={<DemoPage />} />
+                <Route path='/admin' element={<Admin />} />
                 <Route path='/*' element={<Navigate to='/' />} />
               </Routes>
             </BrowserRouter>
