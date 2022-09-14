@@ -56,6 +56,7 @@ class CFMLineGraph extends React.Component {
         };
       }),
     };
+    console.log(CFMData);
 
     return (
       <div className='CFM-Chart'>

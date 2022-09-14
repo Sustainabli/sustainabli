@@ -5,8 +5,9 @@ const fs = require('fs');
 const math = require('mathjs');
 const { Router } = require('express');
 const { pool } = require('./sensors-db');
-const format = require('pg-format');
 const { warn } = require('console');
+
+const { SELECT_SENSORS_QUERY, INSERT_SENSOR_DATA_QUERY } = require('./Constants');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -380,17 +381,14 @@ app.post('/api/data', (req, res) => {
 });
 
 app.get('/api/sensors', async (req, res) => {
-  pool.query(
-    `SELECT time, value, sensor_name FROM sensors ORDER BY time ASC`,
-    (err, results) => {
-      if (err) {
-        res.status(500).send('GET sensors data errored');
-        return;
-      }
-      const toRet = results.rows;
-      res.status(200).json(toRet);
+  pool.query(SELECT_SENSORS_QUERY, (err, results) => {
+    if (err) {
+      res.status(500).send('GET sensors data errored');
+      return;
     }
-  );
+    const toRet = results.rows;
+    res.status(200).json(toRet);
+  });
 });
 
 app.post('/api/add_sensors_data', async (req, res) => {
@@ -400,17 +398,11 @@ app.post('/api/add_sensors_data', async (req, res) => {
   let toRet;
   try {
     await client.query('BEGIN');
-    const insertQuery = format(
-      `INSERT INTO sensors (time, value, sensor_name) VALUES (%L)`,
-      formattedSensorsData
-    );
-    await client.query(insertQuery);
-    const selectSensorsQuery = `SELECT time, value FROM sensors ORDER BY time ASC`;
-    toRet = (await client.query(selectSensorsQuery)).rows;
+    await client.query(INSERT_SENSOR_DATA_QUERY(formattedSensorsData));
+    toRet = (await client.query(SELECT_SENSORS_QUERY)).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
-    console.log(err);
     res.status(500).send('POST add sensors data errored');
     return;
   } finally {
