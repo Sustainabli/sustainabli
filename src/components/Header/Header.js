@@ -25,7 +25,7 @@ class Header extends React.Component {
             <Col md={2} className='right'>
               <span>
                 <br />
-                <GoogleAuth />
+                {/* <GoogleAuth /> */}
               </span>
             </Col>
           </Row>
