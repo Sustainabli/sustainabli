@@ -11,7 +11,7 @@ export default function InfoModal() {
     }
 
     useEffect(() => {
-        if (password === "admin") {
+        if (password === process.env.REACT_APP_ADMIN_PASSWORD) {
             setShow(false);
         }
     }, [password]);
