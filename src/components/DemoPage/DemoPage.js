@@ -30,9 +30,9 @@ class DemoPage extends React.Component {
   }
 
   async componentDidMount() {
-    await this.updateSensorsData();
+    await this.getAndformatSensorsData();
     this.interval = setInterval(
-      async () => await this.updateSensorsData(),
+      async () => await this.getAndformatSensorsData(),
       5000
     );
   }
@@ -41,9 +41,28 @@ class DemoPage extends React.Component {
     clearInterval(this.interval);
   }
 
-  updateSensorsData = async () => {
-    this.setState({ data: await getSensorsData() });
+  getAndformatSensorsData = async () => {
+    const data = await getSensorsData();
+    const timeSet = new Set();
+    data.forEach(datum =>
+      datum.data.forEach(payload => timeSet.add(payload.time))
+    );
+    const timeList = [...timeSet].sort((date1, date2) => new Date(date1) - new Date(date2));
+    data.forEach(datum => {
+      const datumTimeList = datum.data.map(payload => payload.time);
+      datum.data = timeList.map(time => ({
+        time: time,
+        value: datumTimeList.includes(time)
+          ? datum.data.find(payload => payload.time === time).value
+          : null,
+      }));
+    });
+    this.setState({data: data});
   };
+
+  /* updateSensorsData = async () => { */
+  /*   this.setState({ data: await getSensorsData() }); */
+  /* }; */
 
   // Choose the sensor datum with the largest number of timestamps as the x-labels for the graph
   getLabels = data => {
@@ -62,7 +81,7 @@ class DemoPage extends React.Component {
       labels: this.getLabels(data),
       datasets: data.map((datum, index) => ({
         label: datum.sensor_name,
-        data: datum.data.map(values => values.value),
+        data: datum.data.map(payload => payload.value),
         borderColor: CHART_COLORS[index],
         backgroundColor: `${CHART_COLORS[index]}80`,
       })),
