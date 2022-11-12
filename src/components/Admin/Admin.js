@@ -1,7 +1,6 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Header from '../Header/Header';
-import GoogleAuth from '../GoogleAuth/GoogleAuth';
 import InfoModal from '../InfoModal/InfoModal';
 
 import './Admin.scss';

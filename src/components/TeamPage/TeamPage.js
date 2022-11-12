@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 import Header from '../Header/Header.js';
-import GoogleAuth from '../GoogleAuth/GoogleAuth.js';
 
 import kevin_tu_pfp from "./../../assets/kevin_tu_pfp.png"
 import michael_li_pfp from "./../../assets/michael_li_pfp.png"
