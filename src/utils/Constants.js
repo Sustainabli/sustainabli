@@ -29,6 +29,12 @@ export const FETCH_DATA_URL = '/api/data';
 
 export const FETCH_SENSORS_DATA_URL = '/api/sensors';
 
+export const POST_USER_INFO_URL = '/api/add_user_info';
+
+export const GET_USER_INFO_URL = '/api/get_user_info';
+
+export const PUT_USER_INFO_URL = '/api/update_user_info';
+
 export const LOADING_COLOR = '#171b26';
 
 /** Data and Chart Constants **/
@@ -90,6 +96,8 @@ export const LAB_FUMEHOOD_MAPPING = {
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood9_ExhaustCFM_Tridium',
   ],
 };
+
+export const ALL_LAB_FUMEHOOD_NAMES = Object.values(LAB_FUMEHOOD_MAPPING).reduce((acc, labFumehoods) => acc.concat(labFumehoods));
 
 export const LAB_NAME_FILTERS = {
   all: 'all',

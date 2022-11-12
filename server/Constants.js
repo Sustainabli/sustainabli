@@ -13,16 +13,15 @@ const SELECT_SENSORS_QUERY = `
   GROUP BY sensor_name
 `;
 
-const INSERT_SENSOR_DATA_QUERY = formattedSensorsData =>
-  format(
-    `
-      INSERT INTO sensors (time, value, sensor_name)
-      VALUES (%L)
-    `,
-    formattedSensorsData
-  );
+const INSERT_USER_INFO_QUERY = formattedUserInfo => format(
+  `
+    INSERT INTO accounts (email, name, fumehoods)
+    VALUES (%L)
+  `,
+  formattedUserInfo
+);
 
 module.exports = {
   SELECT_SENSORS_QUERY,
-  INSERT_SENSOR_DATA_QUERY,
+  INSERT_USER_INFO_QUERY,
 };
