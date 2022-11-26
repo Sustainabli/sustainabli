@@ -106,11 +106,11 @@ export const LAB_NAME_FILTERS = {
 };
 
 export const LAB_NAMES = Object.values(LAB_NAME_FILTERS).filter(
-  (name) => name !== LAB_NAME_FILTERS.all
+  name => name !== LAB_NAME_FILTERS.all
 );
 
 export const LAB_NAME_LABELS = LAB_NAMES.map(
-  (lab) => `${capitalizeString(lab)} Lab`
+  lab => `${capitalizeString(lab)} Lab`
 );
 
 export const LAB_NUM_FUMEHOODS = {
@@ -147,6 +147,11 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
   },
 };
 
+export const LAB_FILTER_OPTIONS = LAB_NAMES.map(labName => ({
+  value: labName,
+  label: capitalizeString(labName),
+}));
+
 export const TIME_GRANULARITIES = {
   none: 'none',
   day: 'day',
@@ -164,3 +169,20 @@ export const TIME_OF_DAY = {
 export const NUMBER_OF_COMPETITION_WEEKS = 4;
 
 export const MIN_DATE = new Date('01/01/2000');
+
+export const METRIC_TYPE_AIRFLOW = 'airflow';
+export const METRIC_TYPE_CARBON = 'carbon';
+export const METRIC_TYPE_ENERGY = 'energy';
+export const METRIC_TYPE_COST = 'cost';
+
+export const METRIC_TYPES_MAP = {
+  airflow: { type: METRIC_TYPE_AIRFLOW, title: 'Average Airflow', unit: 'CFM' },
+  carbon: { type: METRIC_TYPE_CARBON, title: 'Carbon Saved', unit: 'kg' },
+  energy: { type: METRIC_TYPE_ENERGY, title: 'Energy Saved', unit: 'kWh' },
+  cost: { type: METRIC_TYPE_COST, title: 'Cost Saved', unit: 'dollars' },
+};
+
+export const METRIC_TYPES_NEW_METRIC = {
+  type: 'newMetric',
+  title: 'Add New Metric',
+};

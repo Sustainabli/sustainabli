@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Rankings from '../Rankings/Rankings';
 import CFMBarGraph from '../../CFMBarGraph/CFMBarGraph';
-import CFMLineGraph from '../../CFMLineGraph/CFMLineGraph';
+import LineGraph from '../../LineGraph/LineGraph';
 import CompetitionStats from '../../CompetitionStats/CompetitionStats';
 import FilterOptions from '../../FilterOptions/FilterOptions';
 import { LAB_NAME_FILTERS, LAB_NAME_LABELS } from '../../../utils/Constants';
@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
           </Col>
           <Col md={7}>
             {Object.keys(lineGraphData).length > 0 && (
-              <CFMLineGraph
+              <LineGraph
                 lab={LAB_NAME_FILTERS.all}
                 filteredData={lineGraphData}
                 chartTitle='Average CFM per Lab'

@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ReactLoading from 'react-loading';
-import CFMLineGraph from '../CFMLineGraph/CFMLineGraph.js';
+import LineGraph from '../LineGraph/LineGraph.js';
 import FilterOptions from '../FilterOptions/FilterOptions';
 import {
   DATA_FORMATS,
@@ -26,7 +26,7 @@ class LabPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      lineGraphData: null,
+      lineGraphData: {},
       loading: true,
     };
   }
@@ -52,7 +52,7 @@ class LabPage extends React.Component {
     );
 
     this.setState({
-      lineGraphData: response.data,
+      lineGraphData: response,
       loading: false,
     });
   }
@@ -82,7 +82,7 @@ class LabPage extends React.Component {
               </Col>
               <Col md={10}>
                 {Object.keys(lineGraphData).length > 0 && (
-                  <CFMLineGraph
+                  <LineGraph
                     lab={lab}
                     filteredData={lineGraphData}
                     chartTitle={chartTitle}

@@ -1,6 +1,10 @@
 import {
   FETCH_DATA_URL,
   FETCH_SENSORS_DATA_URL,
+  METRIC_TYPE_AIRFLOW,
+  METRIC_TYPE_CARBON,
+  METRIC_TYPE_COST,
+  METRIC_TYPE_ENERGY,
   MIN_DATE,
   NUMBER_OF_COMPETITION_WEEKS,
   RELATIVE_TIME_RANGES_OPTIONS,
@@ -28,19 +32,64 @@ export const calculateAmtEnergySaved = (chartData, index) => {
   ).toFixed(2);
 };
 
+export const calculateMetricAvg = data => {
+  const flatListOfValues = Object.values(data).reduce(
+    (acc, labDataList) => acc.concat(labDataList),
+    []
+  );
+  const value =
+    flatListOfValues.length > 0
+      ? flatListOfValues.reduce(
+          (acc, labFumehoodDatum) => acc + labFumehoodDatum.value,
+          0
+        ) / flatListOfValues.length
+      : 0;
+  return value.toFixed(2);
+};
+
+export const convertDataToMetric = (selectedMetric, data) => {
+  const convertedData = {};
+  Object.keys(data).forEach(labName => {
+    const labDataList = data[labName];
+    convertedData[labName] = labDataList.map(labFumehoodDatum => {
+      const toRet = {};
+      toRet.time = labFumehoodDatum.time;
+      let value = labFumehoodDatum.value;
+      switch (selectedMetric.type) {
+        case METRIC_TYPE_ENERGY:
+          value = labFumehoodDatum.value * 35.71;
+          break;
+        case METRIC_TYPE_CARBON:
+          value = labFumehoodDatum.value * 13.771064;
+          break;
+        case METRIC_TYPE_COST:
+          value = labFumehoodDatum.value * 5;
+          break;
+
+        // Do nothing
+        case METRIC_TYPE_AIRFLOW:
+        default:
+      }
+      toRet.value = value;
+      return toRet;
+    });
+  });
+  return convertedData;
+};
+
 // Capitalizes the first letter of a string
-export const capitalizeString = (str) => {
+export const capitalizeString = str => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 // Calculation for converting CFM data to Sash data
-export const convertCFMToSash = (CFM) => {
+export const convertCFMToSash = CFM => {
   return (CFM - 136) / 110;
 };
 
 // Extracts the fumehood name from a given string
 // e.g. FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium becomes Room1302_FumeHood4
-export const extractFumehoodName = (name) => {
+export const extractFumehoodName = name => {
   const regMatch = name.match(/(Room.*FumeHood\d)/);
   return regMatch[1];
 };
@@ -71,7 +120,11 @@ export const fetchFilteredData = async (
     method: 'POST',
     body: JSON.stringify(reqBody),
     headers: { 'Content-Type': 'application/json' },
-  }).then((res) => res.json());
+  }).then(res => res.json());
+};
+
+export const fetchSensorsData = async () => {
+  return fetch(FETCH_SENSORS_DATA_URL).then(res => res.json());
 };
 
 // Formats the date label on the charts based on the granularity we are looking at
@@ -185,7 +238,3 @@ export const getOffsettedStartDate = (date, offset) => {
   }
   return date;
 };
-
-export const getSensorsData = async () => {
-  return fetch(FETCH_SENSORS_DATA_URL).then(res => res.json());
-}

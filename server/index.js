@@ -375,7 +375,8 @@ app.post('/api/data', (req, res) => {
       //     });
       //   });
       // }
-      res.send({ stats: statistics, data: data });
+      /* res.send({ stats: statistics, data: data }); */
+      res.send(data);
     });
   });
 });

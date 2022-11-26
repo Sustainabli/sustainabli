@@ -68,7 +68,7 @@ class FilterOptions extends React.Component {
       labFumehoodMapping,
       startDate
     );
-    setFilteredLineGraphData(filteredLineGraphData.data);
+    setFilteredLineGraphData(filteredLineGraphData);
   };
 
   render() {

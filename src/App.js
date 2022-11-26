@@ -4,8 +4,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import DemoPage from './components/DemoPage/DemoPage';
-import HomePage from './components/HomePage/HomePage';
 import LabPage from './components/LabPage/LabPage';
+import MetricsPage from './components/MetricsPage/MetricsPage';
 import NavDrawer from './components/NavDrawer/NavDrawer';
 import TeamPage from './components/TeamPage/TeamPage';
 import { LAB_NAMES } from './utils/Constants';
@@ -24,7 +24,7 @@ class App extends React.Component {
           <Col md={10} className='root-right-col'>
             <BrowserRouter>
               <Routes>
-                <Route exact path='/' element={<HomePage />} />
+                <Route exact path='/' element={<MetricsPage />} />
                 {LAB_NAMES.map((lab) => (
                   <Route
                     exact
@@ -33,6 +33,7 @@ class App extends React.Component {
                     key={lab}
                   />
                 ))}
+                {/* <Route exact path='/metrics' element={<MetricsPage />} /> */}
                 <Route exact path='/team' element={<TeamPage />} />
                 <Route exact path='/demo' element={<DemoPage />} />
                 <Route path='/admin' element={<Admin />} />

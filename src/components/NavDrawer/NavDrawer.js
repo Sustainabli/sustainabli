@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Collapse, Nav } from 'react-bootstrap';
+import Collapse from 'react-bootstrap/Collapse';
+import Nav from 'react-bootstrap/Nav';
 import {
   Drawer,
   DrawerNavigationHeader,
@@ -9,6 +10,7 @@ import {
 } from 'react-bootstrap-drawer';
 import { LAB_NAMES } from '../../utils/Constants.js';
 import { capitalizeString } from '../../utils/Utils';
+
 import 'react-bootstrap-drawer/lib/style.css';
 import './NavDrawer.scss';
 
@@ -26,9 +28,9 @@ function NavDrawer() {
             <DrawerNavigationHeader href='/'>
               <h3>Sustainabli</h3>
             </DrawerNavigationHeader>
-            <Nav.Item>
-              <Nav.Link href='/'>Home</Nav.Link>
-            </Nav.Item>
+            {/* <Nav.Item> */}
+            {/*   <Nav.Link href='/'>Home</Nav.Link> */}
+            {/* </Nav.Item> */}
             {/*
             <Nav.Item>
               <Nav.Link href="/impact">Impact</Nav.Link>
@@ -37,6 +39,9 @@ function NavDrawer() {
               <Nav.Link href="/goals">Goals</Nav.Link>
             </Nav.Item>
             */}
+            <Nav.Item>
+              <Nav.Link href='/'>Metrics</Nav.Link>
+            </Nav.Item>
             <Nav.Item>
               <Nav.Link href='/team'>Our Team</Nav.Link>
             </Nav.Item>
@@ -47,7 +52,7 @@ function NavDrawer() {
             */}
             <hr />
             <h4 className='labs-header'> Labs </h4>
-            {LAB_NAMES.map((lab) => (
+            {LAB_NAMES.map(lab => (
               <Nav.Item key={lab}>
                 <Nav.Link href={`/${lab}`}>{capitalizeString(lab)}</Nav.Link>
               </Nav.Item>

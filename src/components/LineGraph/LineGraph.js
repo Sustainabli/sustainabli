@@ -21,7 +21,7 @@ import {
   formatDateLabel,
   generateChartOptions,
 } from '../../utils/Utils.js';
-import './CFMLineGraph.scss';
+import './LineGraph.scss';
 
 Chart.register(
   CategoryScale,
@@ -32,7 +32,7 @@ Chart.register(
   Legend
 );
 
-class CFMLineGraph extends React.Component {
+class LineGraph extends React.Component {
   render() {
     const { lab, filteredData, chartTitle } = this.props;
 
@@ -56,7 +56,6 @@ class CFMLineGraph extends React.Component {
         };
       }),
     };
-    console.log(CFMData);
 
     return (
       <div className='CFM-Chart'>
@@ -73,4 +72,4 @@ class CFMLineGraph extends React.Component {
   }
 }
 
-export default CFMLineGraph;
+export default LineGraph;

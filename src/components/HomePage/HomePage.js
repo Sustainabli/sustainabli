@@ -1,6 +1,6 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
 import Header from '../Header/Header';
+import Container from 'react-bootstrap/Container';
 import Dashboard from './Dashboard/Dashboard.js';
 import CompetitionRules from './CompetitionRules/CompetitionRules.js';
 import GoogleAuth from '../GoogleAuth/GoogleAuth';

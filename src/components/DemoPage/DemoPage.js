@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { CHART_COLORS } from '../../utils/Constants.js';
-import { generateChartOptions, getSensorsData } from '../../utils/Utils.js';
+import { generateChartOptions, fetchSensorsData } from '../../utils/Utils.js';
 
 Chart.register(
   CategoryScale,
@@ -42,7 +42,7 @@ class DemoPage extends React.Component {
   }
 
   getAndformatSensorsData = async () => {
-    const data = await getSensorsData();
+    const data = await fetchSensorsData();
     const timeSet = new Set();
     data.forEach(datum =>
       datum.data.forEach(payload => timeSet.add(payload.time))
