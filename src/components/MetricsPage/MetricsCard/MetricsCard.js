@@ -40,65 +40,75 @@ class MetricsCard extends React.Component {
     const metricValue = calculateMetricAvg(metricData);
     const colMdVal = shouldShowTimeSeries ? 11 : 5;
     return (
-      <Col className='metrics-card' md={colMdVal}>
-        <Container fluid className='MetricsCard'>
-          {metricType.type === 'newMetric' ? (
-            <React.Fragment>
-              <Row>{metricType.title}</Row>
-              <br />
-              <Row>
-                <Select
-                  className='filter-select'
-                  ref={this.selectInputRef}
-                  options={Object.values(METRIC_TYPES_MAP)
-                    .filter(metric => !selectedMetrics.includes(metric.type))
-                    .map(metric => ({
-                      value: metric.type,
-                      label: metric.title,
-                    }))}
-                  onChange={options =>
-                    this.onChangeSelectedNewMetric(
-                      options ? options.value : null
-                    )
-                  }
-                />
-              </Row>
-              <Button onClick={this.onClickAddNewMetric}>Add Metric</Button>
-            </React.Fragment>
-          ) : shouldShowTimeSeries ? (
-            <React.Fragment>
-              <LineGraph
-                lab={LAB_NAME_FILTERS.all}
-                filteredData={metricData}
-                chartTitle={metricType.title}
-              />
-              <BootstrapSwitchButton
-                checked={shouldShowTimeSeries}
-                onChange={checked =>
-                  this.setState({ shouldShowTimeSeries: checked })
+      <Col className='MetricsCard' md={colMdVal}>
+        {metricType.type === 'newMetric' ? (
+          <React.Fragment>
+            <Row className='metrics-title'>{metricType.title}</Row>
+            <br />
+            <Row>
+              <Select
+                className='filter-select'
+                ref={this.selectInputRef}
+                options={Object.values(METRIC_TYPES_MAP)
+                  .filter(metric => !selectedMetrics.includes(metric.type))
+                  .map(metric => ({
+                    value: metric.type,
+                    label: metric.title,
+                  }))}
+                onChange={options =>
+                  this.onChangeSelectedNewMetric(options ? options.value : null)
                 }
               />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Row>{metricType.title}</Row>
-              <br />
-              <h4>
-                {metricValue} {metricType.unit}
-              </h4>
-              <br />
-              {/* <div>{percentChange}% since last week</div> */}
-              {metricType.type === 'airflow' && (
+            </Row>
+            <Button onClick={this.onClickAddNewMetric} className='add-metrics-button'>Add Metric</Button>
+          </React.Fragment>
+        ) : shouldShowTimeSeries ? (
+          <React.Fragment>
+            <LineGraph
+              lab={LAB_NAME_FILTERS.all}
+              filteredData={metricData}
+              chartTitle={metricType.title}
+            />
+            <Row className='timeseries-row'>
+              <Col md='auto' />
+              <Col md={2}>
                 <BootstrapSwitchButton
                   checked={shouldShowTimeSeries}
                   onChange={checked =>
                     this.setState({ shouldShowTimeSeries: checked })
                   }
                 />
-              )}
-            </React.Fragment>
-          )}
-        </Container>
+              </Col>
+              <Col className='timeseries-label'> Timeseries </Col>
+            </Row>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Row className='metrics-title'>{metricType.title}</Row>
+            <br />
+            <Row className='metrics-data'>
+              <h2>
+                {metricValue} {metricType.unit}
+              </h2>
+            </Row>
+            <br />
+            {/* <div>{percentChange}% since last week</div> */}
+            {metricType.type === 'airflow' && (
+              <Row className='timeseries-row'>
+                <Col md='auto' />
+                <Col md={2}>
+                  <BootstrapSwitchButton
+                    checked={shouldShowTimeSeries}
+                    onChange={checked =>
+                      this.setState({ shouldShowTimeSeries: checked })
+                    }
+                  />
+                </Col>
+                <Col className='timeseries-label'> Timeseries </Col>
+              </Row>
+            )}
+          </React.Fragment>
+        )}
       </Col>
     );
   }
