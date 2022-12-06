@@ -31,20 +31,21 @@ app.listen(port, (req, res) => {
 });
 
 //The following populates database
-sqldata_sash = fs
-  .readFileSync(path.resolve(__dirname, './static/mock-sash.sql'))
-  .toString()
-  .split(';');
+/* sqldata_sash = fs */
+/*   .readFileSync(path.resolve(__dirname, './static/mock-sash.sql')) */
+/*   .toString() */
+/*   .split(';'); */
 sqldata_cfm = fs
   .readFileSync(path.resolve(__dirname, './static/mock-cfm.sql'))
   .toString()
   .split(';');
-createsash = sqldata_sash[0];
-insertsash = sqldata_sash.slice(1);
+/* createsash = sqldata_sash[0]; */
+/* insertsash = sqldata_sash.slice(1); */
 createcfm = sqldata_cfm[0];
 insertcfm = sqldata_cfm.slice(1);
-allinserts = insertsash.concat(insertcfm);
-sqldata = [].concat(createsash, createcfm, ...allinserts);
+/* allinserts = insertsash.concat(insertcfm); */
+/* sqldata = [].concat(createsash, createcfm, ...allinserts); */
+sqldata = [].concat(createcfm, insertcfm);
 
 db = new sqlite3.Database(':memory:', err => {
   if (err) return console.error(err.message);
@@ -55,11 +56,14 @@ db.serialize(() => {
   db.run('PRAGMA foreign_keys=OFF;');
   db.run('BEGIN TRANSACTION;');
   sqldata.forEach((elm, idx) => {
-    if (elm) {
+    if (elm.trim()) {
       elm += ';';
       if (idx > 1) {
         rx = new RegExp("'.*?'");
         date_val = elm.match(rx);
+        if (date_val === null) {
+          console.log(elm, elm.length, idx, date_val);
+        }
         date_val_new = date_val[0].replaceAll("'", '');
         iso_date = '"' + new Date(date_val_new).toISOString() + '"';
         elm = elm.replace(date_val[0], iso_date);
