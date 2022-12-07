@@ -1,8 +1,13 @@
 .TeamPage {
   padding-left: 0px;
+
   .card-img-top {
     width: 100%;
     height: 15vw;
     object-fit: contain;
+  }
+
+  .card {
+    height: 450px;
   }
 }
