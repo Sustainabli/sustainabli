@@ -53,8 +53,7 @@ export const GRAPH_TYPES = {
 
 export const LAB_FUMEHOOD_MAPPING = {
   issacs: [
-    // Removing for competition purposes
-    // 'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood1_ExhaustCFM_Tridium',
+    'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood1_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood2_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood3_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood4_ExhaustCFM_Tridium',
@@ -80,20 +79,15 @@ export const LAB_FUMEHOOD_MAPPING = {
   wang: [
     'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood5_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood6_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood7_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood8_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood9_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood10_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood1_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood3_ExhaustCFM_Tridium',
+    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood2_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood4_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood5_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood6_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood7_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood8_ExhaustCFM_Tridium',
     'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood9_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood10_ExhaustCFM_Tridium',
   ],
 };
 
