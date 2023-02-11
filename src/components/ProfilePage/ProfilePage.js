@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 import Select from 'react-select'
 import { withAuth0 } from '@auth0/auth0-react';
 import Header from '../Header/Header';
 import { ALL_LAB_FUMEHOOD_NAMES } from '../../utils/Constants.js';
-import { getUserInfo, postUserInfo, putUserInfo } from '../../utils/Utils.js';
+import { getUserInfo, updateUserInfo } from '../../utils/Utils.js';
 
-// Auth0 requires using a functional component
 class ProfilePage extends React.Component {
   constructor() {
     super();
@@ -18,9 +17,6 @@ class ProfilePage extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-  }
-
   // Load up the user selected fumehoods from the database.
   // If the user email isn't found in the database, this will default to empty array.
   // Also sets isNewUser, which will determine if we should use a POST (new user) or PUT (existing user) request when updating the profile.
@@ -29,6 +25,7 @@ class ProfilePage extends React.Component {
     const { fetchedUserInfo } = this.state;
     let userSelectedFumehoods = [];
     let isNewUser = true;
+
     // Using fetchedUserIinfo to prevent redundent fetches to database for user info
     if (!fetchedUserInfo && isAuthenticated && user && user.email) {
       const userInfo = await getUserInfo({email: user.email});
@@ -46,8 +43,7 @@ class ProfilePage extends React.Component {
   }
 
   // Send updated user profile info to database.
-  // If it's a new user, use post request.
-  // Otherwise use put request.
+  // If it's a new user, use post request. Otherwise use put request.
   updateUserProfile = () => {
     const { user } = this.props.auth0;
     const { isNewUser, selectedFumehoods } = this.state;
@@ -56,11 +52,14 @@ class ProfilePage extends React.Component {
       email: user.email,
       fumehoods: selectedFumehoods,
     };
-    isNewUser ? postUserInfo(reqBody) : putUserInfo(reqBody);
+    updateUserInfo(reqBody, isNewUser);
   }
 
-  onChangeSelectedFumehoods = options => this.setState({ selectedFumehoods: options.map(option => option.value) });
-
+  onChangeSelectedFumehoods = options => {
+    this.setState({
+      selectedFumehoods: options.map(option => option.value)
+    });
+  }
 
   render() {
     const { isAuthenticated, user } = this.props.auth0;
@@ -80,8 +79,11 @@ class ProfilePage extends React.Component {
               value={selectedFumehoods.map(fumehood => ({value: fumehood, label: fumehood}))}
               closeMenuOnSelect={false}
             />
-            <Button className='query-metrics-button' onClick={() => this.updateUserProfile()}>
-              Submit
+            <Button
+              className='query-metrics-button'
+              onClick={() => this.updateUserProfile()}
+            >
+              Update Selected Fumehoods
             </Button>
           </React.Fragment>
         )}
@@ -89,4 +91,5 @@ class ProfilePage extends React.Component {
     );
   }
 }
+
 export default withAuth0(ProfilePage);

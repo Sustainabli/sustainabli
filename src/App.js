@@ -17,6 +17,7 @@ import './App.scss';
 
 class App extends React.Component {
   render() {
+  console.log('ASDFASDF', window.location.href);
     return (
       <Container className='App' fluid>
         <Row className='root-row'>

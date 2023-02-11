@@ -130,23 +130,6 @@ export const fetchSensorsData = async () => {
   return fetch(FETCH_SENSORS_DATA_URL).then(res => res.json());
 };
 
-export const postUserInfo = async (reqBody) => {
-  return fetch(POST_USER_INFO_URL, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const putUserInfo = async (reqBody) => {
-  console.log(reqBody);
-  return fetch(PUT_USER_INFO_URL, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
 export const getUserInfo = async (reqBody) => {
   return fetch(GET_USER_INFO_URL, {
     method: 'POST',
@@ -154,6 +137,14 @@ export const getUserInfo = async (reqBody) => {
     headers: { 'Content-Type': 'application/json' },
   }).then(res => res.json());
 };
+
+export const updateUserInfo = async (reqBody, isNewUser) => {
+  return fetch(isNewUser ? POST_USER_INFO_URL : PUT_USER_INFO_URL, {
+    method: isNewUser ? 'POST' : 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
 
 // Formats the date label on the charts based on the granularity we are looking at
 //   - NONE:  mm/dd/yyyy hh:mm
