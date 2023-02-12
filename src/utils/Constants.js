@@ -188,3 +188,9 @@ export const METRIC_TYPES_NEW_METRIC = {
   type: 'newMetric',
   title: 'Add New Metric',
 };
+
+
+// Endpoints for various pages on the website
+export const HOME_PAGE_PATH = '/';
+export const TEAM_PAGE_PATH = '/team';
+export const PROFILE_PAGE_PATH = '/profile';

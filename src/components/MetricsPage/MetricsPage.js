@@ -86,7 +86,7 @@ class MetricsPage extends React.Component {
   render() {
     const { timeRange, selectedMetrics, queriedLabs, data } = this.state;
     return (
-      <Container fluid className='MetricsPage'>
+      <Container className='MetricsPage' fluid>
         <Row className='filter-row'>
           <Col className='filter-col' md={5}>
             Date Range:
