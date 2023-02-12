@@ -57,6 +57,10 @@ function NavDrawer() {
                 <Nav.Link href={`/${lab}`}>{capitalizeString(lab)}</Nav.Link>
               </Nav.Item>
             ))}
+            <br/>
+            <Nav.Item>
+              <Nav.Link href='/profile'>Profile</Nav.Link>
+            </Nav.Item>
           </DrawerToC>
         </DrawerOverflow>
       </Collapse>

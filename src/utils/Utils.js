@@ -1,12 +1,15 @@
 import {
   FETCH_DATA_URL,
   FETCH_SENSORS_DATA_URL,
+  GET_USER_INFO_URL,
   METRIC_TYPE_AIRFLOW,
   METRIC_TYPE_CARBON,
   METRIC_TYPE_COST,
   METRIC_TYPE_ENERGY,
   MIN_DATE,
   NUMBER_OF_COMPETITION_WEEKS,
+  POST_USER_INFO_URL,
+  PUT_USER_INFO_URL,
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
 } from './Constants.js';
@@ -126,6 +129,22 @@ export const fetchFilteredData = async (
 export const fetchSensorsData = async () => {
   return fetch(FETCH_SENSORS_DATA_URL).then(res => res.json());
 };
+
+export const getUserInfo = async (reqBody) => {
+  return fetch(GET_USER_INFO_URL, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
+export const updateUserInfo = async (reqBody, isNewUser) => {
+  return fetch(isNewUser ? POST_USER_INFO_URL : PUT_USER_INFO_URL, {
+    method: isNewUser ? 'POST' : 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
 
 // Formats the date label on the charts based on the granularity we are looking at
 //   - NONE:  mm/dd/yyyy hh:mm

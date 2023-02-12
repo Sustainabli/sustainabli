@@ -7,7 +7,7 @@ const { Router } = require('express');
 const { pool } = require('./sensors-db');
 const { warn } = require('console');
 
-const { SELECT_SENSORS_QUERY, INSERT_SENSOR_DATA_QUERY } = require('./Constants');
+const { SELECT_SENSORS_QUERY, INSERT_SENSOR_DATA_QUERY, INSERT_USER_INFO_QUERY } = require('./Constants');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -404,7 +404,7 @@ app.post('/api/add_sensors_data', async (req, res) => {
   try {
     await client.query('BEGIN');
     await client.query(INSERT_SENSOR_DATA_QUERY(formattedSensorsData));
-    toRet = (await client.query(SELECT_SENSORS_QUERY)).rows;
+    toRet = (await client.query(`SELECT * FROM accounts`)).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -414,6 +414,43 @@ app.post('/api/add_sensors_data', async (req, res) => {
     client.release();
   }
   res.status(200).json(toRet);
+});
+
+app.post('/api/add_user_info', async (req, res) => {
+  const { email, name, fumehoods } = req.body;
+  pool.query(`INSERT INTO accounts (email, name, fumehoods) VALUES ($1, $2, $3)`, [email, name, fumehoods], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('POST add user info errored');
+      return;
+    }
+    res.status(200).json();
+  });
+});
+
+app.put('/api/update_user_info', async (req, res) => {
+  const { email, name, fumehoods } = req.body;
+  pool.query(`UPDATE accounts set fumehoods = $1 WHERE email = $2`, [fumehoods, email], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('PUT add user info errored');
+      return;
+    }
+    res.status(200).json();
+  });
+});
+
+app.post('/api/get_user_info', async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+  pool.query('SELECT * FROM accounts WHERE email = $1', [email], (err, results) => {
+    if (err) {
+      res.status(500).send('POST get user info errored');
+      return;
+    }
+    const toRet = results.rows;
+    res.status(200).json(toRet);
+  });
 });
 
 app.get('*', (req, res) => {
