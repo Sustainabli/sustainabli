@@ -13,9 +13,6 @@ import './TeamPage.scss';
 
 function TeamPage() {
 
-  var teamInfo = [
-
-  ]
   var about_us_input = [
     {
       "name": "Kevin Tu",

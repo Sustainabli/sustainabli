@@ -12,7 +12,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 const Header = ({ pageName, selectedTab, onChangeSelectedTab }) => {
   const { isAuthenticated, loginWithPopup, logout } = useAuth0();
   return (
-    <Container fluid className='Header'>
+    <Container className='p-0 m-0 Header'>
       <div className='header-content'>
         <Row>
           <Col md={10} className='left'>
@@ -44,6 +44,6 @@ const Header = ({ pageName, selectedTab, onChangeSelectedTab }) => {
       <hr />
     </Container>
   );
-};
+}
 
 export default Header;
