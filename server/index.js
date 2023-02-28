@@ -340,7 +340,7 @@ app.post('/api/data', (req, res) => {
                 (acc, fumehood) =>
                   acc +
                   beginningRows.reduce((acc2, row) => acc2 + row[fumehood], 0) /
-                    beginningRows.length,
+                  beginningRows.length,
                 0
               ) / lab_fumehood_mapping[lab].length,
               2

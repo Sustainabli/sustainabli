@@ -1,11 +1,12 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col, Image } from 'react-bootstrap'
 import ReactLoading from 'react-loading';
 import LineGraph from '../LineGraph/LineGraph.js';
 import FilterOptions from '../FilterOptions/FilterOptions';
 import ChartTemplate from '../ChartTemplate/ChartTemplate.js';
+import MetricsAreaChart from "../MetricsAreaChart/MetricsAreaChart.js";
+import CostAreaChart from '../CostAreaChart/CostAreaChart.js';
+import FumeTable from '../FumeTable/FumeTable.js';
 
 import {
   DATA_FORMATS,
@@ -16,13 +17,18 @@ import {
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
   TIME_OF_DAY,
+  LAB_NAMES,
 } from '../../utils/Constants.js';
 import {
   capitalizeString,
   fetchFilteredData,
   getOffsettedStartDate,
+  formatDateLabel,
 } from '../../utils/Utils.js';
 import './LabPage.scss';
+
+import HeatMap from "react-heatmap-grid";
+
 
 class LabPage extends React.Component {
   constructor() {
@@ -30,6 +36,10 @@ class LabPage extends React.Component {
     this.state = {
       lineGraphData: {},
       barGraphData: {},
+      areaGraph: {},
+      costAreaGraph: {},
+      tableData: {},
+      allTableData: {},
       loading: true,
     };
   }
@@ -41,7 +51,7 @@ class LabPage extends React.Component {
     labFumehoodMapping[lab] = LAB_FUMEHOOD_MAPPING[lab];
     const startDate = getOffsettedStartDate(
       new Date(),
-      RELATIVE_TIME_RANGES_OPTIONS.one_month.value
+      RELATIVE_TIME_RANGES_OPTIONS.all.value
     );
 
     const response = await fetchFilteredData(
@@ -64,9 +74,54 @@ class LabPage extends React.Component {
       startDate
     );
 
+    const test = await fetchFilteredData(
+      DATA_TYPES.cfm,
+      DATA_FORMATS.allLabs,
+      GRAPH_TYPES.line,
+      TIME_GRANULARITIES.day,
+      TIME_OF_DAY.all,
+      labFumehoodMapping,
+      startDate
+    );
+
+    const test2 = await fetchFilteredData(
+      DATA_TYPES.cfm,
+      DATA_FORMATS.allLabs,
+      GRAPH_TYPES.line,
+      TIME_GRANULARITIES.month,
+      TIME_OF_DAY.all,
+      labFumehoodMapping,
+      startDate
+    );
+
+
+    const test3 = await fetchFilteredData(
+      DATA_TYPES.cfm,
+      DATA_FORMATS.singleLab,
+      GRAPH_TYPES.line,
+      TIME_GRANULARITIES.year,
+      TIME_OF_DAY.all,
+      labFumehoodMapping,
+      startDate
+    );
+
+    const test4 = await fetchFilteredData(
+      DATA_TYPES.cfm,
+      DATA_FORMATS.allLabs,
+      GRAPH_TYPES.line,
+      TIME_GRANULARITIES.year,
+      TIME_OF_DAY.all,
+      LAB_FUMEHOOD_MAPPING,
+      startDate
+    );
+
     this.setState({
       lineGraphData: response,
       barGraphData: responseBar,
+      areaGraph: test,
+      costAreaGraph: test2,
+      tableData: test3,
+      allTableData: test4,
       loading: false,
     });
   }
@@ -82,10 +137,12 @@ class LabPage extends React.Component {
 
   render() {
     const { lab } = this.props;
-    const { lineGraphData, barGraphData, loading } = this.state;
+    const { lineGraphData, barGraphData, areaGraph, costAreaGraph, loading, tableData, allTableData } = this.state;
 
     const barChartTitle = `Fumehood CFM Data for ${capitalizeString(lab)} Lab (Bar)`;
     const chartTitle = `Fumehood CFM Data for ${capitalizeString(lab)} Lab`;
+
+    const fumeHoods = LAB_FUMEHOOD_MAPPING[lab];
 
     return (
       <Container fluid className='LabPage'>
@@ -93,41 +150,27 @@ class LabPage extends React.Component {
           <React.Fragment>
             <h1>{capitalizeString(lab)} Lab</h1>
             <br />
+
             <Row>
-              <Col md={2}>
-                <FilterOptions
-                  lab={lab}
-                  setFilteredLineGraphData={this.setFilteredBarGraphData}
-                />
-              </Col>
-              <Col md={10}>
-                {Object.keys(barGraphData).length > 0 && (
-                  <ChartTemplate
-                    lab={lab}
-                    filteredData={barGraphData}
-                    chartTitle={barChartTitle}
-                    chartType={"bar"}
-                  />
-                )}
+              <Col md={12}>
+                <div>
+                  {/* <HeatMap xLabels={heatMapData.x} yLabels={heatMapData.y} data={heatMapData.data} /> */}
+                  <MetricsAreaChart data={areaGraph} />
+                </div>
               </Col>
             </Row>
             <Row>
-              <Col md={2}>
-                <FilterOptions
-                  lab={lab}
-                  setFilteredLineGraphData={this.setFilteredLineGraphData}
-                />
+              <Col md={6}>
+                <div>
+                  <FumeTable data={tableData} />
+                </div>
               </Col>
-              <Col md={10}>
-                {Object.keys(lineGraphData).length > 0 && (
-                  <ChartTemplate
-                    lab={lab}
-                    filteredData={lineGraphData}
-                    chartTitle={chartTitle}
-                    chartType={"line"}
-                  />
-                )}
+              <Col md={6}>
+                <div>
+                  <FumeTable data={allTableData} />
+                </div>
               </Col>
+
             </Row>
           </React.Fragment>
         ) : (
