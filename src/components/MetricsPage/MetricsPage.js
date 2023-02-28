@@ -69,6 +69,7 @@ class MetricsPage extends React.Component {
       lab => (labFumehoodMapping[lab] = LAB_FUMEHOOD_MAPPING[lab])
     );
     const startDate = getOffsettedStartDate(new Date(), relativeTimeRange);
+
     this.setState({
       queriedLabs: [...selectedLabs],
       data: await fetchFilteredData(

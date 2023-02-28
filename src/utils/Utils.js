@@ -43,9 +43,9 @@ export const calculateMetricAvg = data => {
   const value =
     flatListOfValues.length > 0
       ? flatListOfValues.reduce(
-          (acc, labFumehoodDatum) => acc + labFumehoodDatum.value,
-          0
-        ) / flatListOfValues.length
+        (acc, labFumehoodDatum) => acc + labFumehoodDatum.value,
+        0
+      ) / flatListOfValues.length
       : 0;
   return value.toFixed(2);
 };
@@ -80,6 +80,29 @@ export const convertDataToMetric = (selectedMetric, data) => {
   return convertedData;
 };
 
+export const convertDataToMetricSingle = (selectedMetric, data) => {
+  let value = data
+  if (selectedMetric) {
+    switch (selectedMetric.type) {
+      case METRIC_TYPE_ENERGY:
+        value = value * 35.71;
+        break;
+      case METRIC_TYPE_CARBON:
+        value = value * 13.771064;
+        break;
+      case METRIC_TYPE_COST:
+        value = value * 5;
+        break;
+
+      // Do nothing
+      case METRIC_TYPE_AIRFLOW:
+      default:
+
+    }
+  }
+  return value
+
+}
 // Capitalizes the first letter of a string
 export const capitalizeString = str => {
   return str.charAt(0).toUpperCase() + str.slice(1);

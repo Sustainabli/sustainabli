@@ -21,7 +21,7 @@ import {
 import './FilterOptions.scss';
 
 class FilterOptions extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       filters: {
@@ -29,6 +29,7 @@ class FilterOptions extends React.Component {
         timeOfDay: TIME_OF_DAY.all,
       },
     };
+    this.timeStep = props.timeStep;
   }
 
   onChangeRelativeTimeRange = (range) => {
@@ -41,6 +42,34 @@ class FilterOptions extends React.Component {
     const { filters } = this.state;
     filters.timeOfDay = timeOfDay;
     this.setState({ filteres: { ...filters } });
+  };
+
+  onSubmitBarUpdateFilters = async () => {
+    const { filters } = this.state;
+    const { lab, setFilteredLineGraphData } = this.props;
+
+    const dataFormat =
+      lab === LAB_NAME_FILTERS.all
+        ? DATA_FORMATS.allLabs
+        : DATA_FORMATS.singleLab;
+    const startDate = getOffsettedStartDate(
+      new Date(),
+      filters.relativeTimeRange
+    );
+    const labFumehoodMapping =
+      lab === LAB_NAME_FILTERS.all
+        ? LAB_FUMEHOOD_MAPPING
+        : { lab: LAB_FUMEHOOD_MAPPING[lab] };
+    const filteredLineGraphData = await fetchFilteredData(
+      DATA_TYPES.cfm,
+      dataFormat,
+      GRAPH_TYPES.line,
+      TIME_GRANULARITIES.week,
+      filters.timeOfDay,
+      labFumehoodMapping,
+      startDate
+    );
+    setFilteredLineGraphData(filteredLineGraphData);
   };
 
   onSubmitUpdateFilters = async () => {
@@ -110,7 +139,8 @@ class FilterOptions extends React.Component {
         </Row>
         <br />
         <Row>
-          <Button onClick={this.onSubmitUpdateFilters}>Filter</Button>
+          {this.timeStep === "week" && <Button onClick={this.onSubmitBarUpdateFilters}>Filter</Button>}
+          {this.timeStep !== "week" && <Button onClick={this.onSubmitUpdateFilters}>Filter</Button>}
         </Row>
       </Container>
     );
