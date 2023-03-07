@@ -1,60 +1,54 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import { METRIC_TYPE_AIRFLOW } from '../../utils/Constants';
+import { convertSashHeightToMetricValue } from '../../utils/Utils';
 
 import './FumeTable.scss';
 
 class FumeTable extends React.Component {
-    render() {
-        const { data } = this.props;
-        console.log("dsfdsfsdf ", data)
-        let labels = []
-        let normalizedCFMs = []
-        for (const [key, value] of Object.entries(data)) {
-            labels.push({
-                fumeHood: key,
-                cfm: value[0].value,
-                normalizedCFM: value[0].value
-            })
-            normalizedCFMs.push(value[0].value)
-            //   labels.push(formatDateLabel(new Date(entry.time), TIME_GRANULARITIES.day))
-        }
-        var ratio = Math.max.apply(Math, normalizedCFMs) / 100
-        for (var i = 0; i < normalizedCFMs.length; i++) {
-            labels[i].normalizedCFM = Math.round(normalizedCFMs[i] / ratio)
-        }
+  render() {
+    const { data } = this.props;
 
-        console.log(labels)
-        labels.sort((a, b) => {
-            if (a.normalizedCFM < b.normalizedCFM) {
-                return 1
-            } else if (a.normalizedCFM > b.normalizedCFM) {
-                return -1
-            }
-            return 0
-        })
-        console.log(labels)
-        return (
-            <Table>
-                <thead>
-                    <tr>
-                        <th>Fume Hood</th>
-                        <th>CFM</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {labels.map((entry, index) => (
-                        <tr key={index}>
-                            {/* <td>{entry.fumeHood.substring(0, 6)}</td> */}
-                            <td>{entry.cfm ? entry.cfm.toFixed(2) : "N/A"}</td>
-                            <td><ProgressBar variant="info" now={entry.normalizedCFM} /></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
-        );
-    }
+    // Store an object of {fumeHoodName, summed cfm data} key value pairs
+    const summedCfmData = {};
+    data.forEach(datum => Object.entries(datum.data).forEach(([key, value]) => {
+      const cfmValue = convertSashHeightToMetricValue(METRIC_TYPE_AIRFLOW, value);
+      summedCfmData[key] = key in summedCfmData ? summedCfmData[key] + cfmValue : cfmValue;
+    }));
+
+    // Take the largest cfm value, calculate the ratio for the progress bar, and sort summedCfmData in descending order based on this ratio
+    const ratio = Math.max.apply(Math, Object.values(summedCfmData)) / 100;
+    const orderedSummedCfmData = Object.entries(summedCfmData).map(([key, value]) => ({
+      fumeHood: key,
+      cfm: value,
+      normalizedCfm: Math.round(value / ratio)
+    }));
+    orderedSummedCfmData.sort((a, b) => b.normalizedCfm - a.normalizedCfm);
+
+    return (
+      <Table bordered hover className='FumeTable'>
+        <thead>
+          <tr>
+            <th>Fume Hood</th>
+            <th colSpan={2}>CFM</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orderedSummedCfmData.map((datum, index) => (
+            <tr key={index}>
+              <td>{datum.fumeHood}</td>
+              <td>{datum.cfm ? datum.cfm.toFixed(2) : 'N/A'}</td>
+              {/* Unable to set progress bar to 25% of table width through scss so doing inline styling instead */}
+              <td style={{width: '25%'}}>
+                <ProgressBar variant='info' now={datum.normalizedCfm}/>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  }
 }
 
 export default FumeTable;

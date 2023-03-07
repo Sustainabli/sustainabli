@@ -1,5 +1,3 @@
-import { capitalizeString } from './Utils';
-
 /** General Constants **/
 // Distinct color hexes. If we need more look at https://medialab.github.io/iwanthue/
 export const CHART_COLORS = [
@@ -25,101 +23,15 @@ export const CHART_COLORS = [
   '#9f582c',
 ];
 
-export const FETCH_DATA_URL = '/api/data';
+export const SINGLE_CHART_BORDER_COLOR = 'rgb(53, 162, 235)';
+export const SINGLE_CHART_BACKGROUND_COLOR = 'rgb(53, 162, 235, 0.5)';
 
-export const FETCH_SENSORS_DATA_URL = '/api/sensors';
-
-export const POST_USER_INFO_URL = '/api/add_user_info';
-
-export const GET_USER_INFO_URL = '/api/get_user_info';
-
-export const PUT_USER_INFO_URL = '/api/update_user_info';
-
-export const LOADING_COLOR = '#171b26';
-
-/** Data and Chart Constants **/
-export const COMPETITION_START_DATE = new Date('04/01/022');
-
-export const DATA_TYPES = {
-  sash: 'sash',
-  cfm: 'cfm',
-};
-
-// Single lab and all labs data have different formats
-export const DATA_FORMATS = {
-  singleLab: 'single_lab',
-  allLabs: 'all_labs',
-};
-
-// Different graph types have different output formats
-export const GRAPH_TYPES = {
-  line: 'line',
-  bar: 'bar',
-};
-
-export const LAB_FUMEHOOD_MAPPING = {
-  issacs: [
-    'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood1_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood2_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood3_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room3336_FumeHood4_ExhaustCFM_Tridium',
-  ],
-  falvey: [
-    'FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHood1_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHood2_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHood3_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room3356_FumeHood4_ExhaustCFM_Tridium',
-  ],
-  rodriguez: [
-    'FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHood3_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2360_FumeHood4_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHood1_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHood2_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHood3_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2364_FumeHood4_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHood1_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHood2_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHood3_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room2368_FumeHood4_ExhaustCFM_Tridium',
-  ],
-  wang: [
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood5_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood9_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood10_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood2_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood4_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood5_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood6_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood7_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood8_ExhaustCFM_Tridium',
-    'FMGTAP012L01_B091_ChemistryW3_Room1308_FumeHood9_ExhaustCFM_Tridium',
-  ],
-};
-
-export const ALL_LAB_FUMEHOOD_NAMES = Object.values(LAB_FUMEHOOD_MAPPING).reduce((acc, labFumehoods) => acc.concat(labFumehoods));
-
-export const LAB_NAME_FILTERS = {
-  all: 'all',
-  issacs: 'issacs',
-  falvey: 'falvey',
-  rodriguez: 'rodriguez',
-  wang: 'wang',
-};
-
-export const LAB_NAMES = Object.values(LAB_NAME_FILTERS).filter(
-  name => name !== LAB_NAME_FILTERS.all
-);
-
-export const LAB_NAME_LABELS = LAB_NAMES.map(
-  lab => `${capitalizeString(lab)} Lab`
-);
-
-export const LAB_NUM_FUMEHOODS = {
-  issacs: LAB_FUMEHOOD_MAPPING.issacs.length,
-  falvey: LAB_FUMEHOOD_MAPPING.falvey.length,
-  rodriguez: LAB_FUMEHOOD_MAPPING.rodriguez.length,
-  wang: LAB_FUMEHOOD_MAPPING.wang.length,
+export const TIME_GRANULARITIES = {
+  none: 'none',
+  day: 'day',
+  week: 'week',
+  month: 'month',
+  year: 'year',
 };
 
 export const RELATIVE_TIME_RANGES_OPTIONS = {
@@ -149,27 +61,6 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
   },
 };
 
-export const LAB_FILTER_OPTIONS = LAB_NAMES.map(labName => ({
-  value: labName,
-  label: capitalizeString(labName),
-}));
-
-export const TIME_GRANULARITIES = {
-  none: 'none',
-  day: 'day',
-  week: 'week',
-  month: 'month',
-  year: 'year',
-};
-
-export const TIME_OF_DAY = {
-  all: 'all',
-  day: 'day',
-  night: 'night',
-};
-
-export const NUMBER_OF_COMPETITION_WEEKS = 4;
-
 export const MIN_DATE = new Date('01/01/2000');
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
@@ -189,8 +80,41 @@ export const METRIC_TYPES_NEW_METRIC = {
   title: 'Add New Metric',
 };
 
+export const USER_ROLE = 'user';
+export const ORGANIZATION_ADMIN_ROLE = 'organization_admin';
+export const SUPER_ADMIN_ROLE = 'super_admin';
 
 // Endpoints for various pages on the website
 export const HOME_PAGE_PATH = '/';
 export const TEAM_PAGE_PATH = '/team';
 export const PROFILE_PAGE_PATH = '/profile';
+
+// API endpoints
+export const FETCH_ORGANIZATIONS_PATH = '/api/fetch_organizations';
+export const ADD_ORGANIZATION_PATH = '/api/add_organization';
+export const DELETE_ORGANIZATION_PATH = '/api/delete_organization';
+export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';
+export const ADD_GROUP_PATH = '/api/add_group';
+export const DELETE_GROUP_PATH = '/api/delete_group';
+export const FETCH_ALL_USER_EMAILS_PATH = '/api/fetch_all_user_emails';
+export const FETCH_USER_INFO_PATH = '/api/fetch_user_info';
+export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
+export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
+export const FETCH_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_PATH = '/api/fetch_all_user_emails_without_organization';
+export const ADD_USER_INFO_PATH = '/api/add_user_info';
+export const UPDATE_USER_INFO_PATH = '/api/update_user_info';
+export const UPDATE_USER_ROLE_PATH = '/api/update_user_role';
+export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
+export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
+export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
+export const ADD_SENSOR_INFO_PATH = '/api/add_sensor_info';
+export const UPDATE_SENSOR_INFO_PATH = '/api/update_sensor_info';
+export const FETCH_SENSOR_DATA_PATH = '/api/fetch_sensor_data';
+export const ADD_SENSOR_DATA_PATH = '/api/add_sensor_data';
+
+// Form Types for Profile Page
+export const CREATE_ORGANIZATION = 'create_organization';
+export const CREATE_SENSOR = 'create_sensor';
+export const ADD_ORGANIZATION_ADMIN = 'add_organization_admin';
+export const ADD_USER = 'add_user';
+export const CREATE_GROUP = 'create_group';

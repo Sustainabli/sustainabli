@@ -49,7 +49,7 @@ function TeamPage() {
   return (
     <Container fluid className="TeamPage">
       <Header
-        pageName='Green Labs'
+        pageName='Our Team'
       />
       <div className="team_card_holder" pl="25px" pr="25px">
         <Row xs={1} md={3} className="g-4">

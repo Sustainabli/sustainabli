@@ -4,20 +4,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import MetricsCard from './MetricsCard/MetricsCard';
+import Header from '../Header/Header';
+import MetricsLineGraph from './components/MetricsLineGraph/MetricsLineGraph';
+import FumeTable from '../FumeTable/FumeTable.js';
 import {
-  DATA_FORMATS,
-  DATA_TYPES,
-  GRAPH_TYPES,
-  LAB_FILTER_OPTIONS,
-  LAB_FUMEHOOD_MAPPING,
-  METRIC_TYPES_MAP,
-  METRIC_TYPES_NEW_METRIC,
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
-  TIME_OF_DAY,
 } from '../../utils/Constants';
-import { fetchFilteredData, getOffsettedStartDate } from '../../utils/Utils';
+import { fetchSensorData, getOffsettedStartDate } from '../../utils/Utils';
 
 import './MetricsPage.scss';
 
@@ -25,11 +19,11 @@ class MetricsPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      relativeTimeRange: RELATIVE_TIME_RANGES_OPTIONS.all.value,
+      relativeTimeRange: RELATIVE_TIME_RANGES_OPTIONS.one_month.value,
       // Updates when clicking submit button
-      queriedLabs: [],
+      queriedSensors: [],
       // Updates when selecting labs from drop down
-      selectedLabs: [],
+      selectedSensors: [],
       selectedMetrics: [],
       data: {},
     };
@@ -45,8 +39,8 @@ class MetricsPage extends React.Component {
     this.setState({ relativeTimeRange: range });
   };
 
-  onChangeLabFilter = options => {
-    this.setState({ selectedLabs: options.map(option => option.value) });
+  onChangeSelectedSensorsFilter = options => {
+    this.setState({ selectedSensors: options.map(option => option.value) });
   };
 
   onChangeSelectedMetrics = (metricName, toAdd) => {
@@ -63,31 +57,29 @@ class MetricsPage extends React.Component {
   };
 
   fetchData = async () => {
-    const { selectedLabs, relativeTimeRange } = this.state;
-    const labFumehoodMapping = {};
-    selectedLabs.forEach(
-      lab => (labFumehoodMapping[lab] = LAB_FUMEHOOD_MAPPING[lab])
-    );
+    const { selectedSensors, relativeTimeRange } = this.state;
     const startDate = getOffsettedStartDate(new Date(), relativeTimeRange);
+    // TODO modify dates to only use days, instead of time since we can lose data depending on the hour of the day requested
+    const reqBody = {
+      granularity: TIME_GRANULARITIES.day,
+      start_date: startDate,
+      end_date: new Date(),
+      sensors: selectedSensors,
+    }
 
     this.setState({
-      queriedLabs: [...selectedLabs],
-      data: await fetchFilteredData(
-        DATA_TYPES.cfm,
-        DATA_FORMATS.allLabs,
-        GRAPH_TYPES.line,
-        TIME_GRANULARITIES.day,
-        TIME_OF_DAY.all,
-        labFumehoodMapping,
-        startDate
-      ),
+      queriedSensors: [...selectedSensors],
+      data: await fetchSensorData(reqBody),
     });
   };
 
   render() {
-    const { timeRange, selectedMetrics, queriedLabs, data } = this.state;
+    const { timeRange, queriedSensors, data } = this.state;
+    const { availableSensors } = this.props;
+    const sensorOptions = availableSensors.map(sensor => ({value: sensor.id, label: sensor.fumeHoodName}));
     return (
       <Container className='MetricsPage' fluid>
+        <Header pageName='Metrics Page' />
         <Row className='filter-row'>
           <Col className='filter-col' md={5}>
             Date Range:
@@ -104,47 +96,33 @@ class MetricsPage extends React.Component {
             />
           </Col>
           <Col className='filter-col' md={6}>
-            Labs:
+            Fume Hoods:
             <Select
               className='filter-select'
               isMulti={true}
               closeMenuOnSelect={false}
-              options={LAB_FILTER_OPTIONS}
-              onChange={options => this.onChangeLabFilter(options)}
+              options={sensorOptions}
+              onChange={options => this.onChangeSelectedSensorsFilter(options)}
             />
           </Col>
           <Col className='filter-col' md={1}>
-            <Button className='query-metrics-button' onClick={this.fetchData}>
+            <Button
+              className='query-metrics-button'
+              onClick={this.fetchData}
+            >
               Submit
             </Button>
           </Col>
         </Row>
         <br />
         <br />
-        {queriedLabs.length > 0 ? (
+        {(queriedSensors.length > 0  && data) ? (
           <Row className='metrics-row'>
-            {data &&
-              selectedMetrics.map(selectedMetric => (
-                <React.Fragment key={selectedMetric}>
-                  <MetricsCard
-                    data={data}
-                    metricType={METRIC_TYPES_MAP[selectedMetric]}
-                    selectedMetrics={selectedMetrics}
-                  />
-                  <Col md={1} />
-                </React.Fragment>
-              ))}
-            {Object.keys(METRIC_TYPES_MAP).length != selectedMetrics.length && (
-              <MetricsCard
-                data={data}
-                metricType={METRIC_TYPES_NEW_METRIC}
-                selectedMetrics={selectedMetrics}
-                onAddNewMetric={this.onAddNewMetric}
-              />
-            )}
+            <MetricsLineGraph data={data}/>
+            <FumeTable data={data}/>
           </Row>
         ) : (
-          <Row> Select a Lab </Row>
+          <Row> Select a Fume Hood </Row>
         )}
       </Container>
     );

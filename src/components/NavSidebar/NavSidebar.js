@@ -1,16 +1,14 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Sidebar, Menu, MenuItem, useProSidebar, sidebarClasses } from 'react-pro-sidebar';
 import { Link, useLocation } from 'react-router-dom';
-import { LAB_NAMES, HOME_PAGE_PATH, TEAM_PAGE_PATH, PROFILE_PAGE_PATH } from '../../utils/Constants.js';
-import { capitalizeString } from '../../utils/Utils';
+import { HOME_PAGE_PATH, TEAM_PAGE_PATH, PROFILE_PAGE_PATH } from '../../utils/Constants.js';
 import logo from '../../assets/logo.png'
 import './NavSidebar.scss';
 
 function NavSidebar() {
-  const { collapseSidebar, toggleSidebar, broken } = useProSidebar();
+  const { toggleSidebar, broken } = useProSidebar();
   const pathname = useLocation().pathname;
 
   // react-pro-sidebar recommends in-line styling
@@ -65,18 +63,6 @@ function NavSidebar() {
           >
             Our Team
           </MenuItem>
-          {LAB_NAMES.map(labName => {
-            const labNamePath = `/${labName}`;
-            return (
-              <MenuItem
-                key={labName}
-                active={pathname === labNamePath}
-                component={<Link to={labNamePath} />}
-              >
-                {capitalizeString(labName)}
-              </MenuItem>
-            );
-          })}
           <MenuItem
             className='lastMenuItem'
             active={pathname === PROFILE_PAGE_PATH}
