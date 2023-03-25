@@ -116,7 +116,9 @@ export const convertCFMToSash = CFM => {
 // Extracts the fumehood name from a given string
 // e.g. FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium becomes Room1302_FumeHood4
 export const extractFumehoodName = name => {
+  console.log("nanananaana ", name)
   const regMatch = name.match(/(Room.*FumeHood\d)/);
+  console.log("sfsdfsdf dsfds", regMatch)
   return regMatch[1];
 };
 

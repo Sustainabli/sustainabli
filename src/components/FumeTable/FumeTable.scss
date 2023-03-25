@@ -3,3 +3,13 @@
         width: "33%";
     }
 }
+
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+    width: 10rem;
+    overflow: scroll;
+}

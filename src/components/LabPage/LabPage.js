@@ -7,6 +7,8 @@ import ChartTemplate from '../ChartTemplate/ChartTemplate.js';
 import MetricsAreaChart from "../MetricsAreaChart/MetricsAreaChart.js";
 import CostAreaChart from '../CostAreaChart/CostAreaChart.js';
 import FumeTable from '../FumeTable/FumeTable.js';
+import SashStackChart from '../SashStackChart/SashStackChart.js';
+
 
 import {
   DATA_FORMATS,
@@ -88,7 +90,7 @@ class LabPage extends React.Component {
       DATA_TYPES.cfm,
       DATA_FORMATS.allLabs,
       GRAPH_TYPES.line,
-      TIME_GRANULARITIES.month,
+      TIME_GRANULARITIES.day,
       TIME_OF_DAY.all,
       labFumehoodMapping,
       startDate
@@ -152,25 +154,44 @@ class LabPage extends React.Component {
             <br />
 
             <Row>
-              <Col md={12}>
-                <div>
-                  {/* <HeatMap xLabels={heatMapData.x} yLabels={heatMapData.y} data={heatMapData.data} /> */}
-                  <MetricsAreaChart data={areaGraph} />
-                </div>
-              </Col>
-            </Row>
-            <Row>
               <Col md={6}>
-                <div>
-                  <FumeTable data={tableData} />
-                </div>
+                <Row>
+                  <div>
+                    {/* <HeatMap xLabels={heatMapData.x} yLabels={heatMapData.y} data={heatMapData.data} /> */}
+                    <MetricsAreaChart data={areaGraph} />
+                  </div>
+                </Row>
+                <Row>
+                  <div>
+                    {/* <HeatMap xLabels={heatMapData.x} yLabels={heatMapData.y} data={heatMapData.data} /> */}
+                    <FumeTable data={allTableData} name={"Lab"} />
+                  </div>
+                </Row>
+                <Row>
+                  <div>
+                    {/* <HeatMap xLabels={heatMapData.x} yLabels={heatMapData.y} data={heatMapData.data} /> */}
+                    <CostAreaChart data={costAreaGraph} />
+                  </div>
+                </Row>
               </Col>
               <Col md={6}>
-                <div>
-                  <FumeTable data={allTableData} />
-                </div>
+                <Row>
+                  <div>
+                    <SashStackChart />
+                  </div>
+                </Row>
+                <Row>
+                  <div>
+                    <FumeTable data={tableData} name={"Fume Hood"} />
+                  </div>
+                </Row>
+                <Row>
+                  <div>
+                    {/* <HeatMap xLabels={heatMapData.x} yLabels={heatMapData.y} data={heatMapData.data} /> */}
+                    {/* <CostAreaChart data={costAreaGraph} /> */}
+                  </div>
+                </Row>
               </Col>
-
             </Row>
           </React.Fragment>
         ) : (

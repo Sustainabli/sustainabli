@@ -4,10 +4,13 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 
 import './FumeTable.scss';
 
+import {
+    extractFumehoodName
+} from '../../utils/Utils.js';
+
 class FumeTable extends React.Component {
     render() {
-        const { data } = this.props;
-        console.log("dsfdsfsdf ", data)
+        const { data, name } = this.props;
         let labels = []
         let normalizedCFMs = []
         for (const [key, value] of Object.entries(data)) {
@@ -38,7 +41,7 @@ class FumeTable extends React.Component {
             <Table>
                 <thead>
                     <tr>
-                        <th>Fume Hood</th>
+                        <th>{name} </th>
                         <th>CFM</th>
                         <th></th>
                     </tr>
@@ -46,7 +49,8 @@ class FumeTable extends React.Component {
                 <tbody>
                     {labels.map((entry, index) => (
                         <tr key={index}>
-                            {/* <td>{entry.fumeHood.substring(0, 6)}</td> */}
+                            {name == "Fume Hood" && <td>{extractFumehoodName(entry.fumeHood)}</td>}
+                            {name == "Lab" && <td>{entry.fumeHood}</td>}
                             <td>{entry.cfm ? entry.cfm.toFixed(2) : "N/A"}</td>
                             <td><ProgressBar variant="info" now={entry.normalizedCFM} /></td>
                         </tr>
