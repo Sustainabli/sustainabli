@@ -1,18 +1,9 @@
 .Header {
-  padding-left: 0px;
-  padding-right: 0px;
-
+  margin-right: 100px;
   .header-content {
-    padding-left: var(--bs-gutter-x,.75rem);
-
     .header-title {
       display: flex;
       margin-bottom: 20px;
-
-      svg {
-        height: 75px;
-        width: 75px;
-      }
 
       h1 {
         font-size: 50px;
@@ -22,9 +13,8 @@
       }
     }
 
-
-    .nav-tabs .nav-item {
-      font-size: 18px;
+    .login-button {
+      float: right;
     }
   }
 

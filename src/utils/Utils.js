@@ -1,173 +1,167 @@
 import {
-  FETCH_DATA_URL,
-  FETCH_SENSORS_DATA_URL,
-  GET_USER_INFO_URL,
+  FETCH_ORGANIZATIONS_PATH,
+  ADD_ORGANIZATION_PATH,
+  FETCH_GROUPS_IN_ORGANIZATION_PATH,
+  ADD_GROUP_PATH,
+  FETCH_USER_INFO_PATH,
+  FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH,
+  FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH,
+  FETCH_ALL_USER_EMAILS_PATH,
+  FETCH_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_PATH,
+  UPDATE_USER_INFO_PATH,
+  UPDATE_USER_ROLE_PATH,
+  FETCH_ALL_SENSOR_INFO_PATH,
+  FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH,
+  FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH,
+  ADD_SENSOR_INFO_PATH,
+  FETCH_SENSOR_DATA_PATH,
   METRIC_TYPE_AIRFLOW,
   METRIC_TYPE_CARBON,
   METRIC_TYPE_COST,
   METRIC_TYPE_ENERGY,
-  MIN_DATE,
-  NUMBER_OF_COMPETITION_WEEKS,
-  POST_USER_INFO_URL,
-  PUT_USER_INFO_URL,
-  RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
+  MIN_DATE,
+  RELATIVE_TIME_RANGES_OPTIONS,
+  ADD_USER_INFO_PATH,
 } from './Constants.js';
 
-/*
- ** File contains several helper functions
- */
+// API calls
+export const fetchOrganizations = async () => {
+  return fetch(FETCH_ORGANIZATIONS_PATH).then(res => res.json());
+}
 
-// Calculate how much energy has been saved based on the given chartData
-// chartData will come in the form of
-//  - <Before competition>: <array of data points per lab>
-//  - <Week 1 of competition>: <array of data points per lab>
-//  - <Week 2 of competition>: <array of data points per lab>
-//  - ...
-// Assume that the array fo data points are in the correct order so we can index into it to retrieve data from a specific lab
-// Also assume that the chartData weeks are sorted correctly, so the last key should be the latest week
-export const calculateAmtEnergySaved = (chartData, index) => {
-  const keys = Object.keys(chartData);
-  return (
-    ((chartData.beginning[index] - chartData[keys[keys.length - 1]][index]) *
-      357.1) /
-    52
-  ).toFixed(2);
+export const addOrganization = async (reqBody) => {
+  return fetch(ADD_ORGANIZATION_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const fetchGroupsInOrganization = async (reqBody) => {
+  return fetch(FETCH_GROUPS_IN_ORGANIZATION_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
 };
 
-export const calculateMetricAvg = data => {
-  const flatListOfValues = Object.values(data).reduce(
-    (acc, labDataList) => acc.concat(labDataList),
-    []
-  );
-  const value =
-    flatListOfValues.length > 0
-      ? flatListOfValues.reduce(
-        (acc, labFumehoodDatum) => acc + labFumehoodDatum.value,
-        0
-      ) / flatListOfValues.length
-      : 0;
-  return value.toFixed(2);
+export const addGroup = async (reqBody) => {
+  return fetch(ADD_GROUP_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const fetchAllUserEmails = async () => {
+  return fetch(FETCH_ALL_USER_EMAILS_PATH).then(res => res.json());
 };
 
-export const convertDataToMetric = (selectedMetric, data) => {
-  const convertedData = {};
-  Object.keys(data).forEach(labName => {
-    const labDataList = data[labName];
-    convertedData[labName] = labDataList.map(labFumehoodDatum => {
-      const toRet = {};
-      toRet.time = labFumehoodDatum.time;
-      let value = labFumehoodDatum.value;
-      switch (selectedMetric.type) {
-        case METRIC_TYPE_ENERGY:
-          value = labFumehoodDatum.value * 35.71;
-          break;
-        case METRIC_TYPE_CARBON:
-          value = labFumehoodDatum.value * 13.771064;
-          break;
-        case METRIC_TYPE_COST:
-          value = labFumehoodDatum.value * 5;
-          break;
-
-        // Do nothing
-        case METRIC_TYPE_AIRFLOW:
-        default:
-      }
-      toRet.value = value;
-      return toRet;
-    });
-  });
-  return convertedData;
+export const fetchUserInfo = async (reqBody) => {
+  return fetch(FETCH_USER_INFO_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
 };
 
-export const convertDataToMetricSingle = (selectedMetric, data) => {
-  let value = data
-  if (selectedMetric) {
-    switch (selectedMetric.type) {
-      case METRIC_TYPE_ENERGY:
-        value = value * 35.71;
-        break;
-      case METRIC_TYPE_CARBON:
-        value = value * 13.771064;
-        break;
-      case METRIC_TYPE_COST:
-        value = value * 5;
-        break;
+export const fetchOrganizationAdminUserInfo = async () => {
+  return fetch(FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH).then(res => res.json());
+};
 
-      // Do nothing
-      case METRIC_TYPE_AIRFLOW:
-      default:
+export const fetchUsersInOrganization = async (reqBody) => {
+  return fetch(FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
 
-    }
+export const fetchUserEmailsWithoutOrganization = async () => {
+  return fetch(FETCH_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_PATH).then(res => res.json());
+}
+
+export const addUserInfo = async (reqBody) => {
+  return fetch(ADD_USER_INFO_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
+export const updateUserInfo = async (reqBody) => {
+  return fetch(UPDATE_USER_INFO_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const updateUserRole = async (reqBody) => {
+  return fetch(UPDATE_USER_ROLE_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
+export const fetchAllSensorInfo = async () => {
+  return fetch(FETCH_ALL_SENSOR_INFO_PATH).then(res => res.json());
+}
+
+export const fetchSensorInfoFromGroup = async (reqBody) => {
+  return fetch(FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json())
+};
+
+export const fetchSensorInfoFromOrganization = async (reqBody) => {
+  return fetch(FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
+export const addSensor = async (reqBody) => {
+  return fetch(ADD_SENSOR_INFO_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const fetchSensorData = async (reqBody) => {
+  return fetch(FETCH_SENSOR_DATA_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
+
+export const convertSashHeightToMetricValue = (metricType, value) => {
+  switch (metricType) {
+    case METRIC_TYPE_ENERGY:
+      return ((11 * value) + 136) * 35.71;
+    case METRIC_TYPE_CARBON:
+      return ((11 * value) + 136) * 13.771064;
+    case METRIC_TYPE_COST:
+      return ((11 * value) + 136) * 5;
+    case METRIC_TYPE_AIRFLOW:
+      return 136 + (11 * value);
+    default:
   }
   return value
-
 }
+
 // Capitalizes the first letter of a string
 export const capitalizeString = str => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
-
-// Calculation for converting CFM data to Sash data
-export const convertCFMToSash = CFM => {
-  return (CFM - 136) / 110;
-};
-
-// Extracts the fumehood name from a given string
-// e.g. FMGTAP012L01_B091_ChemistryW3_Room1302_FumeHood4_ExhaustCFM_Tridium becomes Room1302_FumeHood4
-export const extractFumehoodName = name => {
-  const regMatch = name.match(/(Room.*FumeHood\d)/);
-  return regMatch[1];
-};
-
-// Fetches data from db
-export const fetchFilteredData = async (
-  dataType,
-  dataFormat,
-  graphType,
-  granularity,
-  timeOfDay,
-  labFumehoodMapping,
-  startSlice,
-  endSlice = null
-) => {
-  const reqBody = {
-    data_type: dataType,
-    data_format: dataFormat,
-    graph_type: graphType,
-    granularity: granularity,
-    time_of_day: timeOfDay,
-    lab_fumehood_mapping: labFumehoodMapping,
-    number_of_competition_weeks: NUMBER_OF_COMPETITION_WEEKS,
-    start_slice: startSlice,
-  };
-  reqBody['end_slice'] = endSlice ? endSlice : new Date();
-  return fetch(FETCH_DATA_URL, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const fetchSensorsData = async () => {
-  return fetch(FETCH_SENSORS_DATA_URL).then(res => res.json());
-};
-
-export const getUserInfo = async (reqBody) => {
-  return fetch(GET_USER_INFO_URL, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const updateUserInfo = async (reqBody, isNewUser) => {
-  return fetch(isNewUser ? POST_USER_INFO_URL : PUT_USER_INFO_URL, {
-    method: isNewUser ? 'POST' : 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
 
 // Formats the date label on the charts based on the granularity we are looking at
 //   - NONE:  mm/dd/yyyy hh:mm
@@ -223,14 +217,16 @@ export const formatDateLabel = (date, granularity) => {
 
 // Generate default chart options
 // Accepts the chart ttile, y axis label, and x axis label
-export const generateChartOptions = (title, yLabel, xLabel) => {
+export const generateChartOptions = (title, yLabel, xLabel, tooltipLabels=null) => {
   return {
-    animation: {
-      duration: 0,
+    responsive: true,
+    interaction: {
+      intersect: false,
+      mode: 'index',
     },
     plugins: {
       legend: {
-        position: 'top',
+        display: false,
       },
       title: {
         display: true,
@@ -240,6 +236,13 @@ export const generateChartOptions = (title, yLabel, xLabel) => {
           size: 30,
         },
       },
+      ...tooltipLabels && {
+        tooltip: {
+          callbacks: {
+            label: tooltipLabels,
+          }
+        }
+      }
     },
     scales: {
       x: {
@@ -249,7 +252,9 @@ export const generateChartOptions = (title, yLabel, xLabel) => {
         },
       },
       y: {
+        type: 'linear',
         beginAtZero: true,
+        max: 100,
         title: {
           display: 'true',
           text: yLabel,
@@ -277,6 +282,8 @@ export const getOffsettedStartDate = (date, offset) => {
       break;
     case RELATIVE_TIME_RANGES_OPTIONS.one_year.value:
       date.setFullYear(date.getFullYear() - 1);
+      break;
+    default:
   }
   return date;
 };

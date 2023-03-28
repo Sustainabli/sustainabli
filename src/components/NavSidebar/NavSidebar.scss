@@ -4,14 +4,12 @@
 
 .ps-menu-root {
   height: 100%;
+
   ul {
     display: flex;
     flex-direction: column;
     height: 100%;
 
-    .sidebarHeader {
-      pointer-events: none;
-    }
     .lastMenuItem {
       margin-top: auto;
     }

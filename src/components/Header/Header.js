@@ -1,29 +1,23 @@
 import React from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import { AiOutlineHome, AiOutlineTeam } from 'react-icons/ai';
-import './Header.scss';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { useAuth0 } from '@auth0/auth0-react';
+import './Header.scss';
 
-const Header = ({ pageName, selectedTab, onChangeSelectedTab }) => {
+const Header = ({ pageName }) => {
   const { isAuthenticated, loginWithPopup, logout } = useAuth0();
   return (
     <Container className='p-0 m-0 Header'>
-      <div className='header-content'>
-        <Row>
-          <Col md={10} className='left'>
-            <span className='header-title'>
-              {pageName === 'Home' && <AiOutlineHome />}
-              {pageName === 'Our Team' && <AiOutlineTeam />}
+        <Row className='header-content'>
+          <Col xs={10} className='header-title'>
               <h1> {pageName} </h1>
-            </span>
           </Col>
-          <Col md={2} className='right'>
+          <Col xs={2}>
+          {/* TODO once login page is configured, we will only need the logout button. If the user logs out, website will redirect to login page */}
             <Button
+              className='login-button'
               onClick={() => {
                 isAuthenticated
                   ? logout()
@@ -34,13 +28,6 @@ const Header = ({ pageName, selectedTab, onChangeSelectedTab }) => {
             </Button>
           </Col>
         </Row>
-        {pageName === 'Home' && (
-          <Tabs activeKey={selectedTab} onSelect={onChangeSelectedTab}>
-            <Tab eventKey='dashboard' title='Dashboard'></Tab>
-            <Tab eventKey='rules' title='Sash Competition Rules'></Tab>
-          </Tabs>
-        )}
-      </div>
       <hr />
     </Container>
   );
