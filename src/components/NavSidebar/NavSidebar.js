@@ -8,7 +8,7 @@ import logo from '../../assets/logo.png'
 import './NavSidebar.scss';
 
 function NavSidebar() {
-  const { toggleSidebar, broken } = useProSidebar();
+  const { broken, toggleSidebar } = useProSidebar();
   const pathname = useLocation().pathname;
 
   // react-pro-sidebar recommends in-line styling

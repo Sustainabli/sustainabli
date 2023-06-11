@@ -3,24 +3,24 @@ import { withAuth0 } from '@auth0/auth0-react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
-import Header from '../Header/Header';
 import ModalForm from './components/ModalForm/ModalForm';
+import Header from '../Header/Header';
 import {
-  SUPER_ADMIN_ROLE,
-  ORGANIZATION_ADMIN_ROLE,
-  USER_ROLE ,
   CREATE_ORGANIZATION,
   CREATE_GROUP,
-  CREATE_SENSOR,
-  ADD_USER,
+  SUPER_ADMIN_ROLE,
+  ORGANIZATION_ADMIN_ROLE,
+  USER_ROLE,
   ADD_ORGANIZATION_ADMIN,
+  ADD_USER,
+  CREATE_SENSOR,
 } from '../../utils/Constants.js';
 import {
   fetchOrganizations,
   fetchGroupsInOrganization,
   fetchAllUserEmails,
-  fetchUsersInOrganization,
   fetchOrganizationAdminUserInfo,
+  fetchUsersInOrganization,
   fetchSensorInfoFromOrganization,
   fetchAllSensorInfo,
 } from '../../utils/Utils.js';
@@ -35,13 +35,13 @@ class ProfilePage extends React.Component {
 
       // States for super admin
       allOrganizations: [],
-      allSensors: [],
       allOrganizationAdminUsers: [],
       allUserEmails: [],
+      allSensors: [],
 
       // States for organization admin
-      allUsersInOrganization: [],
       allGroupsInOrganization: [],
+      allUsersInOrganization: [],
       allSensorsInOrganization: [],
     }
   }
@@ -49,10 +49,8 @@ class ProfilePage extends React.Component {
   componentDidMount = async () => {
     const { userInfo } = this.props;
     if (userInfo) {
-      const {role, organizationCode } = userInfo;
+      const { organizationCode, role } = userInfo;
       this.setState({
-        userInfo,
-
         // Super admin can create/delete organizations
         allOrganizations: role === SUPER_ADMIN_ROLE ? await fetchOrganizations() : [],
         // Super admin can add/remove sensors
@@ -66,7 +64,7 @@ class ProfilePage extends React.Component {
         allGroupsInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchGroupsInOrganization({organization_code: organizationCode}) : [],
         // Organization admin can manage users in his organization
         allUsersInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchUsersInOrganization({organization_code: organizationCode}) : [],
-        // Organizatino admin can view all sensors in his organization
+        // Organization admin can view all sensors in his organization
         allSensorsInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchSensorInfoFromOrganization({organization_code: organizationCode}) : [],
       });
     }
@@ -90,18 +88,6 @@ class ProfilePage extends React.Component {
     });
   }
 
-  updateAllGroupsInOrganization = allGroupsInOrganization => {
-    this.setState({
-      allGroupsInOrganization: allGroupsInOrganization,
-    });
-  }
-
-  updateAllUsersInOrganization = allUsersInOrganization => {
-    this.setState({
-      allUsersInOrganization: allUsersInOrganization,
-    });
-  }
-
   updateAllOrganizationAdminUsers = allOrganizationAdminUsers => {
     this.setState({
       allOrganizationAdminUsers: allOrganizationAdminUsers,
@@ -111,6 +97,18 @@ class ProfilePage extends React.Component {
   updateAllSensorsList = allSensors => {
     this.setState({
       allSensors: allSensors,
+    });
+  }
+
+  updateAllGroupsInOrganization = allGroupsInOrganization => {
+    this.setState({
+      allGroupsInOrganization: allGroupsInOrganization,
+    });
+  }
+
+  updateAllUsersInOrganization = allUsersInOrganization => {
+    this.setState({
+      allUsersInOrganization: allUsersInOrganization,
     });
   }
 
@@ -168,6 +166,7 @@ class ProfilePage extends React.Component {
               <h2>Role: {userInfo.role}</h2>
               {!isSuperAdmin && <h2>Organization: {userInfo.organizationCode}</h2>}
               {isUserRole && <h2>Group: {userInfo.groupName}</h2>}
+            {/* TODO commonize the table creation code */}
               {isSuperAdmin &&
                 <React.Fragment>
                   <Button
@@ -278,7 +277,7 @@ class ProfilePage extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* TODO display sensor.fumeHoodName, rather than sensor.id */}
+                      {/* TODO display sensor.fumeHoodName, rather than sensor.id from the backend*/}
                       {allGroupsInOrganization.map((group, index) => (
                         <tr key={index}>
                           <td>{group.name}</td>
@@ -318,7 +317,8 @@ class ProfilePage extends React.Component {
             <React.Fragment>
               Please log in to view profile information.
             </React.Fragment>
-          )}
+          )
+        }
       </Container>
     );
   }

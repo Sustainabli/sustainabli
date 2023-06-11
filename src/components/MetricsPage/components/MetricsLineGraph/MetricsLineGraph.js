@@ -46,8 +46,10 @@ class MetricsLineGraph extends React.Component {
     ;
     const options = generateChartOptions('Metrics Overview Reductions', 'Average Sash Height (%)', 'Date', tooltipLabels);
 
+    // TODO this needs to be able to display several different line graphs with different colors. Refer to code in https://github.com/Sustainabli/sustainabli/blob/61f18f9149b96a21ed9f437f32fcf0bf8ba010ea/src/components/CFMLineGraph/CFMLineGraph.js
+    // TODO add fumehood name as label within datasets object
     const areaChartData = {
-      labels: data.map(datum => formatDateLabel(new Date(datum.time), TIME_GRANULARITIES.day)),
+      labels: data.map((datum, i) => formatDateLabel(new Date(datum.time), TIME_GRANULARITIES.day)),
       datasets: [
         {
           fill: true,

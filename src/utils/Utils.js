@@ -26,6 +26,7 @@ import {
 } from './Constants.js';
 
 // API calls
+// TODO we can probably commonize the REST API calls since all we do is pass reqBody
 export const fetchOrganizations = async () => {
   return fetch(FETCH_ORGANIZATIONS_PATH).then(res => res.json());
 }
@@ -157,11 +158,6 @@ export const convertSashHeightToMetricValue = (metricType, value) => {
   }
   return value
 }
-
-// Capitalizes the first letter of a string
-export const capitalizeString = str => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
 
 // Formats the date label on the charts based on the granularity we are looking at
 //   - NONE:  mm/dd/yyyy hh:mm

@@ -11,8 +11,8 @@ import telon_yan_pfp from "./../../assets/telon_yan_pfp.png"
 
 import './TeamPage.scss';
 
+// TODO fix mobile phone pictures look weird
 function TeamPage() {
-
   var about_us_input = [
     {
       "name": "Kevin Tu",
@@ -48,9 +48,7 @@ function TeamPage() {
 
   return (
     <Container fluid className="TeamPage">
-      <Header
-        pageName='Our Team'
-      />
+      <Header pageName='Our Team' />
       <div className="team_card_holder" pl="25px" pr="25px">
         <Row xs={1} md={3} className="g-4">
           {about_us_input.map((person) => (
