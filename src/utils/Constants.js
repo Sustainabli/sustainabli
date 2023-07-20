@@ -61,6 +61,7 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
   },
 };
 
+// TODO find a better date to use for MIN_DATE when viewing all data
 export const MIN_DATE = new Date('01/01/2000');
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
@@ -75,14 +76,10 @@ export const METRIC_TYPES_MAP = {
   cost: { type: METRIC_TYPE_COST, title: 'Cost Saved', unit: 'dollars' },
 };
 
-export const METRIC_TYPES_NEW_METRIC = {
-  type: 'newMetric',
-  title: 'Add New Metric',
-};
-
-export const USER_ROLE = 'user';
-export const ORGANIZATION_ADMIN_ROLE = 'organization_admin';
+// User roles
 export const SUPER_ADMIN_ROLE = 'super_admin';
+export const ORGANIZATION_ADMIN_ROLE = 'organization_admin';
+export const USER_ROLE = 'user';
 
 // Endpoints for various pages on the website
 export const HOME_PAGE_PATH = '/';

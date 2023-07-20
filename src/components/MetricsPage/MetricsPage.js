@@ -4,36 +4,27 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import Header from '../Header/Header';
+import FumeTable from './components/FumeTable/FumeTable.js';
 import MetricsLineGraph from './components/MetricsLineGraph/MetricsLineGraph';
-import FumeTable from '../FumeTable/FumeTable.js';
+import Header from '../Header/Header';
 import {
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
 } from '../../utils/Constants';
 import { fetchSensorData, getOffsettedStartDate } from '../../utils/Utils';
-
 import './MetricsPage.scss';
 
+// TODO instead of using relativeTimeRange, create a calendar selector component for startDate and endDate. We can also maybe tailor this to be a startTime and endTime hh:mm yy:mm:dd
 class MetricsPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      relativeTimeRange: RELATIVE_TIME_RANGES_OPTIONS.one_month.value,
-      // Updates when clicking submit button
-      queriedSensors: [],
-      // Updates when selecting labs from drop down
-      selectedSensors: [],
-      selectedMetrics: [],
       data: {},
+      relativeTimeRange: RELATIVE_TIME_RANGES_OPTIONS.one_month.value,
+      queriedSensors: [],   // Updates when clicking submit button
+      selectedSensors: [],  // Updates when selecting labs from drop down
     };
   }
-
-  onAddNewMetric = metricType => {
-    const { selectedMetrics } = this.state;
-    selectedMetrics.push(metricType);
-    this.setState({ selectedMetrics: [...selectedMetrics] });
-  };
 
   onChangeRelativeTimeRange = range => {
     this.setState({ relativeTimeRange: range });
@@ -41,19 +32,6 @@ class MetricsPage extends React.Component {
 
   onChangeSelectedSensorsFilter = options => {
     this.setState({ selectedSensors: options.map(option => option.value) });
-  };
-
-  onChangeSelectedMetrics = (metricName, toAdd) => {
-    const { selectedMetrics } = this.state;
-    if (toAdd) {
-      selectedMetrics.push(metricName);
-      this.setState({ selectedMetrics: [...selectedMetrics] });
-    } else {
-      const newlySelectedMetrics = selectedMetrics.selectedMetrics.filter(
-        metric => metric !== metricName
-      );
-      this.setState({ selectedMetrics: newlySelectedMetrics });
-    }
   };
 
   fetchData = async () => {
@@ -68,15 +46,18 @@ class MetricsPage extends React.Component {
     }
 
     this.setState({
-      queriedSensors: [...selectedSensors],
       data: await fetchSensorData(reqBody),
+      queriedSensors: [...selectedSensors],
     });
   };
 
   render() {
-    const { timeRange, queriedSensors, data } = this.state;
+    const { data, queriedSensors, relativeTimeRange } = this.state;
     const { availableSensors } = this.props;
-    const sensorOptions = availableSensors.map(sensor => ({value: sensor.id, label: sensor.fumeHoodName}));
+    const sensorOptions = availableSensors.map(sensor => ({
+      value: sensor.id,
+      label: sensor.fumeHoodName
+    }));
     return (
       <Container className='MetricsPage' fluid>
         <Header pageName='Metrics Page' />
@@ -90,8 +71,8 @@ class MetricsPage extends React.Component {
                 this.onChangeRelativeTimeRange(options.value)
               }
               defaultValue={{
-                value: timeRange,
                 label: RELATIVE_TIME_RANGES_OPTIONS.one_month.label,
+                value: relativeTimeRange,
               }}
             />
           </Col>

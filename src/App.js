@@ -20,9 +20,8 @@ import {
   fetchSensorInfoFromGroup,
 } from './utils/Utils';
 
-// TODO create a login page. User should not be able to access any pages until he has logged in
-// After user logins, two scenarios will occur
-//  - User hasn't been added to an organization. In the case display a message saying the user to ask the organization admin to add him/her to the organization
+// TODO: create a login in page. After user logs in, two scenarios will occur
+//  - User hasn't been added to an organization. In this case, display a message saying the user to ask the organization admin to add him/her to the organization
 //  - User has already been added to an organization, in which case he/she can navigate to the website pages as normal
 class App extends React.Component {
   constructor() {
@@ -38,34 +37,29 @@ class App extends React.Component {
     const { userInfo } = this.state;
     // Need to wait for auth0 to authenticate user before we retrieve userInfo data from our database
     // Do a null check on userInfo so we don't repeatedly fetch user info
-    // If aftering fetcher using info from the database yields an empty object (meaning the user isn't in our database yet), add the user into our database
+    // If fetching user info from the database yields an empty object (meaning the user isn't in our database yet), add the user into our database. After the empty account is created, the user must be added to the organization by the organization admin
     // The available sensors for a user to view are the sensors associated with the group the user belongs to
-    if (isAuthenticated && user) {
-      if (!userInfo) {
-        console.log(user);
-        let userInfo = await fetchUserInfo({email: user.email});
-        console.log(userInfo);
-        if (Object.keys(userInfo).length === 0) {
-          console.log('creating user');
-          const reqBody = {
-            email: user.email,
-            name: user.name,
-            role: USER_ROLE,
-            organization_code: '',
-            group_name: '',
-          }
-          userInfo = await addUserInfo(reqBody);
-        }
-        this.setState({
-          userInfo: userInfo,
-          availableSensors: await fetchSensorInfoFromGroup({group_name: userInfo.groupName}),
-        })
+    if (isAuthenticated && user && !userInfo) {
+      let userInfo = await fetchUserInfo({ email: user.email });
+      if (Object.keys(userInfo).length === 0) {
+        const reqBody = {
+          email: user.email,
+          name: user.name,
+          role: USER_ROLE,
+          organization_code: '',
+          group_name: '',
+        };
+        userInfo = await addUserInfo(reqBody);
       }
+      this.setState({
+        userInfo: userInfo,
+        availableSensors: await fetchSensorInfoFromGroup({ group_name: userInfo.groupName }),
+      });
     }
   }
 
   render() {
-    const { userInfo, availableSensors } = this.state;
+    const { availableSensors, userInfo } = this.state;
     return (
       <Container className='p-0 m-0 App'>
         <BrowserRouter>
@@ -77,22 +71,22 @@ class App extends React.Component {
                 <Routes>
                   <Route
                     exact
-                    path={HOME_PAGE_PATH}
-                    element={<MetricsPage availableSensors={availableSensors}/>}
+                    path={ HOME_PAGE_PATH }
+                    element={ <MetricsPage availableSensors={ availableSensors }/> }
                   />
                   <Route
                     exact
-                    path={TEAM_PAGE_PATH}
-                    element={<TeamPage />}
+                    path={ TEAM_PAGE_PATH }
+                    element={ <TeamPage/> }
                   />
                   <Route
                     exact
-                    path={PROFILE_PAGE_PATH}
-                    element={<ProfilePage userInfo={userInfo}/>}
+                    path={ PROFILE_PAGE_PATH }
+                    element={ <ProfilePage userInfo={ userInfo }/> }
                   />
                   <Route
                     path='/*'
-                    element={<Navigate to='/' />}
+                    element={ <Navigate to='/'/> }
                   />
                 </Routes>
               </Col>

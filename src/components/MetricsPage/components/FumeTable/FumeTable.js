@@ -1,8 +1,8 @@
 import React from 'react';
-import Table from 'react-bootstrap/Table';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { METRIC_TYPE_AIRFLOW } from '../../utils/Constants';
-import { convertSashHeightToMetricValue } from '../../utils/Utils';
+import Table from 'react-bootstrap/Table';
+import { METRIC_TYPE_AIRFLOW } from '../../../../utils/Constants';
+import { convertSashHeightToMetricValue } from '../../../../utils/Utils';
 
 import './FumeTable.scss';
 
