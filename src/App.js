@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import LoginPage from './components/LoginPage/LoginPage';
 import MetricsPage from './components/MetricsPage/MetricsPage';
 import NavSidebar from './components/NavSidebar/NavSidebar';
 import ProfilePage from './components/ProfilePage/ProfilePage';
@@ -42,56 +43,54 @@ class App extends React.Component {
     if (isAuthenticated && user && !userInfo) {
       let userInfo = await fetchUserInfo({ email: user.email });
       if (Object.keys(userInfo).length === 0) {
-        const reqBody = {
-          email: user.email,
-          name: user.name,
-          role: USER_ROLE,
-          organization_code: '',
-          group_name: '',
-        };
-        userInfo = await addUserInfo(reqBody);
+        userInfo = await addUserInfo(user.email, user.name, USER_ROLE, '', '');
       }
       this.setState({
         userInfo: userInfo,
-        availableSensors: await fetchSensorInfoFromGroup({ group_name: userInfo.groupName }),
+        availableSensors: await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name),
       });
     }
   }
 
   render() {
+    const { isAuthenticated, user } = this.props.auth0;
     const { availableSensors, userInfo } = this.state;
     return (
-      <Container className='p-0 m-0 App'>
-        <BrowserRouter>
-            <Row className='p-0 root-row'>
-              <Col sm={1} lg={2} className='p-0'>
-                <NavSidebar />
-              </Col>
-              <Col sm={12} lg={10} className='p-0'>
-                <Routes>
-                  <Route
-                    exact
-                    path={ HOME_PAGE_PATH }
-                    element={ <MetricsPage availableSensors={ availableSensors }/> }
-                  />
-                  <Route
-                    exact
-                    path={ TEAM_PAGE_PATH }
-                    element={ <TeamPage/> }
-                  />
-                  <Route
-                    exact
-                    path={ PROFILE_PAGE_PATH }
-                    element={ <ProfilePage userInfo={ userInfo }/> }
-                  />
-                  <Route
-                    path='/*'
-                    element={ <Navigate to='/'/> }
-                  />
-                </Routes>
-              </Col>
-            </Row>
-        </BrowserRouter>
+      <Container fluid className='p-0 m-0 App'>
+        { isAuthenticated && user ?
+          <BrowserRouter>
+              <Row className='p-0 m-0 root-row'>
+                <Col sm={1} lg={2} className='p-0'>
+                  <NavSidebar />
+                </Col>
+                <Col sm={12} lg={10} className='p-0'>
+                  <Routes>
+                    <Route
+                      exact
+                      path={ HOME_PAGE_PATH }
+                      element={ <MetricsPage availableSensors={availableSensors} userInfo={userInfo} /> }
+                    />
+                    <Route
+                      exact
+                      path={ TEAM_PAGE_PATH }
+                      element={ <TeamPage/> }
+                    />
+                    <Route
+                      exact
+                      path={ PROFILE_PAGE_PATH }
+                      element={ <ProfilePage userInfo={ userInfo }/> }
+                    />
+                    <Route
+                      path='/*'
+                      element={ <Navigate to='/'/> }
+                    />
+                  </Routes>
+                </Col>
+              </Row>
+          </BrowserRouter>
+        :
+          <LoginPage/>
+        }
       </Container>
     );
   }

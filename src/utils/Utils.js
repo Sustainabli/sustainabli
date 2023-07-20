@@ -1,37 +1,47 @@
 import {
-  FETCH_ORGANIZATIONS_PATH,
-  ADD_ORGANIZATION_PATH,
-  FETCH_GROUPS_IN_ORGANIZATION_PATH,
+  // API paths
   ADD_GROUP_PATH,
-  FETCH_USER_INFO_PATH,
-  FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH,
+  ADD_ORGANIZATION_PATH,
+  ADD_SENSOR_INFO_PATH,
+  ADD_USER_INFO_PATH,
+  DELETE_GROUP_PATH,
   FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH,
+  FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH,
+  FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH,
+  FETCH_ALL_SENSOR_INFO_PATH,
   FETCH_ALL_USER_EMAILS_PATH,
-  FETCH_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_PATH,
+  FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH,
+  FETCH_GROUPS_IN_ORGANIZATION_PATH,
+  FETCH_ORGANIZATIONS_PATH,
+  FETCH_SENSOR_DATA_PATH,
+  FETCH_USER_INFO_PATH,
+  UPDATE_FUME_HOOD_INFO_PATH,
+  UPDATE_GROUP_INFO_PATH,
+  UPDATE_ORGANIZATION_ADMIN_INFO_PATH,
+  UPDATE_ORGANIZATION_INFO_PATH,
+  DELETE_ORGANIZATION_PATH,
+  UPDATE_SENSOR_INFO_PATH,
   UPDATE_USER_INFO_PATH,
   UPDATE_USER_ROLE_PATH,
-  FETCH_ALL_SENSOR_INFO_PATH,
-  FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH,
-  FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH,
-  ADD_SENSOR_INFO_PATH,
-  FETCH_SENSOR_DATA_PATH,
+
+  // Other imports
   METRIC_TYPE_AIRFLOW,
   METRIC_TYPE_CARBON,
   METRIC_TYPE_COST,
   METRIC_TYPE_ENERGY,
-  TIME_GRANULARITIES,
   MIN_DATE,
   RELATIVE_TIME_RANGES_OPTIONS,
-  ADD_USER_INFO_PATH,
+  TIME_GRANULARITIES,
 } from './Constants.js';
 
 // API calls
-// TODO we can probably commonize the REST API calls since all we do is pass reqBody
-export const fetchOrganizations = async () => {
-  return fetch(FETCH_ORGANIZATIONS_PATH).then(res => res.json());
-}
+export const fetchOrganizations = async () => fetch(FETCH_ORGANIZATIONS_PATH).then(res => res.json());
 
-export const addOrganization = async (reqBody) => {
+export const addOrganization = async (organizationCode, organizationName) => {
+  const reqBody = {
+    organization_code: organizationCode,
+    organization_name: organizationName,
+  };
   return fetch(ADD_ORGANIZATION_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -39,7 +49,35 @@ export const addOrganization = async (reqBody) => {
   }).then(res => res.json());
 }
 
-export const fetchGroupsInOrganization = async (reqBody) => {
+export const updateOrganizationInfo = async (newOrganizationCode, newOrganizationName,
+    oldOrganizationCode) => {
+  const reqBody = {
+    old_organization_code: oldOrganizationCode,
+    new_organization_code: newOrganizationCode,
+    new_organization_name: newOrganizationName,
+  };
+  return fetch(UPDATE_ORGANIZATION_INFO_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
+export const deleteOrganization = async (organizationCode) => {
+  const reqBody = {
+    organization_code: organizationCode
+  };
+  return fetch(DELETE_ORGANIZATION_PATH, {
+    method: 'DELETE',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const fetchGroupsInOrganization = async (organizationCode) => {
+  const reqBody = {
+    organization_code: organizationCode
+  };
   return fetch(FETCH_GROUPS_IN_ORGANIZATION_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -47,7 +85,12 @@ export const fetchGroupsInOrganization = async (reqBody) => {
   }).then(res => res.json());
 };
 
-export const addGroup = async (reqBody) => {
+export const addGroup = async (groupName, organizationCode, sensorInfos) => {
+  const reqBody = {
+    group_name: groupName,
+    organization_code: organizationCode,
+    sensor_infos: sensorInfos
+  };
   return fetch(ADD_GROUP_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -55,9 +98,31 @@ export const addGroup = async (reqBody) => {
   }).then(res => res.json());
 }
 
-export const fetchAllUserEmails = async () => {
-  return fetch(FETCH_ALL_USER_EMAILS_PATH).then(res => res.json());
-};
+export const updateGroupInfo = async (newGroupName, oldGroupName, organizationCode, sensorInfos) => {
+  const reqBody = {
+    new_group_name: newGroupName,
+    old_group_name: oldGroupName,
+    organization_code: organizationCode,
+    sensor_infos: sensorInfos
+  };
+  return fetch(UPDATE_GROUP_INFO_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const deleteGroup = async (groupName, organizationCode) => {
+  const reqBody = {
+    group_name: groupName,
+    organization_code: organizationCode
+  };
+  return fetch(DELETE_GROUP_PATH, {
+    method: 'DELETE',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
 
 export const fetchUserInfo = async (reqBody) => {
   return fetch(FETCH_USER_INFO_PATH, {
@@ -71,7 +136,10 @@ export const fetchOrganizationAdminUserInfo = async () => {
   return fetch(FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH).then(res => res.json());
 };
 
-export const fetchUsersInOrganization = async (reqBody) => {
+export const fetchUsersInOrganization = async (organizationCode) => {
+  const reqBody = {
+    organization_code: organizationCode
+  };
   return fetch(FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -79,11 +147,14 @@ export const fetchUsersInOrganization = async (reqBody) => {
   }).then(res => res.json());
 };
 
-export const fetchUserEmailsWithoutOrganization = async () => {
-  return fetch(FETCH_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_PATH).then(res => res.json());
-}
-
-export const addUserInfo = async (reqBody) => {
+export const addUserInfo = async (email, name, role, organizationCode, groupName) => {
+  const reqBody = {
+    email: email,
+    name: name,
+    role: role,
+    organization_code: organizationCode,
+    group_name: groupName
+  };
   return fetch(ADD_USER_INFO_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -91,7 +162,16 @@ export const addUserInfo = async (reqBody) => {
   }).then(res => res.json());
 };
 
-export const updateUserInfo = async (reqBody) => {
+export const updateUserInfo = async (newEmail, oldEmail, newGroupName, organizationCode, role,
+    queryOrganizationCode) => {
+  const reqBody = {
+    new_email: newEmail,
+    old_email: oldEmail == null ? '' : oldEmail,
+    group_name: newGroupName,
+    organization_code: organizationCode,
+    role: role,
+    query_organization_code: queryOrganizationCode,
+  };
   return fetch(UPDATE_USER_INFO_PATH, {
     method: 'PUT',
     body: JSON.stringify(reqBody),
@@ -99,7 +179,27 @@ export const updateUserInfo = async (reqBody) => {
   }).then(res => res.json());
 }
 
-export const updateUserRole = async (reqBody) => {
+export const updateOrganizationAdminInfo = async (newEmail, oldEmail, groupName, organizationCode, role) => {
+  const reqBody = {
+    new_email: newEmail,
+    old_email: oldEmail,
+    group_name: groupName,
+    organization_code: organizationCode,
+    role: role
+  };
+  return fetch(UPDATE_ORGANIZATION_ADMIN_INFO_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const updateUserRole = async (email, role, organizationCode) => {
+  const reqBody = {
+    email: email,
+    role: role,
+    organization_code: organizationCode,
+  };
   return fetch(UPDATE_USER_ROLE_PATH, {
     method: 'PUT',
     body: JSON.stringify(reqBody),
@@ -111,7 +211,11 @@ export const fetchAllSensorInfo = async () => {
   return fetch(FETCH_ALL_SENSOR_INFO_PATH).then(res => res.json());
 }
 
-export const fetchSensorInfoFromGroup = async (reqBody) => {
+export const fetchSensorInfoFromGroup = async (organizationCode, groupName) => {
+  const reqBody = {
+    organization_code: organizationCode,
+    group_name: groupName,
+  };
   return fetch(FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -119,7 +223,10 @@ export const fetchSensorInfoFromGroup = async (reqBody) => {
   }).then(res => res.json())
 };
 
-export const fetchSensorInfoFromOrganization = async (reqBody) => {
+export const fetchSensorInfoFromOrganization = async (organizationCode, groupName) => {
+  const reqBody = {
+    organization_code: organizationCode,
+  };
   return fetch(FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -127,7 +234,11 @@ export const fetchSensorInfoFromOrganization = async (reqBody) => {
   }).then(res => res.json());
 };
 
-export const addSensor = async (reqBody) => {
+export const addSensor = async (sensorId, organizationCode) => {
+  const reqBody = {
+    sensor_id: sensorId,
+    organization_code: organizationCode,
+  };
   return fetch(ADD_SENSOR_INFO_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -135,7 +246,39 @@ export const addSensor = async (reqBody) => {
   }).then(res => res.json());
 }
 
-export const fetchSensorData = async (reqBody) => {
+export const updateFumeHoodInfo = async (sensorId, fumeHoodName, organizationCode) => {
+  const reqBody = {
+    fume_hood_name: fumeHoodName,
+    sensor_id: sensorId,
+    organization_code: organizationCode
+  };
+  return fetch(UPDATE_FUME_HOOD_INFO_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const updateSensorInfo = async (newId, oldId, organizationCode) => {
+  const reqBody = {
+    new_id: newId,
+    old_id: oldId,
+    new_organization_code: organizationCode
+  };
+  return fetch(UPDATE_SENSOR_INFO_PATH, {
+    method: 'PUT',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+}
+
+export const fetchSensorData = async (granularity, startDate, endDate, sensors) => {
+  const reqBody = {
+    granularity: granularity,
+    start_date: startDate,
+    end_date: endDate,
+    sensors: sensors
+  }
   return fetch(FETCH_SENSOR_DATA_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -250,7 +393,6 @@ export const generateChartOptions = (title, yLabel, xLabel, tooltipLabels=null) 
       y: {
         type: 'linear',
         beginAtZero: true,
-        max: 100,
         title: {
           display: 'true',
           text: yLabel,

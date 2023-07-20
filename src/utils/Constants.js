@@ -23,9 +23,6 @@ export const CHART_COLORS = [
   '#9f582c',
 ];
 
-export const SINGLE_CHART_BORDER_COLOR = 'rgb(53, 162, 235)';
-export const SINGLE_CHART_BACKGROUND_COLOR = 'rgb(53, 162, 235, 0.5)';
-
 export const TIME_GRANULARITIES = {
   none: 'none',
   day: 'day',
@@ -87,31 +84,39 @@ export const TEAM_PAGE_PATH = '/team';
 export const PROFILE_PAGE_PATH = '/profile';
 
 // API endpoints
-export const FETCH_ORGANIZATIONS_PATH = '/api/fetch_organizations';
-export const ADD_ORGANIZATION_PATH = '/api/add_organization';
-export const DELETE_ORGANIZATION_PATH = '/api/delete_organization';
-export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';
 export const ADD_GROUP_PATH = '/api/add_group';
-export const DELETE_GROUP_PATH = '/api/delete_group';
-export const FETCH_ALL_USER_EMAILS_PATH = '/api/fetch_all_user_emails';
-export const FETCH_USER_INFO_PATH = '/api/fetch_user_info';
-export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
-export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
-export const FETCH_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_PATH = '/api/fetch_all_user_emails_without_organization';
+export const ADD_ORGANIZATION_PATH = '/api/add_organization';
+export const ADD_SENSOR_DATA_PATH = '/api/add_sensor_data';
+export const ADD_SENSOR_INFO_PATH = '/api/add_sensor_info';
 export const ADD_USER_INFO_PATH = '/api/add_user_info';
+export const DELETE_GROUP_PATH = '/api/delete_group';
+export const DELETE_ORGANIZATION_PATH = '/api/delete_organization';
+export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
+export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
+export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
+export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
+export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
+export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';
+export const FETCH_ORGANIZATIONS_PATH = '/api/fetch_organizations';
+export const FETCH_SENSOR_DATA_PATH = '/api/fetch_sensor_data';
+export const FETCH_USER_INFO_PATH = '/api/fetch_user_info';
+export const UPDATE_FUME_HOOD_INFO_PATH = '/api/update_fume_hood_info';
+export const UPDATE_GROUP_INFO_PATH = '/api/update_group_info';
+export const UPDATE_ORGANIZATION_ADMIN_INFO_PATH = '/api/update_organization_admin_info';
+export const UPDATE_ORGANIZATION_INFO_PATH = '/api/update_organization_info';
+export const UPDATE_SENSOR_INFO_PATH = '/api/update_sensor_info';
 export const UPDATE_USER_INFO_PATH = '/api/update_user_info';
 export const UPDATE_USER_ROLE_PATH = '/api/update_user_role';
-export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
-export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
-export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
-export const ADD_SENSOR_INFO_PATH = '/api/add_sensor_info';
-export const UPDATE_SENSOR_INFO_PATH = '/api/update_sensor_info';
-export const FETCH_SENSOR_DATA_PATH = '/api/fetch_sensor_data';
-export const ADD_SENSOR_DATA_PATH = '/api/add_sensor_data';
 
 // Form Types for Profile Page
-export const CREATE_ORGANIZATION = 'create_organization';
-export const CREATE_SENSOR = 'create_sensor';
 export const ADD_ORGANIZATION_ADMIN = 'add_organization_admin';
 export const ADD_USER = 'add_user';
 export const CREATE_GROUP = 'create_group';
+export const CREATE_ORGANIZATION = 'create_organization';
+export const CREATE_SENSOR = 'create_sensor';
+export const UPDATE_FUME_HOOD_INFO = 'update_fume_hood_info';
+export const UPDATE_GROUP_INFO = 'update_group_info';
+export const UPDATE_ORGANIZATION_ADMIN_INFO = 'update_organization_admin_info';
+export const UPDATE_ORGANIZATION_INFO = 'update_organization_info';
+export const UPDATE_SENSOR_INFO = 'update_sensor_info';
+export const UPDATE_USER_INFO = 'update_user_info';

@@ -4,27 +4,33 @@ const format = require('pg-format');
 const { pool } = require('./sensors-db');
 
 const {
-  SELECT_ALL_ORGANIZATIONS_QUERY,
-  INSERT_ORGANIZATION_QUERY,
-  DELETE_ORGANIZATION_QUERY,
-  SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY,
-  INSERT_GROUP_QUERY,
+  DELETE_GROUP_FUME_HOODS_QUERY,
   DELETE_GROUP_QUERY,
-  SELECT_USER_INFO_QUERY,
-  SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY,
-  SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY,
-  INSERT_USER_INFO_QUERY,
-  UPDATE_USER_INFO_QUERY,
-  SELECT_ALL_SENSOR_INFO,
-  SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY,
-  INSERT_SENSOR_INFO_QUERY,
-  UPDATE_SENSOR_INFO_QUERY,
+  DELETE_ORGANIZATION_QUERY,
+  INSERT_GROUP_FUME_HOODS_QUERY,
+  INSERT_GROUP_QUERY,
+  INSERT_ORGANIZATION_QUERY,
   INSERT_SENSOR_DATA_QUERY,
+  INSERT_SENSOR_INFO_QUERY,
+  INSERT_USER_INFO_QUERY,
+  SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY,
+  SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY,
+  SELECT_ALL_ORGANIZATIONS_QUERY,
+  SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY,
+  SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY,
+  SELECT_ALL_SENSOR_INFO_QUERY,
+  SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY,
   SELECT_SENSOR_DATA_QUERY,
-  SELECT_ALL_USER_EMAILS,
+  SELECT_USER_INFO_QUERY,
+  UPDATE_FUME_HOOD_INFO_QUERY,
+  UPDATE_GROUP_QUERY,
+  UPDATE_ORGANIZATION_ADMIN_INFO_ON_ORGANIZATION_DELETION_QUERY,
+  UPDATE_ORGANIZATION_INFO_QUERY,
+  UPDATE_SENSOR_INFO_ON_ORGANIZATION_DELETION_QUERY,
+  UPDATE_SENSOR_INFO_QUERY,
+  UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY,
+  UPDATE_USER_INFO_QUERY,
   UPDATE_USER_ROLE_QUERY,
-  SELECT_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_QUERY,
-  SELECT_ALL_SENSOR_INFO_FROM_GROUP,
 } = require('./Constants');
 
 const app = express();
@@ -38,7 +44,7 @@ app.listen(port, _ => console.log(`Listening on port ${port}`));
 
 // Fetches all organizations in database
 // response: {
-//  List of organizations
+//   List of organizations
 // }
 app.get('/api/fetch_organizations', async (_, res) => {
   pool.query(SELECT_ALL_ORGANIZATIONS_QUERY, (err, results) => {
@@ -57,7 +63,7 @@ app.get('/api/fetch_organizations', async (_, res) => {
 //  organization_name: String,
 // }
 // response: {
-//  List of organizations
+//   List of organizations
 // }
 app.post('/api/add_organization', async (req, res) => {
   const { organization_code, organization_name } = req.body;
@@ -78,22 +84,46 @@ app.post('/api/add_organization', async (req, res) => {
   res.status(200).json(toRet);
 });
 
+// TODO add javadoc
+app.put('/api/update_organization_info', async(req, res) => {
+  const { new_organization_code, new_organization_name, old_organization_code } = req.body;
+  const client = await pool.connect();
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    await client.query(format(UPDATE_ORGANIZATION_INFO_QUERY, new_organization_code, new_organization_name, old_organization_code));
+    toRet = (await client.query(SELECT_ALL_ORGANIZATIONS_QUERY)).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('DELETE delete organization errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
+});
 
 // Deletes organization from database
 // reqBody: {
 //  organization_code: String,
 // }
 // response: {
-//  List of organizations
+//   List of organizations
 // }
 app.delete('/api/delete_organization', async (req, res) => {
   const { organization_code } = req.body;
   const client = await pool.connect();
-  let toRet;
+  let toRet = {};
   try {
     await client.query('BEGIN');
     await client.query(format(DELETE_ORGANIZATION_QUERY, organization_code));
-    toRet = (await client.query(SELECT_ALL_ORGANIZATIONS_QUERY)).rows;
+    toRet.organizations = (await client.query(SELECT_ALL_ORGANIZATIONS_QUERY)).rows;
+    await client.query(format(UPDATE_SENSOR_INFO_ON_ORGANIZATION_DELETION_QUERY, organization_code));
+    toRet.sensors = (await client.query(SELECT_ALL_SENSOR_INFO_QUERY)).rows;
+    await client.query(format(UPDATE_ORGANIZATION_ADMIN_INFO_ON_ORGANIZATION_DELETION_QUERY,
+        organization_code));
+    toRet.organization_admins = (await client.query(SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY)).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -110,7 +140,7 @@ app.delete('/api/delete_organization', async (req, res) => {
 //  organization_code: String,
 // }
 // response: {
-//  List of groups from organization
+//   List of groups from organization
 // }
 app.post('/api/fetch_groups_in_organization', async (req, res) => {
   const { organization_code } = req.body;
@@ -128,23 +158,47 @@ app.post('/api/fetch_groups_in_organization', async (req, res) => {
 // reqBody: {
 //  organization_code: String,
 //  group_name: String,
-//  sensors: List of sensor ids
+//  sensor_infos: List of sensor ids
 // }
 // response: {
-//  List of groups from organization
+//   List of groups from organization
 // }
 app.post('/api/add_group', async (req, res) => {
-  const { organization_code, group_name, sensors } = req.body;
+  const { organization_code, group_name, sensor_infos } = req.body;
   const client = await pool.connect();
   let toRet;
   try {
     await client.query('BEGIN');
-    await client.query(format(INSERT_GROUP_QUERY, organization_code, group_name, sensors));
+    await client.query(format(INSERT_GROUP_QUERY, organization_code, group_name));
+    const formattedSensors = sensor_infos.map(sensor => [organization_code, group_name, sensor.id, sensor.fume_hood_name]);
+    await client.query(format(INSERT_GROUP_FUME_HOODS_QUERY, formattedSensors));
     toRet = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
     res.status(500).send('POST add group errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
+});
+
+app.put('/api/update_group_info', async (req, res) => {
+  const { organization_code, old_group_name, new_group_name, sensor_infos } = req.body;
+  const client = await pool.connect();
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    await client.query(format(UPDATE_GROUP_QUERY, new_group_name, organization_code, old_group_name));
+    await client.query(format(DELETE_GROUP_FUME_HOODS_QUERY, organization_code, new_group_name));
+    const formattedSensors = sensor_infos.map(sensor => [organization_code, new_group_name, sensor.id, sensor.fume_hood_name]);
+    await client.query(format(INSERT_GROUP_FUME_HOODS_QUERY, formattedSensors));
+    toRet = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('PUT update group info errored ' + err);
     return;
   } finally {
     client.release();
@@ -163,11 +217,15 @@ app.post('/api/add_group', async (req, res) => {
 app.delete('/api/delete_group', async (req, res) => {
   const { organization_code, group_name } = req.body;
   const client = await pool.connect();
-  let toRet;
+  let toRet = {};
   try {
     await client.query('BEGIN');
     await client.query(format(DELETE_GROUP_QUERY, organization_code, group_name));
-    toRet = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query(format(DELETE_GROUP_FUME_HOODS_QUERY, organization_code, group_name));
+    toRet.groups = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query(format(UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY, organization_code, group_name));
+    toRet.users = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY,
+        organization_code))).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -177,21 +235,6 @@ app.delete('/api/delete_group', async (req, res) => {
     client.release();
   }
   res.status(200).json(toRet);
-});
-
-// Fetches all user emails in database
-// response: {
-//  List of emails
-// }
-app.get('/api/fetch_all_user_emails', async (_, res) => {
-  pool.query(SELECT_ALL_USER_EMAILS, (err, results) => {
-    if (err) {
-      res.status(500).send('GET fetch all user emails ' + err);
-      return;
-    }
-    const toRet = results.rows;
-    res.status(200).json(toRet);
-  })
 });
 
 // Fetch user info from database
@@ -251,17 +294,6 @@ app.post('/api/fetch_all_user_info_from_organization', async (req, res) => {
   });
 });
 
-app.get('/api/fetch_all_user_emails_without_organization', async (_, res) => {
-  pool.query(SELECT_ALL_USER_EMAILS_WITHOUT_ORGANIZATION_QUERY, (err, results) => {
-    if (err) {
-      res.status(500).send('GET fetch all organization admin user info ' + err);
-      return;
-    }
-    const toRet = results.rows;
-    res.status(200).json(toRet);
-  })
-});
-
 // Adds user info to database
 // reqBody: {
 //  email: String,
@@ -295,23 +327,45 @@ app.post('/api/add_user_info', async (req, res) => {
 
 // Updates user info in database
 // reqBody: {
-//  email: String,
-//  name: String,
-//  role: String,
-//  organization_code: String,
-//  group_name: String,
+//  query_organization_code: String,
+//  user_info: {
+//   email: String,
+//   name: String,
+//   role: String,
+//   organization_code: String,
+//   group_name: String,
+//  }
 // }
 // response: {
 //  List of user info
 // }
 app.put('/api/update_user_info', async (req, res) => {
-  const { email, role, organization_code, group_name } = req.body;
+  const { new_email, old_email, group_name, organization_code, role, query_organization_code } = req.body;
   const client = await pool.connect();
   let toRet;
   try {
     await client.query('BEGIN');
-    await client.query(format(UPDATE_USER_INFO_QUERY, role, organization_code, group_name, email));
-    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query(format(UPDATE_USER_INFO_QUERY, new_email, role, organization_code, group_name, old_email));
+    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, query_organization_code))).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('PUT update user info errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
+});
+
+app.put('/api/update_organization_admin_info', async (req, res) => {
+  const { old_email, new_email, group_name, organization_code, role } = req.body;
+  const client = await pool.connect();
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    await client.query(format(UPDATE_USER_INFO_QUERY, new_email, role, organization_code, group_name, old_email));
+    toRet = (await client.query(SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY)).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -359,7 +413,7 @@ app.put('/api/update_user_role', async (req, res) => {
 //  List of sensor info
 // }
 app.get('/api/fetch_all_sensor_info', async (_, res) => {
-  pool.query(SELECT_ALL_SENSOR_INFO, (err, results) => {
+  pool.query(SELECT_ALL_SENSOR_INFO_QUERY, (err, results) => {
     if (err) {
       res.status(500).send('GET fetch all user info errored ' + err);
       return;
@@ -396,8 +450,8 @@ app.post('/api/fetch_all_sensor_info_from_organization', async (req, res) => {
 //  List of sensors info
 // }
 app.post('/api/fetch_all_sensor_info_from_group', async (req, res) => {
-  const { group_name } = req.body;
-  pool.query(format(SELECT_ALL_SENSOR_INFO_FROM_GROUP, group_name), (err, results) => {
+  const { organization_code, group_name } = req.body;
+  pool.query(format(SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY, organization_code, group_name), (err, results) => {
     if (err) {
       res.status(500).send('POST fetch all sensor info from group errored ' + err);
       return;
@@ -423,7 +477,7 @@ app.post('/api/add_sensor_info', async (req, res) => {
   try {
     await client.query('BEGIN');
     await client.query(format(INSERT_SENSOR_INFO_QUERY, sensor_id, sensor_id, organization_code));
-    toRet = (await client.query(SELECT_ALL_SENSOR_INFO)).rows;
+    toRet = (await client.query(SELECT_ALL_SENSOR_INFO_QUERY)).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -444,14 +498,34 @@ app.post('/api/add_sensor_info', async (req, res) => {
 // response {
 //  List of sensor info from organization
 // }
-app.put('/api/update_sensor_info', async (req, res) => {
+app.put('/api/update_fume_hood_info', async (req, res) => {
   const { sensor_id, fume_hood_name, organization_code } = req.body;
+  const client = await pool.connect();
+  let toRet = {};
+  try {
+    await client.query('BEGIN');
+    await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, sensor_id));
+    toRet.fume_hoods = (await client.query(format(SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    toRet.groups = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('PUT update sensor info info errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
+});
+
+app.put('/api/update_sensor_info', async (req, res) => {
+  const { old_id, new_id, new_organization_code } = req.body;
   const client = await pool.connect();
   let toRet;
   try {
     await client.query('BEGIN');
-    await client.query(format(UPDATE_SENSOR_INFO_QUERY, fume_hood_name, sensor_id));
-    toRet = (await client.query(format(SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query(format(UPDATE_SENSOR_INFO_QUERY, new_id, new_organization_code, old_id));
+    toRet = (await client.query(SELECT_ALL_SENSOR_INFO_QUERY)).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');

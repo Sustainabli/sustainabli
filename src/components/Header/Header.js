@@ -17,14 +17,11 @@ const Header = ({ pageName }) => {
           <Col xs={2}>
           {/* TODO once login page is configured, we will only need the logout button. If the user logs out, website will redirect to login page */}
             <Button
+              variant='dark'
               className='login-button'
-              onClick={() => {
-                isAuthenticated
-                  ? logout()
-                  : loginWithPopup();
-              }}
+              onClick={() => logout()}
             >
-              {isAuthenticated ? 'Log Out' : 'Log In'}
+              Log Out
             </Button>
           </Col>
         </Row>
