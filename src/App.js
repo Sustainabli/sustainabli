@@ -8,17 +8,21 @@ import LoginPage from './components/LoginPage/LoginPage';
 import MetricsPage from './components/MetricsPage/MetricsPage';
 import NavSidebar from './components/NavSidebar/NavSidebar';
 import ProfilePage from './components/ProfilePage/ProfilePage';
+import OrganizationSummaryPage from './components/OrganizationSummaryPage/OrganizationSummaryPage';
 import TeamPage from './components/TeamPage/TeamPage';
 import {
   HOME_PAGE_PATH,
   PROFILE_PAGE_PATH,
+  SUMMARY_PAGE_PATH,
   TEAM_PAGE_PATH,
+  ORGANIZATION_ADMIN_ROLE,
   USER_ROLE
 } from './utils/Constants';
 import {
   addUserInfo,
   fetchUserInfo,
   fetchSensorInfoFromGroup,
+  fetchSensorInfoFromOrganization,
 } from './utils/Utils';
 
 // TODO: create a login in page. After user logs in, two scenarios will occur
@@ -45,9 +49,21 @@ class App extends React.Component {
       if (Object.keys(userInfo).length === 0) {
         userInfo = await addUserInfo(user.email, user.name, USER_ROLE, '', '');
       }
+      let availableSensors = [];
+      if (userInfo.role === USER_ROLE) {
+        availableSensors = await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name);
+      } else if (userInfo.role === ORGANIZATION_ADMIN_ROLE) {
+        availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
+        // Get correct keyname
+        availableSensors.forEach(sensor => {
+          sensor['sensor_id'] = sensor['id'];
+        delete sensor['id'];
+        });
+      }
+
       this.setState({
         userInfo: userInfo,
-        availableSensors: await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name),
+        availableSensors: availableSensors,
       });
     }
   }
@@ -61,7 +77,7 @@ class App extends React.Component {
           <BrowserRouter>
               <Row className='p-0 m-0 root-row'>
                 <Col sm={1} lg={2} className='p-0'>
-                  <NavSidebar />
+                  <NavSidebar userInfo={userInfo}/>
                 </Col>
                 <Col sm={12} lg={10} className='p-0'>
                   <Routes>
@@ -79,6 +95,11 @@ class App extends React.Component {
                       exact
                       path={ PROFILE_PAGE_PATH }
                       element={ <ProfilePage userInfo={ userInfo }/> }
+                    />
+                    <Route
+                      exact
+                      path = { SUMMARY_PAGE_PATH }
+                      element={ <OrganizationSummaryPage userInfo={ userInfo }/> }
                     />
                     <Route
                       path='/*'

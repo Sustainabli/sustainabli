@@ -43,12 +43,13 @@ class MetricsLineGraph extends React.Component {
         `${metric.type.toUpperCase()}: ${convertSashHeightToMetricValue(metric.type, tooltipItems.parsed.y).toFixed(2)} ${metric.unit}`
       )
     ;
-    const options = generateChartOptions('Metrics Overview Reductions', 'Average Sash Height (%)',
+    const options = generateChartOptions('Metrics Overview', 'Average Sash Height (%)',
         'Date', tooltipLabels);
 
     const areaChartData = {
       labels: data.map((datum, i) => formatDateLabel(new Date(datum.time), TIME_GRANULARITIES.day)),
       datasets: Object.keys(data[0].data).map((fumeHood, index) => ({
+          label: fumeHood,
           fill: true,
           data: data.map((datum) => datum.data[fumeHood]),
           borderColor: CHART_COLORS[index],

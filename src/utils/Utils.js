@@ -5,14 +5,15 @@ import {
   ADD_SENSOR_INFO_PATH,
   ADD_USER_INFO_PATH,
   DELETE_GROUP_PATH,
+  FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION,
   FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH,
   FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH,
   FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH,
   FETCH_ALL_SENSOR_INFO_PATH,
-  FETCH_ALL_USER_EMAILS_PATH,
   FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH,
   FETCH_GROUPS_IN_ORGANIZATION_PATH,
   FETCH_ORGANIZATIONS_PATH,
+  FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH,
   FETCH_SENSOR_DATA_PATH,
   FETCH_USER_INFO_PATH,
   UPDATE_FUME_HOOD_INFO_PATH,
@@ -84,6 +85,18 @@ export const fetchGroupsInOrganization = async (organizationCode) => {
     headers: { 'Content-Type': 'application/json' },
   }).then(res => res.json());
 };
+
+export const fetchAllGroupFumeHoodsFromOrganization = async (organizationCode) => {
+  const reqBody = {
+    organization_code: organizationCode
+  };
+  return fetch(FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+
+}
 
 export const addGroup = async (groupName, organizationCode, sensorInfos) => {
   const reqBody = {
@@ -223,7 +236,7 @@ export const fetchSensorInfoFromGroup = async (organizationCode, groupName) => {
   }).then(res => res.json())
 };
 
-export const fetchSensorInfoFromOrganization = async (organizationCode, groupName) => {
+export const fetchSensorInfoFromOrganization = async (organizationCode) => {
   const reqBody = {
     organization_code: organizationCode,
   };
@@ -286,6 +299,18 @@ export const fetchSensorData = async (granularity, startDate, endDate, sensors) 
   }).then(res => res.json());
 };
 
+export const fetchAllSensorForOrganization = async (organizationCode) => {
+  const reqBody = {
+    organization_code: organizationCode,
+  }
+
+  return fetch(FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH, {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json());
+};
+
 
 export const convertSashHeightToMetricValue = (metricType, value) => {
   switch (metricType) {
@@ -296,7 +321,8 @@ export const convertSashHeightToMetricValue = (metricType, value) => {
     case METRIC_TYPE_COST:
       return ((11 * value) + 136) * 5;
     case METRIC_TYPE_AIRFLOW:
-      return 136 + (11 * value);
+      // return 136 + (11 * value);
+      return (11 * value);
     default:
   }
   return value
@@ -365,7 +391,7 @@ export const generateChartOptions = (title, yLabel, xLabel, tooltipLabels=null) 
     },
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
       title: {
         display: true,

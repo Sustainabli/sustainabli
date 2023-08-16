@@ -14,12 +14,14 @@ const {
   INSERT_SENSOR_INFO_QUERY,
   INSERT_USER_INFO_QUERY,
   SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY,
+  SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY,
   SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY,
   SELECT_ALL_ORGANIZATIONS_QUERY,
   SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY,
   SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY,
   SELECT_ALL_SENSOR_INFO_QUERY,
   SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY,
+  SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY,
   SELECT_SENSOR_DATA_QUERY,
   SELECT_USER_INFO_QUERY,
   UPDATE_FUME_HOOD_INFO_QUERY,
@@ -461,7 +463,6 @@ app.post('/api/fetch_all_sensor_info_from_group', async (req, res) => {
   });
 });
 
-
 // adds sensor info to database
 // reqbody: {
 //  sensor_id: string,
@@ -558,6 +559,32 @@ app.post('/api/fetch_sensor_data', (req, res) => {
     res.status(200).json(toRet);
   });
 });
+
+app.post('/api/fetch_all_sensor_data_for_organization', (req, res) => {
+  const { organization_code} = req.body;
+  pool.query(format(SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY, organization_code), (err, results) => {
+    if (err) {
+      res.status(500).send('POST fetch sensors data errored ' + err);
+      return;
+    }
+    const toRet = results.rows;
+    res.status(200).json(toRet);
+  });
+});
+
+app.post('/api/fetch_all_group_fume_hoods_from_organization', (req, res) => {
+  const { organization_code} = req.body;
+  pool.query(format(SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY, organization_code), (err, results) => {
+    if (err) {
+      res.status(500).send('POST fetch sensors data errored ' + err);
+      return;
+    }
+    const toRet = results.rows;
+    res.status(200).json(toRet);
+  });
+});
+
+
 
 // adds sensor data to database
 // reqBody: {

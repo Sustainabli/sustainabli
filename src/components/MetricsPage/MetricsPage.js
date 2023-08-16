@@ -8,6 +8,7 @@ import FumeTable from './components/FumeTable/FumeTable.js';
 import MetricsLineGraph from './components/MetricsLineGraph/MetricsLineGraph';
 import Header from '../Header/Header';
 import {
+  ORGANIZATION_ADMIN_ROLE,
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
 } from '../../utils/Constants';
@@ -56,7 +57,7 @@ class MetricsPage extends React.Component {
     return (
       <Container className='MetricsPage' fluid>
         <Header pageName='Metrics Page' />
-        { userInfo && userInfo.organization_code && userInfo.group_name ?
+        { userInfo && userInfo.organization_code && (userInfo.group_name || userInfo.role === ORGANIZATION_ADMIN_ROLE) ?
             <React.Fragment>
               <Row className='filter-row'>
                 <Col className='filter-col' md={5}>
@@ -93,11 +94,13 @@ class MetricsPage extends React.Component {
                   </Button>
                 </Col>
               </Row>
-              {queriedSensors.length > 0  && data &&
+              {queriedSensors.length > 0  && data.length > 0 ?
                 <Row className='metrics-row'>
                   <MetricsLineGraph data={data}/>
                   <FumeTable data={data}/>
                 </Row>
+              :
+                <Row>No data to show </Row>
               }
             </React.Fragment>
           :

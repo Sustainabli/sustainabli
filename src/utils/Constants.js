@@ -82,6 +82,7 @@ export const USER_ROLE = 'user';
 export const HOME_PAGE_PATH = '/';
 export const TEAM_PAGE_PATH = '/team';
 export const PROFILE_PAGE_PATH = '/profile';
+export const SUMMARY_PAGE_PATH = '/summary';
 
 // API endpoints
 export const ADD_GROUP_PATH = '/api/add_group';
@@ -91,6 +92,7 @@ export const ADD_SENSOR_INFO_PATH = '/api/add_sensor_info';
 export const ADD_USER_INFO_PATH = '/api/add_user_info';
 export const DELETE_GROUP_PATH = '/api/delete_group';
 export const DELETE_ORGANIZATION_PATH = '/api/delete_organization';
+export const FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION = '/api/fetch_all_group_fume_hoods_from_organization';
 export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
 export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
 export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
@@ -98,6 +100,7 @@ export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
 export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
 export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';
 export const FETCH_ORGANIZATIONS_PATH = '/api/fetch_organizations';
+export const FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH = '/api/fetch_all_sensor_data_for_organization';
 export const FETCH_SENSOR_DATA_PATH = '/api/fetch_sensor_data';
 export const FETCH_USER_INFO_PATH = '/api/fetch_user_info';
 export const UPDATE_FUME_HOOD_INFO_PATH = '/api/update_fume_hood_info';

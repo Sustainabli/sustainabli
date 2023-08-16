@@ -8,7 +8,7 @@ import './FumeTable.scss';
 
 class FumeTable extends React.Component {
   render() {
-    const { data } = this.props;
+    const { data, isGroup } = this.props;
 
     // Store an object of {fumeHoodName, summed cfm data} key value pairs
     const summedCfmData = {};
@@ -30,8 +30,8 @@ class FumeTable extends React.Component {
       <Table bordered hover className='FumeTable'>
         <thead>
           <tr>
-            <th>Fume Hood</th>
-            <th colSpan={2}>CFM</th>
+            <th>{isGroup ? 'Groups' : 'Fume Hood'}</th>
+            <th>CFM</th>
           </tr>
         </thead>
         <tbody>

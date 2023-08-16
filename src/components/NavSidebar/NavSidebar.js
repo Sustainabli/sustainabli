@@ -3,11 +3,11 @@ import Image from 'react-bootstrap/Image';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Sidebar, Menu, MenuItem, useProSidebar, sidebarClasses } from 'react-pro-sidebar';
 import { Link, useLocation } from 'react-router-dom';
-import { HOME_PAGE_PATH, TEAM_PAGE_PATH, PROFILE_PAGE_PATH } from '../../utils/Constants.js';
+import { HOME_PAGE_PATH, TEAM_PAGE_PATH, PROFILE_PAGE_PATH, SUMMARY_PAGE_PATH, ORGANIZATION_ADMIN_ROLE } from '../../utils/Constants.js';
 import logo from '../../assets/logo.png'
 import './NavSidebar.scss';
 
-function NavSidebar() {
+function NavSidebar({userInfo}) {
   const { broken, toggleSidebar } = useProSidebar();
   const pathname = useLocation().pathname;
 
@@ -57,6 +57,15 @@ function NavSidebar() {
           >
             <Image src={logo} width='130'/>
           </MenuItem>
+          {userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE &&
+            <MenuItem
+              className='sidebarHeader'
+              active={pathname === SUMMARY_PAGE_PATH}
+              component={<Link to={SUMMARY_PAGE_PATH} />}
+            >
+              Org Summary
+            </MenuItem>
+          }
           <MenuItem
             active={pathname === TEAM_PAGE_PATH}
             component={<Link to ={TEAM_PAGE_PATH} />}

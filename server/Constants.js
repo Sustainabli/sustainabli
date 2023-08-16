@@ -134,6 +134,7 @@ const SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY = `
   WHERE organization_code = %L AND group_name = %L;
 `;
 
+
 const INSERT_SENSOR_INFO_QUERY = `
   INSERT INTO sensor_info (id, fume_hood_name, organization_code)
   VALUES (%L, %L, %L);
@@ -164,10 +165,33 @@ const SELECT_SENSOR_DATA_QUERY = `
   ORDER BY time;
 `;
 
+const SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY = `
+  SELECT DATE_TRUNC('day', outer_table.time) AS time, JSON_OBJECT_AGG(fume_hood_name, (
+    SELECT AVG(value)
+    FROM sensor_data inner_table
+    WHERE inner_table.id = outer_table.id AND inner_table.time = outer_table.time
+  )) AS data
+  FROM sensor_data outer_table INNER JOIN sensor_info ON outer_table.id = sensor_info.id
+  WHERE sensor_info.organization_code = %L
+  GROUP BY DATE_TRUNC('day', time)
+  ORDER BY time;
+`;
+
 const INSERT_SENSOR_DATA_QUERY = `
   INSERT INTO sensor_data(id, time, value, status, error_message)
   VALUES (%L, %L, %L, %L, %L);
 `;
+
+const SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY = `
+  SELECT group_name, ARRAY_AGG(fume_hood_name) as fume_hoods
+  FROM group_fume_hoods
+  WHERE organization_code = %L
+  GROUP BY group_name
+  ORDER BY group_name
+`;
+
+// TODO we can probably query sensor data from group_fume_hoods
+// TODO figure out if we should sum or average
 
 module.exports = {
   SELECT_ALL_ORGANIZATIONS_QUERY,
@@ -197,4 +221,6 @@ module.exports = {
   DELETE_GROUP_FUME_HOODS_QUERY,
   UPDATE_SENSOR_INFO_ON_ORGANIZATION_DELETION_QUERY,
   UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY,
+  SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY,
+  SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY,
 };
