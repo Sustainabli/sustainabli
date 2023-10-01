@@ -3,16 +3,16 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import FumeTable from '../MetricsPage/components/FumeTable/FumeTable.js';
-import MetricsLineGraph from '../MetricsPage/components/MetricsLineGraph/MetricsLineGraph';
 import Header from '../Header/Header';
-import { fetchAllSensorForOrganization, fetchAllGroupFumeHoodsFromOrganization } from '../../utils/Utils';
+import MetricsLineGraph from '../MetricsPage/components/MetricsLineGraph/MetricsLineGraph';
+import { fetchAllGroupFumeHoodsFromOrganization, fetchAllSensorForOrganization } from '../../utils/Utils';
 
 class OrganizationSummaryPage extends React.Component {
   constructor() {
     super();
     this.state = {
       allSensorsData: [],
-      groupsToFumeHoods: {},
+      groupsToFumeHoods: [],
     };
   }
 
@@ -38,7 +38,12 @@ class OrganizationSummaryPage extends React.Component {
     const groupSummaryData = allSensorsData.map(datum => {
       const data = {};
       groupsToFumeHoods.forEach(groupFumeHoods => {
-	data[groupFumeHoods.group_name] = groupFumeHoods.fume_hoods.reduce((acc, fumeHood) => datum.data[fumeHood] + acc, 0);
+	data[groupFumeHoods.group_name] = groupFumeHoods.fume_hoods.reduce((acc, fumeHood) => {
+	  if (datum.data[fumeHood]) {
+	    return datum.data[fumeHood] + acc
+	  }
+	  return acc;
+	}, 0);
       });
 
       return {

@@ -83,6 +83,7 @@ export const HOME_PAGE_PATH = '/';
 export const TEAM_PAGE_PATH = '/team';
 export const PROFILE_PAGE_PATH = '/profile';
 export const SUMMARY_PAGE_PATH = '/summary';
+export const LOGIN_PAGE_PATH = '/login';
 
 // API endpoints
 export const ADD_GROUP_PATH = '/api/add_group';

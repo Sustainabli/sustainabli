@@ -7,14 +7,18 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage/LoginPage';
 import MetricsPage from './components/MetricsPage/MetricsPage';
 import NavSidebar from './components/NavSidebar/NavSidebar';
-import ProfilePage from './components/ProfilePage/ProfilePage';
 import OrganizationSummaryPage from './components/OrganizationSummaryPage/OrganizationSummaryPage';
+import ProfilePage from './components/ProfilePage/ProfilePage';
 import TeamPage from './components/TeamPage/TeamPage';
 import {
+  // Webpage paths
   HOME_PAGE_PATH,
+  LOGIN_PAGE_PATH,
   PROFILE_PAGE_PATH,
   SUMMARY_PAGE_PATH,
   TEAM_PAGE_PATH,
+
+  // Account roles
   ORGANIZATION_ADMIN_ROLE,
   USER_ROLE
 } from './utils/Constants';
@@ -25,9 +29,6 @@ import {
   fetchSensorInfoFromOrganization,
 } from './utils/Utils';
 
-// TODO: create a login in page. After user logs in, two scenarios will occur
-//  - User hasn't been added to an organization. In this case, display a message saying the user to ask the organization admin to add him/her to the organization
-//  - User has already been added to an organization, in which case he/she can navigate to the website pages as normal
 class App extends React.Component {
   constructor() {
     super();
@@ -57,13 +58,13 @@ class App extends React.Component {
         // Get correct keyname
         availableSensors.forEach(sensor => {
           sensor['sensor_id'] = sensor['id'];
-        delete sensor['id'];
+          delete sensor['id'];
         });
       }
 
       this.setState({
-        userInfo: userInfo,
         availableSensors: availableSensors,
+        userInfo: userInfo,
       });
     }
   }
@@ -71,6 +72,7 @@ class App extends React.Component {
   render() {
     const { isAuthenticated, user } = this.props.auth0;
     const { availableSensors, userInfo } = this.state;
+
     return (
       <Container fluid className='p-0 m-0 App'>
         { isAuthenticated && user ?
@@ -103,14 +105,26 @@ class App extends React.Component {
                     />
                     <Route
                       path='/*'
-                      element={ <Navigate to='/'/> }
+                      element={ <Navigate to="/" /> }
                     />
                   </Routes>
                 </Col>
               </Row>
           </BrowserRouter>
         :
-          <LoginPage/>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                exact
+                path = { LOGIN_PAGE_PATH }
+                element={ <LoginPage /> }
+              />
+              <Route
+                path='/*'
+                element={ <Navigate to="/login" /> }
+              />
+            </Routes>
+          </BrowserRouter>
         }
       </Container>
     );

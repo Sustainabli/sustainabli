@@ -15,7 +15,6 @@ const Header = ({ pageName }) => {
               <h1> {pageName} </h1>
           </Col>
           <Col xs={2}>
-          {/* TODO once login page is configured, we will only need the logout button. If the user logs out, website will redirect to login page */}
             <Button
               variant='dark'
               className='login-button'

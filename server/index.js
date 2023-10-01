@@ -550,9 +550,10 @@ app.put('/api/update_sensor_info', async (req, res) => {
 // }
 app.post('/api/fetch_sensor_data', (req, res) => {
   const { granularity, start_date, end_date, sensors } = req.body;
-  pool.query(format(SELECT_SENSOR_DATA_QUERY, granularity, start_date, end_date, sensors), (err, results) => {
+  pool.query(format(SELECT_SENSOR_DATA_QUERY, granularity, start_date, end_date, sensors, granularity), (err, results) => {
     if (err) {
       res.status(500).send('POST fetch sensors data errored ' + err);
+      console.log(err);
       return;
     }
     const toRet = results.rows;

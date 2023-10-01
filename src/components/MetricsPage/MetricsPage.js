@@ -8,7 +8,10 @@ import FumeTable from './components/FumeTable/FumeTable.js';
 import MetricsLineGraph from './components/MetricsLineGraph/MetricsLineGraph';
 import Header from '../Header/Header';
 import {
+  // Account roles
   ORGANIZATION_ADMIN_ROLE,
+
+  // Form filter options
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
 } from '../../utils/Constants';
@@ -21,8 +24,9 @@ class MetricsPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: {},
+      data: [],
       relativeTimeRange: RELATIVE_TIME_RANGES_OPTIONS.one_month.value,
+
       queriedSensors: [],   // Updates when clicking submit button
       selectedSensors: [],  // Updates when selecting labs from drop down
     };
@@ -37,7 +41,7 @@ class MetricsPage extends React.Component {
   };
 
   fetchData = async () => {
-    const { selectedSensors, relativeTimeRange } = this.state;
+    const { relativeTimeRange, selectedSensors } = this.state;
     const startDate = getOffsettedStartDate(new Date(), relativeTimeRange);
     // TODO modify dates to only use days, instead of time since we can lose data depending on the hour of the day requested
 
@@ -57,10 +61,10 @@ class MetricsPage extends React.Component {
     return (
       <Container className='MetricsPage' fluid>
         <Header pageName='Metrics Page' />
-        { userInfo && userInfo.organization_code && (userInfo.group_name || userInfo.role === ORGANIZATION_ADMIN_ROLE) ?
+        { userInfo && userInfo.organization_code && (userInfo.group_name || (userInfo.role === ORGANIZATION_ADMIN_ROLE)) ?
             <React.Fragment>
               <Row className='filter-row'>
-                <Col className='filter-col' md={5}>
+                <Col className='filter-col' md={3}>
                   Date Range:
                   <Select
                     className='filter-select'
@@ -74,7 +78,7 @@ class MetricsPage extends React.Component {
                     }}
                   />
                 </Col>
-                <Col className='filter-col' md={6}>
+                <Col className='filter-col' md={8}>
                   Fume Hoods:
                   <Select
                     className='filter-select'
@@ -94,12 +98,12 @@ class MetricsPage extends React.Component {
                   </Button>
                 </Col>
               </Row>
-              {queriedSensors.length > 0  && data.length > 0 ?
+              {queriedSensors.length > 0  && Object.keys(data).length > 0 ?
                 <Row className='metrics-row'>
                   <MetricsLineGraph data={data}/>
                   <FumeTable data={data}/>
                 </Row>
-              :
+                :
                 <Row>No data to show </Row>
               }
             </React.Fragment>

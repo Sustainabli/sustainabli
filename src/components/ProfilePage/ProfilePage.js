@@ -7,13 +7,12 @@ import Table from 'react-bootstrap/Table';
 import ModalForm from './components/ModalForm/ModalForm';
 import Header from '../Header/Header';
 import {
+  // Form types
   ADD_ORGANIZATION_ADMIN,
   ADD_USER,
-
   CREATE_GROUP,
   CREATE_ORGANIZATION,
   CREATE_SENSOR,
-
   UPDATE_FUME_HOOD_INFO,
   UPDATE_GROUP_INFO,
   UPDATE_ORGANIZATION_ADMIN_INFO,
@@ -27,12 +26,12 @@ import {
   USER_ROLE,
 } from '../../utils/Constants.js';
 import {
-  fetchOrganizations,
+  fetchAllSensorInfo,
   fetchGroupsInOrganization,
   fetchOrganizationAdminUserInfo,
-  fetchUsersInOrganization,
+  fetchOrganizations,
   fetchSensorInfoFromOrganization,
-  fetchAllSensorInfo,
+  fetchUsersInOrganization,
 } from '../../utils/Utils.js';
 
 import './ProfilePage.scss';

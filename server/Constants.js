@@ -154,26 +154,18 @@ const UPDATE_FUME_HOOD_INFO_QUERY = `
 `;
 
 const SELECT_SENSOR_DATA_QUERY = `
-  SELECT DATE_TRUNC(%L, time) AS time, JSON_OBJECT_AGG(fume_hood_name, (
-    SELECT AVG(value)
-    FROM sensor_data inner_table
-    WHERE inner_table.id = outer_table.id AND inner_table.time = outer_table.time
-  )) AS data
-  FROM sensor_data outer_table INNER JOIN sensor_info ON outer_table.id = sensor_info.id
-  WHERE time >= %L AND time <= %L AND outer_table.id = ANY(ARRAY[%L]::VARCHAR[])
-  GROUP BY outer_table.time
+  SELECT DATE_TRUNC(%L, time) AS time, fume_hood_name, AVG(value) AS value
+  FROM sensor_data INNER JOIN sensor_info ON sensor_data.id = sensor_info.id
+  WHERE time >= %L AND time <= %L AND sensor_data.id = ANY(ARRAY[%L]::VARCHAR[])
+  GROUP BY DATE_TRUNC(%L, time), fume_hood_name
   ORDER BY time;
 `;
 
 const SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY = `
-  SELECT DATE_TRUNC('day', outer_table.time) AS time, JSON_OBJECT_AGG(fume_hood_name, (
-    SELECT AVG(value)
-    FROM sensor_data inner_table
-    WHERE inner_table.id = outer_table.id AND inner_table.time = outer_table.time
-  )) AS data
-  FROM sensor_data outer_table INNER JOIN sensor_info ON outer_table.id = sensor_info.id
+  SELECT DATE_TRUNC('day', time) AS time, fume_hood_name, AVG(value) AS value
+  FROM sensor_data INNER JOIN sensor_info ON sensor_data.id = sensor_info.id
   WHERE sensor_info.organization_code = %L
-  GROUP BY DATE_TRUNC('day', time)
+  GROUP BY DATE_TRUNC('day', time), fume_hood_name
   ORDER BY time;
 `;
 
@@ -189,9 +181,6 @@ const SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY = `
   GROUP BY group_name
   ORDER BY group_name
 `;
-
-// TODO we can probably query sensor data from group_fume_hoods
-// TODO figure out if we should sum or average
 
 module.exports = {
   SELECT_ALL_ORGANIZATIONS_QUERY,

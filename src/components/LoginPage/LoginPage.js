@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import './LoginPage.scss';
 
 const LoginPage = () => {
-  const { isAuthenticated, loginWithPopup, logout } = useAuth0();
+  const { loginWithPopup } = useAuth0();
   return (
     <Container fluid className='p-0 m-0 LoginPage'>
         <Row className='text-center header'>
@@ -23,9 +23,9 @@ const LoginPage = () => {
 	    <Button
 	      className='login-button'
 	      variant='dark'
-	      onClick={() => isAuthenticated ? logout() : loginWithPopup() }
+	      onClick={() => loginWithPopup()}
 	    >
-	      {isAuthenticated ? 'Log Out' : 'Log In or Create an Account'}
+	      Log In or Create an Account
 	    </Button>
 	  </Col>
 	</Row>

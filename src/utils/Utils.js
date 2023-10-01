@@ -296,7 +296,28 @@ export const fetchSensorData = async (granularity, startDate, endDate, sensors) 
     method: 'POST',
     body: JSON.stringify(reqBody),
     headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
+  }).then(res => res.json())
+    .then(res => {
+      // We are guaranteed that the result is sorted by date
+      const toRet = [];
+      let currTime = null;
+      // Index of toRet
+      let currIndex = -1;
+      res.forEach(datum => {
+        // New timestamp so create a new data object
+        if (currTime != datum.time) {
+          currTime = datum.time;
+          const currDatum = {
+            time: datum.time,
+            data: {}
+          };
+          toRet.push(currDatum);
+          currIndex++;
+        }
+        toRet[currIndex].data[datum.fume_hood_name] = datum.value;
+      });
+      return toRet;
+    });
 };
 
 export const fetchAllSensorForOrganization = async (organizationCode) => {
@@ -308,7 +329,28 @@ export const fetchAllSensorForOrganization = async (organizationCode) => {
     method: 'POST',
     body: JSON.stringify(reqBody),
     headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
+  }).then(res => res.json())
+    .then(res => {
+      // We are guaranteed that the result is sorted by date
+      const toRet = [];
+      let currTime = null;
+      // Index of toRet
+      let currIndex = -1;
+      res.forEach(datum => {
+        // New timestamp so create a new data object
+        if (currTime != datum.time) {
+          currTime = datum.time;
+          const currDatum = {
+            time: datum.time,
+            data: {}
+          };
+          toRet.push(currDatum);
+          currIndex++;
+        }
+        toRet[currIndex].data[datum.fume_hood_name] = datum.value;
+      });
+      return toRet;
+    });
 };
 
 
