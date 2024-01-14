@@ -22,7 +22,7 @@ import {
   // User roles
   ORGANIZATION_ADMIN_ROLE,
   USER_ROLE
-} from '../../../../utils/Constants';
+} from '../../Constants';
 import {
   addGroup,
   addOrganization,
@@ -36,10 +36,8 @@ import {
   updateSensorInfo,
   updateUserInfo,
   updateUserRole,
-} from '../../../../utils/Utils';
+} from '../../Utils';
 
-// Modal form specific to the profile page
-// TODO We probably don't need this once we finish developing the february release since we're moving functionality around
 class ModalForm extends React.Component {
   constructor() {
     super();

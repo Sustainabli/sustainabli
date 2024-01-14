@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import ModalForm from './components/ModalForm/ModalForm';
-import Header from '../Header/Header';
+import Header from '../../utils/components/Header/Header';
 import {
   // Form types
   ADD_ORGANIZATION_ADMIN,

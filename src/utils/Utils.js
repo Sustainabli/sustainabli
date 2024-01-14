@@ -36,6 +36,7 @@ import {
 } from './Constants.js';
 
 // API calls
+// TODO add catch handlers to API calls that console.warns the errors and shows some sort of UI for the user
 export const fetchOrganizations = async () => fetch(FETCH_ORGANIZATIONS_PATH).then(res => res.json());
 
 export const addOrganization = async (organizationCode, organizationName) => {
@@ -137,7 +138,10 @@ export const deleteGroup = async (groupName, organizationCode) => {
   }).then(res => res.json());
 }
 
-export const fetchUserInfo = async (reqBody) => {
+export const fetchUserInfo = async (email) => {
+  const reqBody = {
+    email: email,
+  };
   return fetch(FETCH_USER_INFO_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -305,7 +309,7 @@ export const fetchSensorData = async (granularity, startDate, endDate, sensors) 
       let currIndex = -1;
       res.forEach(datum => {
         // New timestamp so create a new data object
-        if (currTime != datum.time) {
+        if (currTime !== datum.time) {
           currTime = datum.time;
           const currDatum = {
             time: datum.time,
@@ -338,7 +342,7 @@ export const fetchAllSensorForOrganization = async (organizationCode) => {
       let currIndex = -1;
       res.forEach(datum => {
         // New timestamp so create a new data object
-        if (currTime != datum.time) {
+        if (currTime !== datum.time) {
           currTime = datum.time;
           const currDatum = {
             time: datum.time,
@@ -368,6 +372,26 @@ export const convertSashHeightToMetricValue = (metricType, value) => {
     default:
   }
   return value
+}
+
+// Takes list of sash openness values and calculates the metric value average
+export const convertSashOpennessToMetricValueAverage = (metricType, values) => {
+  let toRet = 0;
+  switch (metricType) {
+    case METRIC_TYPE_ENERGY:
+      toRet = ((values.length * 136 * 35.71) + 11 * 35.71 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+    case METRIC_TYPE_CARBON:
+      toRet = ((values.length * 136 * 13.771064) + 11 * 13.771064 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+    case METRIC_TYPE_COST:
+      toRet = ((values.length * 136 * 5) + 11 * 5 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+    case METRIC_TYPE_AIRFLOW:
+      toRet = ((values.length * 136) + 11 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+  }
+  return toRet.toFixed(2);
 }
 
 // Formats the date label on the charts based on the granularity we are looking at

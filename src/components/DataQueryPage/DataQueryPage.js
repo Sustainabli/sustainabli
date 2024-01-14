@@ -4,9 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Select from 'react-select';
-import FumeTable from './components/FumeTable/FumeTable.js';
-import MetricsLineGraph from './components/MetricsLineGraph/MetricsLineGraph';
-import Header from '../Header/Header';
+import FumeTable from '../../utils/components/FumeTable/FumeTable';
+import MetricsLineGraph from '../../utils/components/MetricsLineGraph/MetricsLineGraph';
+import Header from '../../utils/components/Header/Header';
 import {
   // Account roles
   ORGANIZATION_ADMIN_ROLE,
@@ -17,10 +17,11 @@ import {
 } from '../../utils/Constants';
 import { fetchSensorData, getOffsettedStartDate } from '../../utils/Utils';
 
-import './MetricsPage.scss';
+import './DataQueryPage.scss';
 
 // TODO instead of using relativeTimeRange, create a calendar selector component for startDate and endDate. We can also maybe tailor this to be a startTime and endTime hh:mm yy:mm:dd
-class MetricsPage extends React.Component {
+// TODO refactor this page with recoil
+class DataQueryPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -59,7 +60,7 @@ class MetricsPage extends React.Component {
       label: sensor.fume_hood_name
     }));
     return (
-      <Container className='MetricsPage' fluid>
+      <Container className='DataQueryPage' fluid>
         <Header pageName='Metrics Page' />
         { userInfo && userInfo.organization_code && (userInfo.group_name || (userInfo.role === ORGANIZATION_ADMIN_ROLE)) ?
             <React.Fragment>
@@ -117,4 +118,4 @@ class MetricsPage extends React.Component {
   }
 }
 
-export default MetricsPage;
+export default DataQueryPage;

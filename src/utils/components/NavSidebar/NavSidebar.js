@@ -3,8 +3,20 @@ import Image from 'react-bootstrap/Image';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Sidebar, Menu, MenuItem, useProSidebar, sidebarClasses } from 'react-pro-sidebar';
 import { Link, useLocation } from 'react-router-dom';
-import { HOME_PAGE_PATH, TEAM_PAGE_PATH, PROFILE_PAGE_PATH, SUMMARY_PAGE_PATH, ORGANIZATION_ADMIN_ROLE } from '../../utils/Constants.js';
-import logo from '../../assets/logo.png'
+import {
+  // Webpage paths
+  DATA_QUERY_PAGE_PATH,
+  FUME_HOODS_PAGE_PATH,
+  ORGANIZATION_PAGE_PATH,
+  OVERVIEW_PAGE_PATH,
+  PROFILE_PAGE_PATH,
+  SHUT_THE_SASH_PAGE_PATH,
+  TEAM_PAGE_PATH,
+
+  // Account roles
+  ORGANIZATION_ADMIN_ROLE
+} from '../../Constants.js';
+import logo from '../../../assets/logo.png';
 import './NavSidebar.scss';
 
 function NavSidebar({userInfo}) {
@@ -31,6 +43,19 @@ function NavSidebar({userInfo}) {
     },
   }
 
+  const renderMenuItem = (path, content, isLastMenuItem) => {
+    return (
+      <MenuItem
+        className={isLastMenuItem ? 'lastMenuItem' : 'sidebarHeader'}
+        active={pathname === path}
+        component={<Link to={path} />}
+      >
+        {content}
+      </MenuItem>
+    );
+  }
+
+  // TODO add functionality to only show specific nav items for specific user roles (e.g. organzation admin has access to pages that other accounts don't)
   return (
     <React.Fragment>
       {broken &&
@@ -50,35 +75,18 @@ function NavSidebar({userInfo}) {
         }}
       >
         <Menu className= 'p-0' menuItemStyles={menuItemStyle}>
-          <MenuItem
-            className='sidebarHeader'
-            active={pathname === HOME_PAGE_PATH}
-            component={<Link to={HOME_PAGE_PATH} />}
-          >
-            <Image src={logo} width='130'/>
-          </MenuItem>
-          {userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE &&
-            <MenuItem
-              className='sidebarHeader'
-              active={pathname === SUMMARY_PAGE_PATH}
-              component={<Link to={SUMMARY_PAGE_PATH} />}
-            >
-              Org Summary
-            </MenuItem>
-          }
-          <MenuItem
-            active={pathname === TEAM_PAGE_PATH}
-            component={<Link to ={TEAM_PAGE_PATH} />}
-          >
-            Our Team
-          </MenuItem>
-          <MenuItem
-            className='lastMenuItem'
-            active={pathname === PROFILE_PAGE_PATH}
-            component={<Link to ={PROFILE_PAGE_PATH} />}
-          >
-            Profile
-          </MenuItem>
+          {renderMenuItem(OVERVIEW_PAGE_PATH, <Image src={logo} width='130'/>, false)}
+          {userInfo && renderMenuItem(OVERVIEW_PAGE_PATH, 'Overview', false)}
+          {userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE && renderMenuItem(ORGANIZATION_PAGE_PATH, 'Organization', false)}
+          {userInfo && renderMenuItem(FUME_HOODS_PAGE_PATH, 'Fume Hoods', false)}
+         {/* TODO make data query page */}
+          {userInfo && renderMenuItem(DATA_QUERY_PAGE_PATH, 'Data Query', false)}
+         {/* TODO make shut the sash page */}
+          {userInfo && renderMenuItem(SHUT_THE_SASH_PAGE_PATH, 'Shut the Sash', false)}
+          {/* TODO figure out if we need this
+            {renderMenuItem(TEAM_PAGE_PATH, 'Our Team', false)}
+          */}
+          {renderMenuItem(PROFILE_PAGE_PATH, 'Profile', true)}
         </Menu>
       </Sidebar>
     </React.Fragment>

@@ -1,11 +1,16 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Table from 'react-bootstrap/Table';
-import { METRIC_TYPE_AIRFLOW } from '../../../../utils/Constants';
-import { convertSashHeightToMetricValue } from '../../../../utils/Utils';
+import { METRIC_TYPE_AIRFLOW } from '../../Constants';
+import { convertSashHeightToMetricValue } from '../../Utils';
 
 import './FumeTable.scss';
 
+// Table containing fume hood data. Supports
+//    - grouped data (i.e. all fume hoods within a group/laboratory)
+//    - individual data (i.e. individual fume hoods)
+// The caller parses the data into the correct format. This component only converts it into CFM values and displays the data
+// TODO comment the format of the data that comes in
 class FumeTable extends React.Component {
   render() {
     const { data, isGroup } = this.props;

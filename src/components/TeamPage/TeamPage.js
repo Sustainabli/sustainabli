@@ -1,6 +1,8 @@
-import React from 'react';
-import { Card, Container, Row, Col } from 'react-bootstrap';
-import Header from '../Header/Header.js';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Header from '../../utils/components/Header/Header';
 
 import kevin_tu_pfp from "./../../assets/kevin_tu_pfp.png"
 import michael_li_pfp from "./../../assets/michael_li_pfp.png"

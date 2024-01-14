@@ -15,12 +15,12 @@ import {
   CHART_COLORS,
   METRIC_TYPES_MAP,
   TIME_GRANULARITIES,
-} from '../../../../utils/Constants.js';
+} from '../../Constants.js';
 import {
   convertSashHeightToMetricValue,
   formatDateLabel,
   generateChartOptions,
-} from '../../../../utils/Utils.js';
+} from '../../Utils.js';
 
 ChartJS.register(
   CategoryScale,
@@ -34,6 +34,8 @@ ChartJS.register(
 );
 
 
+// Component for displaying line graphs
+// TODO comment the format of the data that comes in
 class MetricsLineGraph extends React.Component {
   render() {
     const { data } = this.props;
