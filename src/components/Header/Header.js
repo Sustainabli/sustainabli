@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import './Header.scss';
 
 const Header = ({ pageName }) => {
-  const { isAuthenticated, loginWithPopup, logout } = useAuth0();
+  const { logout } = useAuth0();
   return (
     <Container className='p-0 m-0 Header'>
         <Row className='header-content'>

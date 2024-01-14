@@ -1,3 +1,29 @@
+import {
+  atom,
+  selector,
+} from 'recoil';
+
+export const ALL_SENSORS_IN_ORGANIZATION_DATA_STATE = atom({
+  key: 'allSensorsInOrganizationDataState',
+  default: [],
+});
+export const AVAILABLE_SENSORS_STATE = atom({
+  key: 'availableSensorsState',
+  default: [],
+});
+export const GROUPS_TO_FUME_HOODS_STATE = atom({
+  key: 'groupsToFumHoodState',
+  default: [],
+});
+export const USER_INFO_STATE = atom({
+  key: 'userInfoState',
+  default: null,
+});
+
+
+
+
+
 /** General Constants **/
 // Distinct color hexes. If we need more look at https://medialab.github.io/iwanthue/
 export const CHART_COLORS = [
@@ -79,11 +105,14 @@ export const ORGANIZATION_ADMIN_ROLE = 'organization_admin';
 export const USER_ROLE = 'user';
 
 // Endpoints for various pages on the website
-export const HOME_PAGE_PATH = '/';
+export const OVERVIEW_PAGE_PATH = '/';
 export const TEAM_PAGE_PATH = '/team';
 export const PROFILE_PAGE_PATH = '/profile';
-export const SUMMARY_PAGE_PATH = '/summary';
+export const ORGANIZATION_PAGE_PATH = '/organization';
 export const LOGIN_PAGE_PATH = '/login';
+export const FUME_HOODS_PAGE_PATH = '/fume_hoods';
+export const DATA_QUERY_PAGE_PATH = '/data_query';
+export const SHUT_THE_SASH_PAGE_PATH = '/shut_the_sash';
 
 // API endpoints
 export const ADD_GROUP_PATH = '/api/add_group';

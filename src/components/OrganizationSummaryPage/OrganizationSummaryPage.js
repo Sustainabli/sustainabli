@@ -7,7 +7,8 @@ import Header from '../Header/Header';
 import MetricsLineGraph from '../MetricsPage/components/MetricsLineGraph/MetricsLineGraph';
 import { fetchAllGroupFumeHoodsFromOrganization, fetchAllSensorForOrganization } from '../../utils/Utils';
 
-class OrganizationSummaryPage extends React.Component {
+// TODO redo this class to use recoil and match the figma. This was the old organization page so we need to redesign it
+class OrganizationPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -53,7 +54,7 @@ class OrganizationSummaryPage extends React.Component {
     });
 
     return (
-      <Container className='OrganizationSummaryPage' fluid>
+      <Container className='OrganizationPage' fluid>
         <Header pageName='Organization Summary Page' />
 	{allSensorsData.length > 0 &&
 	  <Row>
@@ -71,4 +72,4 @@ class OrganizationSummaryPage extends React.Component {
   }
 }
 
-export default OrganizationSummaryPage;
+export default OrganizationPage;
