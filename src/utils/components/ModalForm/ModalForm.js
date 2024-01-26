@@ -18,6 +18,8 @@ import {
   UPDATE_ORGANIZATION_INFO,
   UPDATE_SENSOR_INFO,
   UPDATE_USER_INFO,
+  UPDATE_FUME_HOOD_PAGE,
+  CREATE_FUME_HOOD,
 
   // User roles
   ORGANIZATION_ADMIN_ROLE,
@@ -665,6 +667,142 @@ class ModalForm extends React.Component {
           </Form>
         break;
 
+
+      case UPDATE_FUME_HOOD_PAGE:
+        formTitle = 'Update Fume Hood Page';
+        modalBody = 
+          <Form>
+            <Modal.Body>
+                <Row>
+                  <Col> <h5>Fume Hood Name</h5> </Col>
+                  <Col> {selectedSensorInfo.fume_hood_name} </Col>
+                </Row>
+                <Form.Group controlId='fumeHoodNameFormPage'>
+                  <Form.Label>
+                    <h5>Organization</h5>
+                  </Form.Label>
+                    <Form.Control
+                      type='input'
+                      placeholder='Organization'
+                      defaultValue='Organization'
+                      required
+                    />
+                  <Form.Label>
+                    <h5>Building</h5>
+                  </Form.Label>
+                    <Form.Control
+                      type='input'
+                      placeholder='Building'
+                      defaultValue='Building'
+                      required
+                    />
+                  <Form.Label>
+                    <h5>Room</h5>
+                  </Form.Label>
+                    <Form.Control
+                      type='input'
+                      placeholder='Room'
+                      defaultValue='Room'
+                      required
+                    />
+                    <Form.Label>
+                    <h5>Lab</h5>
+                  </Form.Label>
+                    <Form.Control
+                      type='input'
+                      placeholder='Lab'
+                      defaultValue='Lab'
+                      required
+                    />
+                  <Form.Label>
+                    <h5>Sensor MAC</h5>
+                  </Form.Label>
+                    <Form.Control
+                      type='input'
+                      placeholder='Sensor MAC'
+                      defaultValue='Sensor MAC'
+                      required
+                    />
+                </Form.Group>
+              </Modal.Body>
+            <Modal.Footer>
+              <Button variant='dark' type='submit'> Update Fume Hood </Button>
+            </Modal.Footer>
+
+          </Form> 
+  
+        break;
+      
+        case CREATE_FUME_HOOD:
+          formTitle = 'Create Fume Hood';
+          modalBody = 
+            <Form>
+              <Modal.Body>
+                  <Form.Group controlId='fumeHoodNameFormPage'>
+                    <Form.Label>
+                      <h5>Fume Hood Name</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Fume Hood Name'
+                        defaultValue='Fume Hood Name'
+                        required
+                      />
+                    <Form.Label>
+                      <h5>Organization</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Organization'
+                        defaultValue='Organization'
+                        required
+                      />
+                    <Form.Label>
+                      <h5>Building</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Building'
+                        defaultValue='Building'
+                        required
+                      />
+                    <Form.Label>
+                      <h5>Room</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Room'
+                        defaultValue='Room'
+                        required
+                      />
+                      <Form.Label>
+                      <h5>Lab</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Lab'
+                        defaultValue='Lab'
+                        required
+                      />
+                    <Form.Label>
+                      <h5>Sensor MAC</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Sensor MAC'
+                        defaultValue='Sensor MAC'
+                        required
+                      />
+                  </Form.Group>
+                </Modal.Body>
+              <Modal.Footer>
+                <Button variant='dark' type='submit'> Create Fume Hood </Button>
+              </Modal.Footer>
+  
+            </Form> 
+    
+          break;
+  
       case UPDATE_GROUP_INFO:
         formTitle = 'Update Group Info'
         modalBody =

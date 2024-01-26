@@ -153,3 +153,5 @@ export const UPDATE_ORGANIZATION_ADMIN_INFO = 'update_organization_admin_info';
 export const UPDATE_ORGANIZATION_INFO = 'update_organization_info';
 export const UPDATE_SENSOR_INFO = 'update_sensor_info';
 export const UPDATE_USER_INFO = 'update_user_info';
+export const UPDATE_FUME_HOOD_PAGE = 'update_fume_hood_page';
+export const CREATE_FUME_HOOD = 'create_fume_hood';
