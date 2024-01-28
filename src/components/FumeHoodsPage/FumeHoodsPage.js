@@ -54,12 +54,17 @@ function FumeHoodsPage() {
 	return res;
   }
 
+  // availableSensors is a list of the possible sensors: [{fume_hood_name: name, organization: code, ...}, ...]
   const [availableSensors, setAvailableSensors] = useRecoilState(AVAILABLE_SENSORS_STATE);
   const [userInfo, _] = useRecoilState(USER_INFO_STATE);
+
   // TODO set up modal form for creating new fume hood and editing fume hood info
   const [shouldShowModalForm, setShouldShowModalForm] = useState(false);
   const [sensor, setSensor] = useState(null);
   const [form, setForm] = useState("");
+
+  // allSensorsData is a list of js objects which contains the Cfm? at a specific time
+  // ex: [{data : {testMac: 5.625, testMax2: 65}, time: "2023"}...]
   const [allSensorsData, setAllSensorsData] = useState([])
   
   useEffect(() => {
@@ -70,6 +75,8 @@ function FumeHoodsPage() {
 	getSensorData();
   }, [])
 
+  // summedCfmData is an object with the sensors and the summed cfm
+  // ex: [{testMac: 835, testMax2: 2090}]
   const summedCfmData = {};
   allSensorsData.forEach(datum => Object.entries(datum.data).forEach(([key, value]) => {
 	const cfmValue = convertSashHeightToMetricValue(METRIC_TYPE_AIRFLOW, value);
@@ -77,6 +84,9 @@ function FumeHoodsPage() {
   }));
 
   // Take the largest cfm value, calculate the ratio for the progress bar, and sort summedCfmData in descending order based on this ratio
+
+  // orderSummedCfmData is a list of the sensors with the summed and normalized cfm
+  // ex: [{fume_hood_name: testMac, cfm : 835, normalizedCfm: 40}]
   const ratio = Math.max.apply(Math, Object.values(summedCfmData)) / 100;
   const orderedSummedCfmData = Object.entries(summedCfmData).map(([key, value]) => ({
 	fumeHood: key,
@@ -84,9 +94,6 @@ function FumeHoodsPage() {
 	normalizedCfm: Math.round(value / ratio)
   }));
   orderedSummedCfmData.sort((a, b) => b.normalizedCfm - a.normalizedCfm);
-
-  console.log(orderedSummedCfmData)
-  console.log(availableSensors)
 
   return (
     <Container className='FumeHoodsPage' fluid>
@@ -126,7 +133,7 @@ function FumeHoodsPage() {
 	</Col>
 	<Col/>
 	<Col md="auto">
-	  <Button onClick={() => createFumeModal(sensor)}>
+	  <Button onClick={() => createFumeModal(sensor)} variant='info'>
 	    Create New Fume Hood
 	  </Button>
 	</Col>

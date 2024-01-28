@@ -673,11 +673,16 @@ class ModalForm extends React.Component {
         modalBody = 
           <Form>
             <Modal.Body>
-                <Row>
-                  <Col> <h5>Fume Hood Name</h5> </Col>
-                  <Col> {selectedSensorInfo.fume_hood_name} </Col>
-                </Row>
-                <Form.Group controlId='fumeHoodNameFormPage'>
+                <Form.Group controlId='fumeHoodNameUpdatePage'>
+                    <Form.Label>
+                      <h5>Fume Hood Name</h5>
+                    </Form.Label>
+                      <Form.Control
+                        type='input'
+                        placeholder='Fume Hood Name'
+                        defaultValue={selectedSensorInfo.fume_hood_name}
+                        required
+                      />
                   <Form.Label>
                     <h5>Organization</h5>
                   </Form.Label>
@@ -714,15 +719,6 @@ class ModalForm extends React.Component {
                       defaultValue='Lab'
                       required
                     />
-                  <Form.Label>
-                    <h5>Sensor MAC</h5>
-                  </Form.Label>
-                    <Form.Control
-                      type='input'
-                      placeholder='Sensor MAC'
-                      defaultValue='Sensor MAC'
-                      required
-                    />
                 </Form.Group>
               </Modal.Body>
             <Modal.Footer>
@@ -738,7 +734,7 @@ class ModalForm extends React.Component {
           modalBody = 
             <Form>
               <Modal.Body>
-                  <Form.Group controlId='fumeHoodNameFormPage'>
+                  <Form.Group controlId='fumeHoodNameCreatePage'>
                     <Form.Label>
                       <h5>Fume Hood Name</h5>
                     </Form.Label>
