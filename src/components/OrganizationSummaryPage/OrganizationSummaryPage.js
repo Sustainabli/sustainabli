@@ -6,16 +6,17 @@ import Col from 'react-bootstrap/Col';
 import Header from '../Header/Header';
 import DataTable from './components/DataTable/DataTable';
 import './OrganizationSummaryPage.scss';
+import './components/DataTable/DataTable.scss'
 
 class OrganizationSummaryPage extends React.Component {
   constructor() {
     super();
     this.state = {
       allSensorsData: [
-        { name: 'Jane Doe', lab: 'Rodriguez Lab', accountType: 'Scientist', joined: '12/1/23', preferredHood: '23', efficiencyScore: 'Very Low' },
-        { name: 'Tom Brady', lab: 'Patriot Lab', accountType: 'QB', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'Very High' },
-        { name: 'Bill B', lab: 'Patriot Lab', accountType: 'Coach', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'Medium' },
-        { name: 'IHaveAVeryLongNameForTestPurposes', lab: 'Patriot Lab', accountType: 'Coach', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'High' },
+        { name: 'Larry Herman', lab: 'Iribe Lab', accountType: 'Lecturer', joined: '1/1/70', preferredHood: '13', efficiencyScore: 'Very Low' },
+        { name: 'Nelson P', lab: 'Letters and Science Lab', accountType: 'Professor', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'Medium' },
+        { name: 'Justin Destroyer', lab: 'Passing Grade Lab', accountType: 'God', joined: '12/1/20', preferredHood: '23', efficiencyScore: 'Very High' },
+        { name: 'Clyde Kruskal', lab: 'Algos Lab', accountType: 'Clyde', joined: '12/1/03', preferredHood: '01', efficiencyScore: 'High' },
       ],
     };
   }
