@@ -664,7 +664,7 @@ class ModalForm extends React.Component {
             </Modal.Footer>
           </Form>
         break;
-
+  
       case UPDATE_GROUP_INFO:
         formTitle = 'Update Group Info'
         modalBody =
