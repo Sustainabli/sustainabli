@@ -1,75 +1,43 @@
+// OrganizationSummaryPage.js
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import FumeTable from '../MetricsPage/components/FumeTable/FumeTable.js';
 import Header from '../Header/Header';
-import MetricsLineGraph from '../MetricsPage/components/MetricsLineGraph/MetricsLineGraph';
-import { fetchAllGroupFumeHoodsFromOrganization, fetchAllSensorForOrganization } from '../../utils/Utils';
+import DataTable from './components/DataTable/DataTable';
+import './OrganizationSummaryPage.scss';
 
-// TODO redo this class to use recoil and match the figma. This was the old organization page so we need to redesign it
-class OrganizationPage extends React.Component {
+class OrganizationSummaryPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      allSensorsData: [],
-      groupsToFumeHoods: [],
+      allSensorsData: [
+        { name: 'Jane Doe', lab: 'Rodriguez Lab', accountType: 'Scientist', joined: '12/1/23', preferredHood: '23', efficiencyScore: 'Very Low' },
+        { name: 'Tom Brady', lab: 'Patriot Lab', accountType: 'QB', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'Very High' },
+        { name: 'Bill B', lab: 'Patriot Lab', accountType: 'Coach', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'Medium' },
+        { name: 'IHaveAVeryLongNameForTestPurposes', lab: 'Patriot Lab', accountType: 'Coach', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'High' },
+      ],
     };
   }
 
   componentDidMount = async () => {
-    const { userInfo } = this.props;
-
-    this.setState({
-      allSensorsData: await fetchAllSensorForOrganization(userInfo.organization_code),
-      groupsToFumeHoods: await fetchAllGroupFumeHoodsFromOrganization(userInfo.organization_code),
-    });
+    // Fetch or simulate fetching data here
   }
 
   render() {
-    const { allSensorsData, groupsToFumeHoods } = this.state;
-
-    const averageData = allSensorsData.map(datum => ({
-      time: datum.time,
-      data: {
-	total: Object.values(datum.data).reduce((acc, curr) => acc + curr, 0)
-      }
-    }));
-
-    const groupSummaryData = allSensorsData.map(datum => {
-      const data = {};
-      groupsToFumeHoods.forEach(groupFumeHoods => {
-	data[groupFumeHoods.group_name] = groupFumeHoods.fume_hoods.reduce((acc, fumeHood) => {
-	  if (datum.data[fumeHood]) {
-	    return datum.data[fumeHood] + acc
-	  }
-	  return acc;
-	}, 0);
-      });
-
-      return {
-	time: datum.time,
-	data: data,
-      };
-    });
+    const { allSensorsData } = this.state;
 
     return (
-      <Container className='OrganizationPage' fluid>
-        <Header pageName='Organization Summary Page' />
-	{allSensorsData.length > 0 &&
-	  <Row>
-	    <Col md={6}>
-	      <MetricsLineGraph data={averageData}/>
-	      <FumeTable data={groupSummaryData} isGroup={true}/>
-	    </Col>
-	    <Col md={6}>
-	      <FumeTable data={allSensorsData}/>
-	    </Col>
-	  </Row>
-	}
+      <Container fluid className="organizationSummaryPage">
+        <Header pageName="UNIVERSITY OF MARYLAND, COLLEGE PARK"/>
+        <Row>
+          <Col xs={12}>
+            <DataTable data={allSensorsData} />
+          </Col>
+        </Row>
       </Container>
-    )
+    );
   }
 }
 
-export default OrganizationPage;
+export default OrganizationSummaryPage;
