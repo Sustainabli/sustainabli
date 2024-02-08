@@ -121,7 +121,7 @@ function App(props) {
                       <Route
                         exact
                         path = { FUME_HOODS_PAGE_PATH }
-                        element={ <FumeHoodsPage availableSensors={availableSensors}/> }
+                        element={ <FumeHoodsPage availableSensors={availableSensors} updateSensors={setAvailableSensors}/> }
                       />
                       <Route
                         exact

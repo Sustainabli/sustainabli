@@ -15,15 +15,23 @@ class FumeModalForm extends React.Component {
   /** Functions for updating fume hoods (organization_admin perspective) on the fume hoods page**/
   onSubmitUpdateFumeHoodInfo = async event => {
     event.preventDefault();
-    const { clearModalFormType, selectedSensorInfo } = this.props
+    const { clearModalFormType, selectedSensorInfo, updateSensor } = this.props
 
     //0: fume hood name, 1: building, 2: room, 3: lab
     const fumeHoodName = event.target.elements.fumeHoodNameUpdatePage[0].value
     const building = event.target.elements.fumeHoodNameUpdatePage[1].value
     const room = event.target.elements.fumeHoodNameUpdatePage[2].value
 
-    const result = await updateFumeHoodInfo(selectedSensorInfo.id, fumeHoodName, building, room, selectedSensorInfo.organization_code)
+    console.log(selectedSensorInfo)
+    const result = await updateFumeHoodInfo(selectedSensorInfo.sensor_id, fumeHoodName, building, room, selectedSensorInfo.organization_code)
+
+    result.fume_hoods.forEach((sensor) => {
+      sensor["sensor_id"] = sensor["id"];
+      delete sensor["id"];
+    })
+
     console.log(result)
+    updateSensor(result.fume_hoods)
     clearModalFormType();
   }
 

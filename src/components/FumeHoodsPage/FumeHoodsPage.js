@@ -101,7 +101,6 @@ function FumeHoodsPage(props) {
   );
   orderedSummedCfmData.sort((a, b) => b.normalizedCfm - a.normalizedCfm);
 
-  console.log(availableSensors)
   return (
     <Container className="FumeHoodsPage" fluid>
       {shouldShowModalForm && (
@@ -109,6 +108,7 @@ function FumeHoodsPage(props) {
           formType={form}
           selectedSensorInfo={sensor}
           clearModalFormType={closeModal}
+          updateSensor={props.updateSensors}
         />
       )}
       <Header pageName="Fume Hoods Page" />
