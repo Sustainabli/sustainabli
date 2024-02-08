@@ -101,6 +101,7 @@ function FumeHoodsPage(props) {
   );
   orderedSummedCfmData.sort((a, b) => b.normalizedCfm - a.normalizedCfm);
 
+  console.log(availableSensors)
   return (
     <Container className="FumeHoodsPage" fluid>
       {shouldShowModalForm && (
@@ -141,8 +142,8 @@ function FumeHoodsPage(props) {
             <tr key={index}>
               <td>{sensor.fume_hood_name}</td>
               <td>{userInfo.organization_code}</td>
-              <td>BUILDING</td>
-              <td>ROOM</td>
+              <td>{sensor.building}</td>
+              <td>{sensor.room}</td>
               <td>LAB</td>
               <td>{sensor.sensor_id}</td>
               {/* Unable to set progress bar to 25% of table width through scss so doing inline styling instead */}

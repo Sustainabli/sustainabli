@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS sensor_info (
   organization_code VARCHAR(5) REFERENCES organizations(code)
     ON UPDATE CASCADE
     ON DELETE SET NULL,
+  building VARCHAR(100),
+  room VARCHAR(100),
   UNIQUE(id, fume_hood_name)
 );
 

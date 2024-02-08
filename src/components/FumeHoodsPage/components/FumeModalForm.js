@@ -4,12 +4,28 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import "../FumeHoodsPage.scss";
 import { CREATE_SENSOR, UPDATE_FUME_HOOD_INFO } from "../../../utils/Constants";
+import { updateFumeHoodInfo } from "../../../utils/Utils";
 
 class FumeModalForm extends React.Component {
   onCloseModal = () => {
     const { clearModalFormType } = this.props;
     clearModalFormType();
   };
+
+  /** Functions for updating fume hoods (organization_admin perspective) on the fume hoods page**/
+  onSubmitUpdateFumeHoodInfo = async event => {
+    event.preventDefault();
+    const { clearModalFormType, selectedSensorInfo } = this.props
+
+    //0: fume hood name, 1: building, 2: room, 3: lab
+    const fumeHoodName = event.target.elements.fumeHoodNameUpdatePage[0].value
+    const building = event.target.elements.fumeHoodNameUpdatePage[1].value
+    const room = event.target.elements.fumeHoodNameUpdatePage[2].value
+
+    const result = await updateFumeHoodInfo(selectedSensorInfo.id, fumeHoodName, building, room, selectedSensorInfo.organization_code)
+    console.log(result)
+    clearModalFormType();
+  }
 
   renderFormContent = () => {
     const { formType, selectedSensorInfo } = this.props;
@@ -21,7 +37,7 @@ class FumeModalForm extends React.Component {
       case UPDATE_FUME_HOOD_INFO:
         formTitle = "Update Fume Hood Page";
         modalBody = (
-          <Form>
+          <Form onSubmit={this.onSubmitUpdateFumeHoodInfo}>
             <Modal.Body>
               <Form.Group controlId="fumeHoodNameUpdatePage">
                 <Form.Label>
@@ -30,14 +46,6 @@ class FumeModalForm extends React.Component {
                 <Form.Control
                   type="input"
                   placeholder={selectedSensorInfo.fume_hood_name}
-                  required
-                />
-                <Form.Label>
-                  <h5>Organization</h5>
-                </Form.Label>
-                <Form.Control
-                  type="input"
-                  placeholder="Organization"
                   required
                 />
                 <Form.Label>
@@ -51,7 +59,7 @@ class FumeModalForm extends React.Component {
                 <Form.Label>
                   <h5>Lab</h5>
                 </Form.Label>
-                <Form.Control type="input" placeholder="Lab" required />
+                <Form.Control type="input" placeholder="Lab"/>
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>

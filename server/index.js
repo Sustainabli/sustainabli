@@ -500,12 +500,12 @@ app.post('/api/add_sensor_info', async (req, res) => {
 //  List of sensor info from organization
 // }
 app.put('/api/update_fume_hood_info', async (req, res) => {
-  const { sensor_id, fume_hood_name, organization_code } = req.body;
+  const { sensor_id, fume_hood_name, building, room, organization_code } = req.body;
   const client = await pool.connect();
   let toRet = {};
   try {
     await client.query('BEGIN');
-    await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, sensor_id));
+    await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, building, room, sensor_id));
     toRet.fume_hoods = (await client.query(format(SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
     toRet.groups = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
     await client.query('COMMIT');
