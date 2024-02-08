@@ -71,12 +71,6 @@ function App(props) {
         availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
       }
 
-      // TODO clean up database so we don't need to map sensor_id to id and get the correct keyname
-      // Get correct keyname
-      availableSensors.forEach(sensor => {
-        sensor['sensor_id'] = sensor['id'];
-        delete sensor['id'];
-      });
       setAvailableSensors(availableSensors);
       setUserInfo(userInfo);
     }

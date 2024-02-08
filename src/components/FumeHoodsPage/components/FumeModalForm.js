@@ -25,11 +25,6 @@ class FumeModalForm extends React.Component {
     console.log(selectedSensorInfo)
     const result = await updateFumeHoodInfo(selectedSensorInfo.sensor_id, fumeHoodName, building, room, selectedSensorInfo.organization_code)
 
-    result.fume_hoods.forEach((sensor) => {
-      sensor["sensor_id"] = sensor["id"];
-      delete sensor["id"];
-    })
-
     console.log(result)
     updateSensor(result.fume_hoods)
     clearModalFormType();

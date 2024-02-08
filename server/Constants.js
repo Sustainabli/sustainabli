@@ -122,7 +122,7 @@ const SELECT_ALL_SENSOR_INFO_QUERY = `
 `;
 
 const SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY = `
-  SELECT id, fume_hood_name, organization_code, building, room
+  SELECT id AS sensor_id, fume_hood_name, organization_code, building, room
   FROM sensor_info
   WHERE organization_code = %L
   ORDER BY fume_hood_name;
