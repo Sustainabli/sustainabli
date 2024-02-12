@@ -494,6 +494,8 @@ app.post('/api/add_sensor_info', async (req, res) => {
 // reqBody {
 //  sensor_id: String,
 //  fume_hood_name: String,
+//  building: String,
+//  room: String,
 //  organization_code: String
 // }
 // response {

@@ -81,13 +81,11 @@ function App(props) {
     // After the empty account is created, the user must be added to the organization by the organization admin.
     // The available sensors for a user to view are:
     //   - The sensors associated with the group the user belongs to for USER_ROLE
-    //   - ALl sensors in the organization for ORGANIZATION_ADMIN_ROLE
+    //   - All sensors in the organization for ORGANIZATION_ADMIN_ROLE
     if (isAuthenticated && user && !userInfo ) {
       loadData();
     }
   }, [isAuthenticated, user, userInfo]);
-
-  // element={ <MetricsPage availableSensors={availableSensors} userInfo={userInfo} /> }
 
     return (
       <Container fluid className='p-0 m-0 App'>
