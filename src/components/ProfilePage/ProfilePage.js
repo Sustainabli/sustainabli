@@ -13,7 +13,6 @@ import {
   CREATE_GROUP,
   CREATE_ORGANIZATION,
   CREATE_SENSOR,
-  UPDATE_FUME_HOOD_INFO,
   UPDATE_GROUP_INFO,
   UPDATE_ORGANIZATION_ADMIN_INFO,
   UPDATE_ORGANIZATION_INFO,
@@ -30,7 +29,6 @@ import {
   fetchGroupsInOrganization,
   fetchOrganizationAdminUserInfo,
   fetchOrganizations,
-  fetchSensorInfoFromOrganization,
   fetchUsersInOrganization,
 } from '../../utils/Utils.js';
 
