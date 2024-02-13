@@ -46,17 +46,17 @@ class FumeModalForm extends React.Component {
                 </Form.Label>
                 <Form.Control
                   type="input"
-                  placeholder={selectedSensorInfo.fume_hood_name}
+                  value={selectedSensorInfo.fume_hood_name}
                   required
                 />
                 <Form.Label>
                   <h5>Building</h5>
                 </Form.Label>
-                <Form.Control type="input" placeholder="Building" required />
+                <Form.Control type="input" value={selectedSensorInfo.building} required />
                 <Form.Label>
                   <h5>Room</h5>
                 </Form.Label>
-                <Form.Control type="input" placeholder="Room" required />
+                <Form.Control type="input" value={selectedSensorInfo.room} required />
                 <Form.Label>
                   <h5>Lab</h5>
                 </Form.Label>

@@ -51,8 +51,8 @@ function FumeHoodsPage(props) {
   }
 
   // availableSensors is a list of the possible sensors
-  // ex: [{fume_hood_name: 'testMac', organization_code: 'TTT', sensor_id: 'testMac'}, ...]
-  const availableSensors = props.availableSensors;
+  // ex: [{fume_hood_name: 'testMac', organization_code: 'TTT', sensor_id: 'testMac'}, ...
+  const { availableSensors, updateSensors } = this.props
 
   const [userInfo, _] = useRecoilState(USER_INFO_STATE);
   const [shouldShowModalForm, setShouldShowModalForm] = useState(false);
@@ -108,7 +108,7 @@ function FumeHoodsPage(props) {
           formType={form}
           selectedSensorInfo={sensor}
           clearModalFormType={closeModal}
-          updateSensor={props.updateSensors}
+          updateSensor={updateSensors}
         />
       )}
       <Header pageName="Fume Hoods Page" />
