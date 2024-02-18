@@ -13,20 +13,27 @@ class FumeModalForm extends React.Component {
   };
 
   /** Functions for updating fume hoods (organization_admin perspective) on the fume hoods page**/
-  onSubmitUpdateFumeHoodInfo = async event => {
+  onSubmitUpdateFumeHoodInfo = async (event) => {
     event.preventDefault();
-    const { clearModalFormType, selectedSensorInfo, updateSensor } = this.props
+    const { clearModalFormType, selectedSensorInfo, updateSensor } = this.props;
 
     //0: fume hood name, 1: building, 2: room, 3: lab
-    const fumeHoodName = event.target.elements.fumeHoodNameUpdatePage[0].value
-    const building = event.target.elements.fumeHoodNameUpdatePage[1].value
-    const room = event.target.elements.fumeHoodNameUpdatePage[2].value
+    const fumeHoodName = event.target.elements.fumeHoodNameUpdatePage[0].value;
+    const building = event.target.elements.fumeHoodNameUpdatePage[1].value;
+    const room = event.target.elements.fumeHoodNameUpdatePage[2].value;
+    const lab = event.target.elements.fumeHoodNameUpdatePage[3].value.trim().split(" ");
 
-    const result = await updateFumeHoodInfo(selectedSensorInfo.sensor_id, fumeHoodName, building, room, selectedSensorInfo.organization_code)
-
-    updateSensor(result.fume_hoods)
+    const result = await updateFumeHoodInfo(
+      selectedSensorInfo.sensor_id,
+      fumeHoodName,
+      building,
+      room,
+      lab,
+      selectedSensorInfo.organization_code
+    );
+    updateSensor(result.fume_hoods);
     clearModalFormType();
-  }
+  };
 
   renderFormContent = () => {
     const { formType, selectedSensorInfo } = this.props;
@@ -46,21 +53,35 @@ class FumeModalForm extends React.Component {
                 </Form.Label>
                 <Form.Control
                   type="input"
-                  value={selectedSensorInfo.fume_hood_name}
+                  defaultValue={selectedSensorInfo.fume_hood_name}
                   required
                 />
                 <Form.Label>
                   <h5>Building</h5>
                 </Form.Label>
-                <Form.Control type="input" value={selectedSensorInfo.building} required />
+                <Form.Control
+                  type="input"
+                  defaultValue={selectedSensorInfo.building}
+                  required
+                />
                 <Form.Label>
                   <h5>Room</h5>
                 </Form.Label>
-                <Form.Control type="input" value={selectedSensorInfo.room} required />
+                <Form.Control
+                  type="input"
+                  defaultValue={selectedSensorInfo.room}
+                  required
+                />
                 <Form.Label>
                   <h5>Lab</h5>
                 </Form.Label>
-                <Form.Control type="input" placeholder="Lab"/>
+                <Form.Control
+                  type="input"
+                  defaultValue={selectedSensorInfo.groups.map((ele) => {
+                    return ele + " ";
+                  })}
+                  required
+                />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>

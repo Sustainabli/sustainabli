@@ -36,7 +36,7 @@ const INSERT_GROUP_QUERY = `
 
 const INSERT_GROUP_FUME_HOODS_QUERY = `
   INSERT INTO group_fume_hoods (organization_code, group_name, sensor_id, fume_hood_name)
-  VALUES %L;
+  VALUES (%L, %L, %L, %L);
 `;
 
 const UPDATE_GROUP_QUERY = `
@@ -122,10 +122,13 @@ const SELECT_ALL_SENSOR_INFO_QUERY = `
 `;
 
 const SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY = `
-  SELECT id AS sensor_id, fume_hood_name, organization_code, building, room
-  FROM sensor_info
-  WHERE organization_code = %L
-  ORDER BY fume_hood_name;
+  SELECT id AS sensor_id, s.fume_hood_name, s.organization_code, building, room, ARRAY_AGG(group_name) as groups
+  FROM sensor_info s
+  JOIN group_fume_hoods g
+  ON s.id = g.sensor_id
+  WHERE s.organization_code = %L
+  GROUP BY s.id
+  ORDER BY s.fume_hood_name;
 `;
 
 const SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY = `
@@ -134,6 +137,16 @@ const SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY = `
   WHERE organization_code = %L AND group_name = %L;
 `;
 
+const SELECT_ALL_GROUPS_FROM_SENSOR_INFO = `
+  SELECT group_name
+  FROM group_fume_hoods
+  WHERE organization_code = %L AND sensor_id = %L;
+`;
+
+const DELETE_GROUP_ON_FUME_HOOD_UPDATE = `
+  DELETE FROM group_fume_hoods
+  WHERE group_name = %L AND sensor_id = %L;
+`;
 
 const INSERT_SENSOR_INFO_QUERY = `
   INSERT INTO sensor_info (id, fume_hood_name, organization_code)
@@ -201,6 +214,8 @@ module.exports = {
   SELECT_ALL_SENSOR_INFO_QUERY,
   SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY,
   SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY,
+  SELECT_ALL_GROUPS_FROM_SENSOR_INFO,
+  DELETE_GROUP_ON_FUME_HOOD_UPDATE,
   INSERT_SENSOR_INFO_QUERY,
   UPDATE_SENSOR_INFO_QUERY,
   SELECT_SENSOR_DATA_QUERY,

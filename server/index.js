@@ -18,6 +18,7 @@ const {
   SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY,
   SELECT_ALL_ORGANIZATIONS_QUERY,
   SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY,
+  SELECT_ALL_GROUPS_FROM_SENSOR_INFO,
   SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY,
   SELECT_ALL_SENSOR_INFO_QUERY,
   SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY,
@@ -33,7 +34,9 @@ const {
   UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY,
   UPDATE_USER_INFO_QUERY,
   UPDATE_USER_ROLE_QUERY,
+  DELETE_GROUP_ON_FUME_HOOD_UPDATE,
 } = require('./Constants');
+const { to } = require('mathjs');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -496,20 +499,40 @@ app.post('/api/add_sensor_info', async (req, res) => {
 //  fume_hood_name: String,
 //  building: String,
 //  room: String,
+//  lab: String,
 //  organization_code: String
 // }
 // response {
 //  List of sensor info from organization
 // }
 app.put('/api/update_fume_hood_info', async (req, res) => {
-  const { sensor_id, fume_hood_name, building, room, organization_code } = req.body;
+  const { sensor_id, fume_hood_name, building, room, lab, organization_code } = req.body;
   const client = await pool.connect();
   let toRet = {};
   try {
     await client.query('BEGIN');
     await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, building, room, sensor_id));
+    const existing_groups = ((await client.query(format(SELECT_ALL_GROUPS_FROM_SENSOR_INFO, organization_code, sensor_id))).rows).map((ele) => ele.group_name);
+
+    existing_groups.forEach(async (ele) => {
+      if (!lab.includes(ele)) {
+        await client.query(format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, ele, sensor_id));
+      }
+    })
+
+    lab.forEach(async (ele) => {
+      if (!existing_groups.includes(ele)) {
+        try {
+          await client.query(format(INSERT_GROUP_FUME_HOODS_QUERY, organization_code, ele, sensor_id, fume_hood_name));
+        }
+        catch (err) {
+          res.status(500).send('Inserting new group fume hoods entry errored ' + err)
+        }
+      }
+    })
+
     toRet.fume_hoods = (await client.query(format(SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
-    toRet.groups = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
