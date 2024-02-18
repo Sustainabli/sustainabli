@@ -162,16 +162,32 @@ const SELECT_SENSOR_DATA_QUERY = `
 `;
 
 const SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY = `
-  SELECT DATE_TRUNC('day', time) AS time, fume_hood_name, AVG(value) AS value
-  FROM sensor_data INNER JOIN sensor_info ON sensor_data.id = sensor_info.id
-  WHERE sensor_info.organization_code = %L
-  GROUP BY DATE_TRUNC('day', time), fume_hood_name
-  ORDER BY time;
+  SELECT 
+    sensor_info.fume_hood_name,
+    DATE_TRUNC('day', sensor_data.time) AS day,
+    sensor_data.id, 
+    sensor_data.time, 
+    sensor_data.value, 
+    sensor_data.status, 
+    sensor_data.error_message, 
+    sensor_data.lab, 
+    sensor_data.account_type, 
+    sensor_data.joined, 
+    sensor_data.preferred_hood, 
+    sensor_data.efficiency_score
+  FROM 
+    sensor_data 
+  INNER JOIN 
+    sensor_info ON sensor_data.id = sensor_info.id
+  WHERE 
+    sensor_info.organization_code = %L
+  ORDER BY 
+    DATE_TRUNC('day', sensor_data.time), sensor_info.fume_hood_name;
 `;
 
 const INSERT_SENSOR_DATA_QUERY = `
-  INSERT INTO sensor_data(id, time, value, status, error_message)
-  VALUES (%L, %L, %L, %L, %L);
+  INSERT INTO sensor_data(id, time, value, status, error_message, lab, account_type, joined, preferred_hood, efficiency_score)
+  VALUES (%L, %L, %L, %L, %L, %L, %L, %L, %L, %L);
 `;
 
 const SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY = `
