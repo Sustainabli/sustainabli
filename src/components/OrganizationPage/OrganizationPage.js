@@ -6,24 +6,73 @@ import Col from 'react-bootstrap/Col';
 import Header from '../Header/Header';
 import DataTable from './components/DataTable/DataTable';
 import './OrganizationSummaryPage.scss';
-import './components/DataTable/DataTable.scss'
+import './components/DataTable/DataTable.scss';
+import { withAuth0 } from '@auth0/auth0-react';
+import { FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH, FETCH_USER_INFO_PATH } from '../../utils/Constants';
 
 class OrganizationSummaryPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      allSensorsData: [
-        { name: 'Larry Herman', lab: 'Iribe Lab', accountType: 'Lecturer', joined: '1/1/70', preferredHood: '13', efficiencyScore: 'Very Low' },
-        { name: 'Nelson P', lab: 'Letters and Science Lab', accountType: 'Professor', joined: '12/1/03', preferredHood: '11', efficiencyScore: 'Medium' },
-        { name: 'Justin Destroyer', lab: 'Passing Grade Lab', accountType: 'God', joined: '12/1/20', preferredHood: '23', efficiencyScore: 'Very High' },
-        { name: 'Clyde Kruskal', lab: 'Algos Lab', accountType: 'Clyde', joined: '12/1/03', preferredHood: '01', efficiencyScore: 'High' },
-      ],
+      allSensorsData: [], 
     };
   }
 
   componentDidMount = async () => {
-    // Fetch or simulate fetching data here
+    const { user } = this.props.auth0; 
+    const userEmail = user.email; 
+    try {
+      const userInfoResponse = await fetch(FETCH_USER_INFO_PATH, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: userEmail }), 
+      });
+
+      if (!userInfoResponse.ok) {
+        throw new Error(`HTTP error! Status: ${userInfoResponse.status}`);
+      }
+
+      const userInfo = await userInfoResponse.json();
+      const organizationCode = userInfo.organization_code; 
+
+      const sensorDataResponse = await fetch(FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ organization_code: organizationCode }), 
+      });
+
+      if (!sensorDataResponse.ok) {
+        throw new Error(`HTTP error! Status: ${sensorDataResponse.status}`);
+      }
+
+      const rawData = await sensorDataResponse.json();
+      console.log(rawData);
+  
+      const data = rawData.map(item => ({
+        name: item.fume_hood_name, 
+        // Currently Un-used
+        // day: item.day || 'N/A', 
+        // time: item.time, 
+        // value: item.value || 'N/A', 
+        // status: item.status || 'N/A',
+        // error_message: item.erro_message || 'N/A',
+        lab: item.lab || 'N/A', 
+        accountType: item.account_type || 'N/A', 
+        joined: item.joined ? new Date(item.joined).toLocaleDateString() : 'N/A',
+        preferredHood: item.preferred_hood || 'N/A', 
+        efficiencyScore: item.efficiency_score || 'N/A' 
+      }));
+  
+      this.setState({ allSensorsData: data });
+    } catch (error) {
+      console.error("Failed to fetch data: ", error);
+    }
   }
+  
 
   render() {
     const { allSensorsData } = this.state;
@@ -41,4 +90,4 @@ class OrganizationSummaryPage extends React.Component {
   }
 }
 
-export default OrganizationSummaryPage;
+export default withAuth0(OrganizationSummaryPage);

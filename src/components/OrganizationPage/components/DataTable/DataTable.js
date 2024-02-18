@@ -1,8 +1,12 @@
 import React from 'react';
 
 function toCssClass(text) {
-    return text.replace(/\s+/g, '-').toLowerCase();
+  if (typeof text !== 'string') {
+    return '';
   }
+  return text.replace(/\s+/g, '-').toLowerCase();
+}
+
 
 const DataTable = ({ data }) => {
   return (
