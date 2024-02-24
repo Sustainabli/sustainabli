@@ -263,10 +263,13 @@ export const addSensor = async (sensorId, organizationCode) => {
   }).then(res => res.json());
 }
 
-export const updateFumeHoodInfo = async (sensorId, fumeHoodName, organizationCode) => {
+export const updateFumeHoodInfo = async (sensorId, fumeHoodName, building, room, lab, organizationCode) => {
   const reqBody = {
     fume_hood_name: fumeHoodName,
     sensor_id: sensorId,
+    building: building,
+    room: room,
+    lab: lab,
     organization_code: organizationCode
   };
   return fetch(UPDATE_FUME_HOOD_INFO_PATH, {

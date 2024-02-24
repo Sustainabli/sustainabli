@@ -52,7 +52,7 @@ function FumeHoodsPage(props) {
 
   // availableSensors is a list of the possible sensors
   // ex: [{fume_hood_name: 'testMac', organization_code: 'TTT', sensor_id: 'testMac'}, ...]
-  const availableSensors = props.availableSensors;
+  const { availableSensors, updateSensors } = props;
 
   const [userInfo, _] = useRecoilState(USER_INFO_STATE);
   const [shouldShowModalForm, setShouldShowModalForm] = useState(false);
@@ -108,6 +108,7 @@ function FumeHoodsPage(props) {
           formType={form}
           selectedSensorInfo={sensor}
           clearModalFormType={closeModal}
+          updateSensor={updateSensors}
         />
       )}
       <Header pageName="Fume Hoods Page" />
@@ -141,9 +142,11 @@ function FumeHoodsPage(props) {
             <tr key={index}>
               <td>{sensor.fume_hood_name}</td>
               <td>{userInfo.organization_code}</td>
-              <td>BUILDING</td>
-              <td>ROOM</td>
-              <td>LAB</td>
+              <td>{sensor.building}</td>
+              <td>{sensor.room}</td>
+              <td>
+                {sensor.groups.join(", ")}
+              </td>
               <td>{sensor.sensor_id}</td>
               {/* Unable to set progress bar to 25% of table width through scss so doing inline styling instead */}
               <td style={{ width: "25%" }}>

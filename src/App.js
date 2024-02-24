@@ -71,12 +71,6 @@ function App(props) {
         availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
       }
 
-      // TODO clean up database so we don't need to map sensor_id to id and get the correct keyname
-      // Get correct keyname
-      availableSensors.forEach(sensor => {
-        sensor['sensor_id'] = sensor['id'];
-        delete sensor['id'];
-      });
       setAvailableSensors(availableSensors);
       setUserInfo(userInfo);
     }
@@ -87,13 +81,11 @@ function App(props) {
     // After the empty account is created, the user must be added to the organization by the organization admin.
     // The available sensors for a user to view are:
     //   - The sensors associated with the group the user belongs to for USER_ROLE
-    //   - ALl sensors in the organization for ORGANIZATION_ADMIN_ROLE
+    //   - All sensors in the organization for ORGANIZATION_ADMIN_ROLE
     if (isAuthenticated && user && !userInfo ) {
       loadData();
     }
   }, [isAuthenticated, user, userInfo]);
-
-  // element={ <MetricsPage availableSensors={availableSensors} userInfo={userInfo} /> }
 
     return (
       <Container fluid className='p-0 m-0 App'>
@@ -121,7 +113,7 @@ function App(props) {
                       <Route
                         exact
                         path = { FUME_HOODS_PAGE_PATH }
-                        element={ <FumeHoodsPage availableSensors={availableSensors}/> }
+                        element={ <FumeHoodsPage availableSensors={availableSensors} updateSensors={setAvailableSensors}/> }
                       />
                       <Route
                         exact

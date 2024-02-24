@@ -13,7 +13,6 @@ import {
   CREATE_GROUP,
   CREATE_ORGANIZATION,
   CREATE_SENSOR,
-  UPDATE_FUME_HOOD_INFO,
   UPDATE_GROUP_INFO,
   UPDATE_ORGANIZATION_ADMIN_INFO,
   UPDATE_ORGANIZATION_INFO,
@@ -30,7 +29,6 @@ import {
   fetchGroupsInOrganization,
   fetchOrganizationAdminUserInfo,
   fetchOrganizations,
-  fetchSensorInfoFromOrganization,
   fetchUsersInOrganization,
 } from '../../utils/Utils.js';
 
@@ -56,7 +54,6 @@ class ProfilePage extends React.Component {
       // States for organization admin
       allGroupsInOrganization: [],
       allUsersInOrganization: [],
-      allFumeHoodsInOrganization: [],
     }
   }
 
@@ -76,8 +73,6 @@ class ProfilePage extends React.Component {
         allGroupsInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchGroupsInOrganization(organization_code) : [],
         // Organization admin can manage users in his organization
         allUsersInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchUsersInOrganization(organization_code) : [],
-        // Organization admin can view all sensors in his organization
-        allFumeHoodsInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchSensorInfoFromOrganization(organization_code) : [],
       });
     }
   }
@@ -120,13 +115,6 @@ class ProfilePage extends React.Component {
     });
   }
 
-  updateAllFumeHoodsInOrganizationList = allFumeHoodsInOrganization => {
-    this.setState({
-      allFumeHoodsInOrganization: allFumeHoodsInOrganization,
-    });
-
-  }
-
   updateAllGroupsInOrganization = allGroupsInOrganization => {
     this.setState({
       allGroupsInOrganization: allGroupsInOrganization,
@@ -158,7 +146,6 @@ class ProfilePage extends React.Component {
       allUsersInOrganization,
       allGroupsInOrganization,
       selectedModalForm,
-      allFumeHoodsInOrganization,
       allOrganizationAdminUsers,
       selectedUserInfo,
       selectedGroupInfo,
@@ -191,7 +178,6 @@ class ProfilePage extends React.Component {
 
             // States used by organization admin
             allGroupsInOrganization={allGroupsInOrganization}
-            allFumeHoodsInOrganization={allFumeHoodsInOrganization}
 
             // Callbacks used by super admin
             updateAllOrganizationsList={this.updateAllOrganizationsList}
@@ -201,7 +187,6 @@ class ProfilePage extends React.Component {
             // Callbacks used by organization admin
             updateAllGroupsInOrganization={this.updateAllGroupsInOrganization}
             updateAllUsersInOrganization={this.updateAllUsersInOrganization}
-            updateAllFumeHoodsInOrganizationList={this.updateAllFumeHoodsInOrganizationList}
           />
         }
         <Header pageName='Profile' />
@@ -334,27 +319,6 @@ class ProfilePage extends React.Component {
                           <td>{group.sensor_infos.map(sensor_info => sensor_info.fume_hood_name).join(', ')}</td>
                           <td className='button-cell'>
                             {this.renderShowModalButton(UPDATE_GROUP_INFO, 'Edit', null, group, null, null)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-
-                  <Row className='table-header'> <h3>Fume Hoods in Organization</h3> </Row>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Sensor ID/Mac Address</th>
-                        <th>Fume Hood Name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allFumeHoodsInOrganization.map((sensor, index) => (
-                        <tr key={index}>
-                          <td>{sensor.id}</td>
-                          <td>{sensor.fume_hood_name}</td>
-                          <td className='button-cell'>
-                            {this.renderShowModalButton(UPDATE_FUME_HOOD_INFO, 'Edit', null, null, sensor, null)}
                           </td>
                         </tr>
                       ))}
