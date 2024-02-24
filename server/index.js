@@ -36,7 +36,6 @@ const {
   UPDATE_USER_ROLE_QUERY,
   DELETE_GROUP_ON_FUME_HOOD_UPDATE,
 } = require('./Constants');
-const { to } = require('mathjs');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -514,23 +513,23 @@ app.put('/api/update_fume_hood_info', async (req, res) => {
     await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, building, room, sensor_id));
     const existing_groups = ((await client.query(format(SELECT_ALL_GROUPS_FROM_SENSOR_INFO, organization_code, sensor_id))).rows).map((ele) => ele.group_name);
 
-    existing_groups.forEach(async (ele) => {
-      if (!lab.includes(ele)) {
-        await client.query(format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, ele, sensor_id));
-      }
-    })
+    var needsDelete = existing_groups.filter((ele) => !lab.includes(ele))
 
-    lab.forEach(async (ele) => {
-      if (!existing_groups.includes(ele)) {
-        try {
-          await client.query(format(INSERT_GROUP_FUME_HOODS_QUERY, organization_code, ele, sensor_id, fume_hood_name));
-        }
-        catch (err) {
-          res.status(500).send('Inserting new group fume hoods entry errored ' + err)
-        }
-      }
-    })
+    if (needsDelete.length > 0) {
 
+      //array of size 1 gets translated to 'Group_x' instead of '(Group_x)'
+      if (needsDelete.length === 1) {
+        needsDelete = [needsDelete]
+      }
+      await client.query(format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, needsDelete))
+    }
+      
+    var needsAdd = lab.filter((ele) => !existing_groups.includes(ele)).map((group) => [organization_code, group, sensor_id, fume_hood_name])
+
+    if (needsAdd.length >= 1) {
+        await client.query(format(INSERT_GROUP_FUME_HOODS_QUERY, needsAdd));
+    }
+    
     toRet.fume_hoods = (await client.query(format(SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
 
     await client.query('COMMIT');

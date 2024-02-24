@@ -77,9 +77,7 @@ class FumeModalForm extends React.Component {
                 </Form.Label>
                 <Form.Control
                   type="input"
-                  defaultValue={selectedSensorInfo.groups.map((ele) => {
-                    return ele + " ";
-                  })}
+                  defaultValue={selectedSensorInfo.groups.join(", ")}
                   required
                 />
               </Form.Group>

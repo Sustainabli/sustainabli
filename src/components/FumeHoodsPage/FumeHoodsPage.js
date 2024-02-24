@@ -51,7 +51,7 @@ function FumeHoodsPage(props) {
   }
 
   // availableSensors is a list of the possible sensors
-  // ex: [{fume_hood_name: 'testMac', organization_code: 'TTT', sensor_id: 'testMac'}, ...
+  // ex: [{fume_hood_name: 'testMac', organization_code: 'TTT', sensor_id: 'testMac'}, ...]
   const { availableSensors, updateSensors } = props;
 
   const [userInfo, _] = useRecoilState(USER_INFO_STATE);
@@ -145,9 +145,7 @@ function FumeHoodsPage(props) {
               <td>{sensor.building}</td>
               <td>{sensor.room}</td>
               <td>
-                {sensor.groups.map((ele) => {
-                  return ele;
-                })}
+                {sensor.groups.join(", ")}
               </td>
               <td>{sensor.sensor_id}</td>
               {/* Unable to set progress bar to 25% of table width through scss so doing inline styling instead */}

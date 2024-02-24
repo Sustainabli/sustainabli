@@ -36,7 +36,7 @@ const INSERT_GROUP_QUERY = `
 
 const INSERT_GROUP_FUME_HOODS_QUERY = `
   INSERT INTO group_fume_hoods (organization_code, group_name, sensor_id, fume_hood_name)
-  VALUES (%L, %L, %L, %L);
+  VALUES %L;
 `;
 
 const UPDATE_GROUP_QUERY = `
@@ -123,9 +123,7 @@ const SELECT_ALL_SENSOR_INFO_QUERY = `
 
 const SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY = `
   SELECT id AS sensor_id, s.fume_hood_name, s.organization_code, building, room, ARRAY_AGG(group_name) as groups
-  FROM sensor_info s
-  JOIN group_fume_hoods g
-  ON s.id = g.sensor_id
+  FROM sensor_info s INNER JOIN group_fume_hoods g ON s.id = g.sensor_id
   WHERE s.organization_code = %L
   GROUP BY s.id
   ORDER BY s.fume_hood_name;
@@ -145,7 +143,7 @@ const SELECT_ALL_GROUPS_FROM_SENSOR_INFO = `
 
 const DELETE_GROUP_ON_FUME_HOOD_UPDATE = `
   DELETE FROM group_fume_hoods
-  WHERE group_name = %L AND sensor_id = %L;
+  WHERE sensor_id = %L AND group_name in %L;
 `;
 
 const INSERT_SENSOR_INFO_QUERY = `
