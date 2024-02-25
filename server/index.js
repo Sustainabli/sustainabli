@@ -517,10 +517,10 @@ app.put('/api/update_fume_hood_info', async (req, res) => {
       //array of size 1 gets translated to 'Group_x' instead of '(Group_x)'
       needsDelete.length === 1
         ? await client.query(
-            format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, needsDelete)
+            format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, [needsDelete])
           )
         : await client.query(
-            format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, [needsDelete])
+            format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, needsDelete)
           );
     }
     const needsAdd = lab.filter((ele) => !existing_groups.includes(ele)).map((group) => [organization_code, group, sensor_id, fume_hood_name])
