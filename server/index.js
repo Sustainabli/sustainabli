@@ -446,6 +446,26 @@ app.post('/api/fetch_all_sensor_info_from_organization', async (req, res) => {
   });
 });
 
+// Fetch all accounts from organization
+// reqBody: {
+//  organization_code: String,
+// }
+// response: {
+//  List of accounts
+// }
+app.post('/api/fetch_all_accounts_from_organization', async (req, res) => {
+  const { organization_code } = req.body;
+  pool.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, organization_code), (err, results) => {
+    if (err) {
+      res.status(500).send('POST fetch all accounts from organization errored ' + err);
+      return;
+    }
+    const toRet = results.rows;
+    res.status(200).json(toRet);
+  })
+})
+
+
 // Fetch all sensor info from group
 // reqBody: {
 //  group_name: String,
@@ -515,13 +535,8 @@ app.put('/api/update_fume_hood_info', async (req, res) => {
     const needsDelete = existing_groups.filter((ele) => !lab.includes(ele))
     if (needsDelete.length > 0) {
       //array of size 1 gets translated to 'Group_x' instead of '(Group_x)'
-      needsDelete.length === 1
-        ? await client.query(
-            format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, [needsDelete])
-          )
-        : await client.query(
-            format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, needsDelete)
-          );
+      const formattedDelete = needsDelete.length === 1 ? [needsDelete] : needsDelete
+      await client.query(format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, formattedDelete))
     }
     const needsAdd = lab.filter((ele) => !existing_groups.includes(ele)).map((group) => [organization_code, group, sensor_id, fume_hood_name])
     if (needsAdd.length >= 1) {

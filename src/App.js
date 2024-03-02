@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useRecoilState,
 } from 'recoil';
@@ -45,12 +45,14 @@ import {
   fetchUserInfo,
   fetchSensorInfoFromGroup,
   fetchSensorInfoFromOrganization,
+  fetchAccountsFromOrganization,
 } from './utils/Utils';
 
 function App(props) {
   const { isAuthenticated, user } = props.auth0;
   const [availableSensors, setAvailableSensors] = useRecoilState(AVAILABLE_SENSORS_STATE);  // Available sensors to view metrics for the user
   const [userInfo, setUserInfo] = useRecoilState(USER_INFO_STATE);
+  const [availableAccounts, setAvailableAccounts] = useState([]);
 
   useEffect(() => {
     // Loads user and sensor data for user from database
@@ -71,6 +73,10 @@ function App(props) {
         availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
       }
 
+      // Get available accounts depending on user account role
+      const availableAccounts = await fetchAccountsFromOrganization(userInfo.organization_code)
+
+      setAvailableAccounts(availableAccounts)
       setAvailableSensors(availableSensors);
       setUserInfo(userInfo);
     }
@@ -103,7 +109,7 @@ function App(props) {
                         <Route
                           exact
                           path={ OVERVIEW_PAGE_PATH }
-                          element={ <OverviewPage /> }
+                          element={ <OverviewPage availableAccounts={ availableAccounts }/> }
                         />
                       <Route
                         exact
