@@ -339,11 +339,12 @@ export const fetchSensorData = async (granularity, startDate, endDate, sensors) 
     });
 };
 
-export const fetchAllSensorForOrganization = async (organizationCode) => {
+export const fetchAllSensorForOrganization = async (organizationCode, startDate, endDate) => {
   const reqBody = {
     organization_code: organizationCode,
+    start_date: startDate,
+    end_date: endDate
   }
-
   return fetch(FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH, {
     method: 'POST',
     body: JSON.stringify(reqBody),

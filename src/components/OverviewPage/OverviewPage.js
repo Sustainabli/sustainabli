@@ -50,8 +50,11 @@ function OverviewPage(props) {
       // Load appropriate data if needed
       // Don't need to load availableSensors since App.js handles this
       if (allSensorsInOrganizationData.length === 0) {
+        const date = new Date()
         const allSensorsInOrganizationData =
-          await fetchAllSensorForOrganization(userInfo.organization_code);
+        
+         //date.getFullYear() is the command to get the current year - hardcoded 2023 since thats the year the data is in
+          await fetchAllSensorForOrganization(userInfo.organization_code, new Date(2023, 0, 1), date);
         setAllSensorsInOrganizationData(allSensorsInOrganizationData);
       }
       if (groupsToFumeHoods.length === 0) {
@@ -65,6 +68,9 @@ function OverviewPage(props) {
       loadData();
     }
   }, [userInfo]);
+
+
+  console.log(allSensorsInOrganizationData)
 
   const summedDataValues = []; // Data for impact calculations
   const averageChartData = []; // Data points for charts

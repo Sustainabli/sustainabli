@@ -597,8 +597,8 @@ app.post('/api/fetch_sensor_data', (req, res) => {
 });
 
 app.post('/api/fetch_all_sensor_data_for_organization', (req, res) => {
-  const { organization_code} = req.body;
-  pool.query(format(SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY, organization_code), (err, results) => {
+  const { organization_code, start_date, end_date } = req.body;
+  pool.query(format(SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY, organization_code, start_date, end_date), (err, results) => {
     if (err) {
       res.status(500).send('POST fetch sensors data errored ' + err);
       return;

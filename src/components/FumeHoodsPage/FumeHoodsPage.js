@@ -66,7 +66,9 @@ function FumeHoodsPage(props) {
   useEffect(() => {
     async function getSensorData() {
       const res = await fetchAllSensorForOrganization(
-        userInfo.organization_code
+        userInfo.organization_code,
+        new Date(2023, 0, 1),
+        new Date()
       );
       setAllSensorsData(res);
     }
