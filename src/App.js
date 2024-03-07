@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   useRecoilState,
 } from 'recoil';
@@ -25,6 +25,7 @@ import {
   // Recoil states
   AVAILABLE_SENSORS_STATE,
   USER_INFO_STATE,
+  AVAILABLE_ACCOUNTS_STATE,
 
   // Webpage paths
   DATA_QUERY_PAGE_PATH,
@@ -39,7 +40,6 @@ import {
   // Account roles
   ORGANIZATION_ADMIN_ROLE,
   USER_ROLE,
-  AVAILABLE_ACCOUNTS_STATE
 } from './utils/Constants';
 import {
   addUserInfo,
@@ -68,14 +68,15 @@ function App(props) {
 
       // Get available sensors depending on user account role
       let availableSensors = [];
+      let availableAccounts = [];
       if (userInfo.role === USER_ROLE) {
         availableSensors = await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name);
       } else if (userInfo.role === ORGANIZATION_ADMIN_ROLE) {
         availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
+        availableAccounts = await fetchUsersInOrganization(userInfo.organization_code)
       }
 
-      // Get available accounts depending on user account role
-      const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code)
+      
 
       setAvailableAccounts(availableAccounts)
       setAvailableSensors(availableSensors);

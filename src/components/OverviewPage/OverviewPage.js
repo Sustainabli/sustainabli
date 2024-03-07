@@ -29,7 +29,6 @@ import {
 import ImpactTable from "./components/ImpactTable/ImpactTable";
 
 function OverviewPage() {
-
   // List of sensor data
   const [allSensorsInOrganizationData, setAllSensorsInOrganizationData] =
     useRecoilState(ALL_SENSORS_IN_ORGANIZATION_DATA_STATE);
@@ -50,11 +49,13 @@ function OverviewPage() {
       // Load appropriate data if needed
       // Don't need to load availableSensors since App.js handles this
       if (allSensorsInOrganizationData.length === 0) {
-        const date = new Date()
+        const date = new Date();
         const allSensorsInOrganizationData =
-
-         //date.getFullYear() is the command to get the current year - hardcoded 2023 since thats the year the data is in
-          await fetchAllSensorForOrganization(userInfo.organization_code, MIN_DATE, date);
+          await fetchAllSensorForOrganization(
+            userInfo.organization_code,
+            MIN_DATE,
+            date
+          );
         setAllSensorsInOrganizationData(allSensorsInOrganizationData);
       }
       if (groupsToFumeHoods.length === 0) {
@@ -64,7 +65,9 @@ function OverviewPage() {
         setGroupsToFumeHoods(groupsToFumeHoods);
       }
       if (availableAccounts.length === 0) {
-        const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code);
+        const availableAccounts = await fetchUsersInOrganization(
+          userInfo.organization_code
+        );
         setAvailableAccounts(availableAccounts);
       }
     };
@@ -135,7 +138,11 @@ function OverviewPage() {
           </Row>
           <Row>
             <h4>IMPACT</h4>
-            <ImpactTable availableSensors={availableSensors} summedDataValues={summedDataValues} availableAccounts={availableAccounts}/>
+            <ImpactTable
+              availableSensors={availableSensors}
+              summedDataValues={summedDataValues}
+              availableAccounts={availableAccounts}
+            />
           </Row>
           <Row>
             <h4>RESEARCH LABS</h4>

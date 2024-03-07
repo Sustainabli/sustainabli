@@ -89,8 +89,8 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
 };
 
 // TODO find a better date to use for MIN_DATE when viewing all data
-// Will change to 2024 when data updates to then
-export const MIN_DATE = new Date(2023, 0, 1);
+const date = new Date();
+export const MIN_DATE = new Date(date.getFullYear(), 0, 1);
 
 export const MILLISECONDS_CONVERSION = 86400000
 export const DAYS_IN_YEARS = 365
