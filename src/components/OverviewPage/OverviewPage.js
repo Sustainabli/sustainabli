@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
 import FumeTable from "../../utils/components/FumeTable/FumeTable";
 import MetricsLineGraph from "../../utils/components/MetricsLineGraph/MetricsLineGraph";
 import Header from "../../utils/components/Header/Header";
@@ -18,7 +17,7 @@ import {
 
   // Metric Types
   METRIC_TYPE_AIRFLOW,
-  MIN_DATE,
+  CURRENT_YEAR_DATE,
 } from "../../utils/Constants";
 import {
   convertSashOpennessToMetricValueAverage,
@@ -49,12 +48,12 @@ function OverviewPage() {
       // Load appropriate data if needed
       // Don't need to load availableSensors since App.js handles this
       if (allSensorsInOrganizationData.length === 0) {
-        const date = new Date();
+        const currentDate = new Date();
         const allSensorsInOrganizationData =
           await fetchAllSensorForOrganization(
             userInfo.organization_code,
-            MIN_DATE,
-            date
+            CURRENT_YEAR_DATE,
+            currentDate
           );
         setAllSensorsInOrganizationData(allSensorsInOrganizationData);
       }
@@ -138,11 +137,7 @@ function OverviewPage() {
           </Row>
           <Row>
             <h4>IMPACT</h4>
-            <ImpactTable
-              availableSensors={availableSensors}
-              summedDataValues={summedDataValues}
-              availableAccounts={availableAccounts}
-            />
+            <ImpactTable summedDataValues={summedDataValues} />
           </Row>
           <Row>
             <h4>RESEARCH LABS</h4>

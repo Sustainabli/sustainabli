@@ -19,7 +19,7 @@ import {
   METRIC_TYPE_AIRFLOW,
 
   // Constants
-  MIN_DATE,
+  CURRENT_YEAR_DATE,
 } from "../../utils/Constants";
 import {
   fetchAllSensorForOrganization,
@@ -70,7 +70,7 @@ function FumeHoodsPage(props) {
     async function getSensorData() {
       const res = await fetchAllSensorForOrganization(
         userInfo.organization_code,
-        MIN_DATE,
+        CURRENT_YEAR_DATE,
         new Date()
       );
       setAllSensorsData(res);

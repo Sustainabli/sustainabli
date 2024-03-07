@@ -1,6 +1,9 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 import {
+  AVAILABLE_ACCOUNTS_STATE,
+  AVAILABLE_SENSORS_STATE,
+  CURRENT_YEAR_DATE,
   DAYS_IN_YEARS,
   // Metric Types
   METRIC_TYPE_AIRFLOW,
@@ -8,13 +11,18 @@ import {
   METRIC_TYPE_COST,
   METRIC_TYPE_ENERGY,
   MILLISECONDS_CONVERSION,
-  MIN_DATE,
 } from "../../../../utils/Constants";
 import { convertSashOpennessToMetricValueAverage } from "../../../../utils/Utils";
+import { useRecoilState } from "recoil";
 
 function ImpactTable(props) {
-  const { availableSensors, summedDataValues, availableAccounts } = props;
-
+  const { summedDataValues } = props;
+  const [availableSensors, setAvailableSensors] = useRecoilState(
+    AVAILABLE_SENSORS_STATE
+  );
+  const [availableAccounts, setAvailableAccounts] = useRecoilState(
+    AVAILABLE_ACCOUNTS_STATE
+  );
   const numBuildings = new Set(availableSensors.map((ele) => ele.building));
 
   // We can also directly query db for groups
@@ -45,7 +53,8 @@ function ImpactTable(props) {
     );
   };
 
-  const date_diff = Math.abs(new Date() - MIN_DATE) / MILLISECONDS_CONVERSION;
+  const date_diff =
+    Math.abs(new Date() - CURRENT_YEAR_DATE) / MILLISECONDS_CONVERSION;
 
   return (
     <Table borderless>

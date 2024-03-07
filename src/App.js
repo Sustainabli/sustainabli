@@ -68,17 +68,14 @@ function App(props) {
 
       // Get available sensors depending on user account role
       let availableSensors = [];
-      let availableAccounts = [];
       if (userInfo.role === USER_ROLE) {
         availableSensors = await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name);
       } else if (userInfo.role === ORGANIZATION_ADMIN_ROLE) {
         availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
-        availableAccounts = await fetchUsersInOrganization(userInfo.organization_code)
+        const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code);
+        setAvailableAccounts(availableAccounts);
       }
 
-      
-
-      setAvailableAccounts(availableAccounts)
       setAvailableSensors(availableSensors);
       setUserInfo(userInfo);
     }
