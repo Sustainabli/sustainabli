@@ -38,21 +38,22 @@ import {
 
   // Account roles
   ORGANIZATION_ADMIN_ROLE,
-  USER_ROLE
+  USER_ROLE,
+  AVAILABLE_ACCOUNTS_STATE
 } from './utils/Constants';
 import {
   addUserInfo,
   fetchUserInfo,
   fetchSensorInfoFromGroup,
   fetchSensorInfoFromOrganization,
-  fetchAccountsFromOrganization,
+  fetchUsersInOrganization,
 } from './utils/Utils';
 
 function App(props) {
   const { isAuthenticated, user } = props.auth0;
   const [availableSensors, setAvailableSensors] = useRecoilState(AVAILABLE_SENSORS_STATE);  // Available sensors to view metrics for the user
   const [userInfo, setUserInfo] = useRecoilState(USER_INFO_STATE);
-  const [availableAccounts, setAvailableAccounts] = useState([]);
+  const [availableAccounts, setAvailableAccounts] = useRecoilState(AVAILABLE_ACCOUNTS_STATE);
 
   useEffect(() => {
     // Loads user and sensor data for user from database
@@ -74,7 +75,7 @@ function App(props) {
       }
 
       // Get available accounts depending on user account role
-      const availableAccounts = await fetchAccountsFromOrganization(userInfo.organization_code)
+      const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code)
 
       setAvailableAccounts(availableAccounts)
       setAvailableSensors(availableSensors);
@@ -109,7 +110,7 @@ function App(props) {
                         <Route
                           exact
                           path={ OVERVIEW_PAGE_PATH }
-                          element={ <OverviewPage availableAccounts={ availableAccounts }/> }
+                          element={ <OverviewPage /> }
                         />
                       <Route
                         exact

@@ -19,6 +19,10 @@ export const USER_INFO_STATE = atom({
   key: 'userInfoState',
   default: null,
 });
+export const AVAILABLE_ACCOUNTS_STATE = atom({
+  key: 'availableAccountsState',
+  default: [],
+})
 
 
 
@@ -85,7 +89,11 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
 };
 
 // TODO find a better date to use for MIN_DATE when viewing all data
-export const MIN_DATE = new Date('01/01/2000');
+// Will change to 2024 when data updates to then
+export const MIN_DATE = new Date(2023, 0, 1);
+
+export const MILLISECONDS_CONVERSION = 86400000
+export const DAYS_IN_YEARS = 365
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
 export const METRIC_TYPE_CARBON = 'carbon';
@@ -126,7 +134,6 @@ export const FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION = '/api/fetch_all_grou
 export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
 export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
 export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
-export const FETCH_ALL_ACCOUNTS_FROM_ORGANIZATION_PATH = '/api/fetch_all_accounts_from_organization';
 export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
 export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
 export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';

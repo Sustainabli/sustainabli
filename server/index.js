@@ -446,26 +446,6 @@ app.post('/api/fetch_all_sensor_info_from_organization', async (req, res) => {
   });
 });
 
-// Fetch all accounts from organization
-// reqBody: {
-//  organization_code: String,
-// }
-// response: {
-//  List of accounts
-// }
-app.post('/api/fetch_all_accounts_from_organization', async (req, res) => {
-  const { organization_code } = req.body;
-  pool.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, organization_code), (err, results) => {
-    if (err) {
-      res.status(500).send('POST fetch all accounts from organization errored ' + err);
-      return;
-    }
-    const toRet = results.rows;
-    res.status(200).json(toRet);
-  })
-})
-
-
 // Fetch all sensor info from group
 // reqBody: {
 //  group_name: String,

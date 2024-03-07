@@ -252,17 +252,6 @@ export const fetchSensorInfoFromOrganization = async (organizationCode) => {
   }).then(res => res.json());
 };
 
-export const fetchAccountsFromOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code : organizationCode,
-  };
-  return fetch(FETCH_ALL_ACCOUNTS_FROM_ORGANIZATION_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json())
-}
-
 export const addSensor = async (sensorId, organizationCode) => {
   const reqBody = {
     sensor_id: sensorId,

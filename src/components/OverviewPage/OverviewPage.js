@@ -14,24 +14,21 @@ import {
   AVAILABLE_SENSORS_STATE,
   GROUPS_TO_FUME_HOODS_STATE,
   USER_INFO_STATE,
+  AVAILABLE_ACCOUNTS_STATE,
 
   // Metric Types
   METRIC_TYPE_AIRFLOW,
-  METRIC_TYPE_CARBON,
-  METRIC_TYPE_COST,
-  METRIC_TYPE_ENERGY,
+  MIN_DATE,
 } from "../../utils/Constants";
 import {
   convertSashOpennessToMetricValueAverage,
   fetchAllGroupFumeHoodsFromOrganization,
   fetchAllSensorForOrganization,
+  fetchUsersInOrganization,
 } from "../../utils/Utils";
-import ImpactTable from "../../utils/components/ImpactTable/ImpactTable";
+import ImpactTable from "./components/ImpactTable/ImpactTable";
 
-function OverviewPage(props) {
-
-  //List of accounts
-  const { availableAccounts } = props;
+function OverviewPage() {
 
   // List of sensor data
   const [allSensorsInOrganizationData, setAllSensorsInOrganizationData] =
@@ -44,6 +41,9 @@ function OverviewPage(props) {
   const [groupsToFumeHoods, setGroupsToFumeHoods] = useRecoilState(
     GROUPS_TO_FUME_HOODS_STATE
   );
+  const [availableAccounts, setAvailableAccounts] = useRecoilState(
+    AVAILABLE_ACCOUNTS_STATE
+  );
 
   useEffect(() => {
     const loadData = async () => {
@@ -52,9 +52,9 @@ function OverviewPage(props) {
       if (allSensorsInOrganizationData.length === 0) {
         const date = new Date()
         const allSensorsInOrganizationData =
-        
+
          //date.getFullYear() is the command to get the current year - hardcoded 2023 since thats the year the data is in
-          await fetchAllSensorForOrganization(userInfo.organization_code, new Date(2023, 0, 1), date);
+          await fetchAllSensorForOrganization(userInfo.organization_code, MIN_DATE, date);
         setAllSensorsInOrganizationData(allSensorsInOrganizationData);
       }
       if (groupsToFumeHoods.length === 0) {
@@ -63,14 +63,15 @@ function OverviewPage(props) {
         );
         setGroupsToFumeHoods(groupsToFumeHoods);
       }
+      if (availableAccounts.length === 0) {
+        const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code);
+        setAvailableAccounts(availableAccounts);
+      }
     };
     if (userInfo && userInfo.organization_code) {
       loadData();
     }
   }, [userInfo]);
-
-
-  console.log(allSensorsInOrganizationData)
 
   const summedDataValues = []; // Data for impact calculations
   const averageChartData = []; // Data points for charts
