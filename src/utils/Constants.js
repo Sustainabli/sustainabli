@@ -19,6 +19,10 @@ export const USER_INFO_STATE = atom({
   key: 'userInfoState',
   default: null,
 });
+export const AVAILABLE_ACCOUNTS_STATE = atom({
+  key: 'availableAccountsState',
+  default: [],
+})
 
 
 
@@ -85,7 +89,12 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
 };
 
 // TODO find a better date to use for MIN_DATE when viewing all data
-export const MIN_DATE = new Date('01/01/2000');
+const currentDate = new Date();
+export const MIN_DATE = new Date(2023, 0, 1);
+export const CURRENT_YEAR_DATE = new Date(currentDate.getFullYear(), 0, 1);
+
+export const MILLISECONDS_CONVERSION = 86400000
+export const DAYS_IN_YEARS = 365
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
 export const METRIC_TYPE_CARBON = 'carbon';

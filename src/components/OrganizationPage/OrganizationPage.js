@@ -24,7 +24,7 @@ class OrganizationPage extends React.Component {
     const { userInfo } = this.props;
 
     this.setState({
-      allSensorsData: await fetchAllSensorForOrganization(userInfo.organization_code),
+      allSensorsData: await fetchAllSensorForOrganization(userInfo.organization_code, new Date(2023, 0, 1), new Date()),
       groupsToFumeHoods: await fetchAllGroupFumeHoodsFromOrganization(userInfo.organization_code),
     });
   }

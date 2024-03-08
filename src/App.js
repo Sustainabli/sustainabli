@@ -25,6 +25,7 @@ import {
   // Recoil states
   AVAILABLE_SENSORS_STATE,
   USER_INFO_STATE,
+  AVAILABLE_ACCOUNTS_STATE,
 
   // Webpage paths
   DATA_QUERY_PAGE_PATH,
@@ -38,19 +39,21 @@ import {
 
   // Account roles
   ORGANIZATION_ADMIN_ROLE,
-  USER_ROLE
+  USER_ROLE,
 } from './utils/Constants';
 import {
   addUserInfo,
   fetchUserInfo,
   fetchSensorInfoFromGroup,
   fetchSensorInfoFromOrganization,
+  fetchUsersInOrganization,
 } from './utils/Utils';
 
 function App(props) {
   const { isAuthenticated, user } = props.auth0;
   const [availableSensors, setAvailableSensors] = useRecoilState(AVAILABLE_SENSORS_STATE);  // Available sensors to view metrics for the user
   const [userInfo, setUserInfo] = useRecoilState(USER_INFO_STATE);
+  const [availableAccounts, setAvailableAccounts] = useRecoilState(AVAILABLE_ACCOUNTS_STATE);
 
   useEffect(() => {
     // Loads user and sensor data for user from database
@@ -69,6 +72,8 @@ function App(props) {
         availableSensors = await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name);
       } else if (userInfo.role === ORGANIZATION_ADMIN_ROLE) {
         availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
+        const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code);
+        setAvailableAccounts(availableAccounts);
       }
 
       setAvailableSensors(availableSensors);

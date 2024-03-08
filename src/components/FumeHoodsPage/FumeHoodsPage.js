@@ -17,6 +17,9 @@ import {
   // Recoil states
   USER_INFO_STATE,
   METRIC_TYPE_AIRFLOW,
+
+  // Constants
+  CURRENT_YEAR_DATE,
 } from "../../utils/Constants";
 import {
   fetchAllSensorForOrganization,
@@ -66,7 +69,9 @@ function FumeHoodsPage(props) {
   useEffect(() => {
     async function getSensorData() {
       const res = await fetchAllSensorForOrganization(
-        userInfo.organization_code
+        userInfo.organization_code,
+        CURRENT_YEAR_DATE,
+        new Date()
       );
       setAllSensorsData(res);
     }

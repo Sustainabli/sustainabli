@@ -175,7 +175,7 @@ const SELECT_SENSOR_DATA_QUERY = `
 const SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY = `
   SELECT DATE_TRUNC('day', time) AS time, fume_hood_name, AVG(value) AS value
   FROM sensor_data INNER JOIN sensor_info ON sensor_data.id = sensor_info.id
-  WHERE sensor_info.organization_code = %L
+  WHERE sensor_info.organization_code = %L AND time >= %L AND time <= %L
   GROUP BY DATE_TRUNC('day', time), fume_hood_name
   ORDER BY time;
 `;
