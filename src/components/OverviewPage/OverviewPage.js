@@ -117,8 +117,6 @@ function OverviewPage() {
     groupSummaryData.push(groupSummaryDatum);
   });
 
-  console.log(averageChartData)
-
   return (
     <Container fluid>
       <Header pageName="Overview Page" />
@@ -132,7 +130,7 @@ function OverviewPage() {
           </Row>
           <Row>
             <h4>5-PT SNAPSHOT</h4>
-            <FivePointSnapshot/>
+            <FivePointSnapshot sensorData={allSensorsInOrganizationData}/>
           </Row>
         </Col>
         <Col>
