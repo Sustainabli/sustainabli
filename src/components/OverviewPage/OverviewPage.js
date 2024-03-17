@@ -130,7 +130,7 @@ function OverviewPage() {
           </Row>
           <Row>
             <h4>5-PT SNAPSHOT</h4>
-            <FivePointSnapshot sensorData={allSensorsInOrganizationData}/>
+            <FivePointSnapshot />
           </Row>
         </Col>
         <Col>
