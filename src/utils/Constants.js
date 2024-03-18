@@ -53,6 +53,14 @@ export const CHART_COLORS = [
   '#9f582c',
 ];
 
+export const SNAPSHOT_COLORS = [
+  'rgb(135, 211, 0)',
+  'rgb(246,230,0)',
+  'rgb(239,165,0)',
+  'rgb(199,0,5)',
+  'rgb(140,26,255)',
+]
+
 export const TIME_GRANULARITIES = {
   none: 'none',
   day: 'day',
@@ -95,6 +103,8 @@ export const CURRENT_YEAR_DATE = new Date(currentDate.getFullYear(), 0, 1);
 
 export const MILLISECONDS_CONVERSION = 86400000
 export const DAYS_IN_YEARS = 365
+
+export const NUM_OF_CATEGORIES = 5
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
 export const METRIC_TYPE_CARBON = 'carbon';

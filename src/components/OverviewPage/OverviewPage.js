@@ -26,6 +26,7 @@ import {
   fetchUsersInOrganization,
 } from "../../utils/Utils";
 import ImpactTable from "./components/ImpactTable/ImpactTable";
+import FivePointSnapshot from "./components/FivePointSnapshot";
 
 function OverviewPage() {
   // List of sensor data
@@ -129,6 +130,7 @@ function OverviewPage() {
           </Row>
           <Row>
             <h4>5-PT SNAPSHOT</h4>
+            <FivePointSnapshot />
           </Row>
         </Col>
         <Col>
