@@ -21,6 +21,7 @@ import './DataQueryPage.scss';
 
 // TODO instead of using relativeTimeRange, create a calendar selector component for startDate and endDate. We can also maybe tailor this to be a startTime and endTime hh:mm yy:mm:dd
 // TODO refactor this page with recoil
+// TODO make Data Query Page a functional component and use useRecoilState
 class DataQueryPage extends React.Component {
   constructor() {
     super();

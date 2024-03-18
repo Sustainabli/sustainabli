@@ -1,5 +1,4 @@
 import Container from 'react-bootstrap/Container';
-import { withAuth0 } from '@auth0/auth0-react';
 import Header from '../../utils/components/Header/Header';
 
 function ShutTheSashPage() {
@@ -10,4 +9,4 @@ function ShutTheSashPage() {
   );
 }
 
-export default withAuth0(ShutTheSashPage);
+export default ShutTheSashPage;

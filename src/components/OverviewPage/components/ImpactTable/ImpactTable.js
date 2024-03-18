@@ -5,8 +5,8 @@ import {
   AVAILABLE_SENSORS_STATE,
   CURRENT_YEAR_DATE,
   DAYS_IN_YEARS,
+
   // Metric Types
-  METRIC_TYPE_AIRFLOW,
   METRIC_TYPE_CARBON,
   METRIC_TYPE_COST,
   METRIC_TYPE_ENERGY,
@@ -17,10 +17,10 @@ import { useRecoilState } from "recoil";
 
 function ImpactTable(props) {
   const { summedDataValues } = props;
-  const [availableSensors, setAvailableSensors] = useRecoilState(
+  const [availableSensors] = useRecoilState(
     AVAILABLE_SENSORS_STATE
   );
-  const [availableAccounts, setAvailableAccounts] = useRecoilState(
+  const [availableAccounts] = useRecoilState(
     AVAILABLE_ACCOUNTS_STATE
   );
   const numBuildings = new Set(availableSensors.map((ele) => ele.building));

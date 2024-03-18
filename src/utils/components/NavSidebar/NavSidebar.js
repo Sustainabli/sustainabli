@@ -31,7 +31,7 @@ function NavSidebar({userInfo}) {
   const menuItemStyle = {
     // Need to be able to style menu items/buttons based on if they are active or disabled
     // Use the pathname to determine if the menu item is active (e.g. /team)
-    button: ({ level, active, disabled }) => {
+    button: ({ active }) => {
       return {
         '&:hover': {
           backgroundColor: 'rgba(15, 15, 15, 0.8)',

@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sustainabli-dev-145306-authRole",
+      "UnauthRoleArn": "arn:aws:iam::654654175306:role/amplify-sustainabli-dev-145306-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::654654175306:role/amplify-sustainabli-dev-145306-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-sustainabli-dev-145306-deployment",
+      "UnauthRoleName": "amplify-sustainabli-dev-145306-unauthRole",
+      "StackName": "amplify-sustainabli-dev-145306",
+      "StackId": "arn:aws:cloudformation:us-east-1:654654175306:stack/amplify-sustainabli-dev-145306/922b7dc0-e3df-11ee-bde9-0aea5b52f671",
+      "AmplifyAppId": "d28lklg7gmx9uy"
+    },
+    "categories": {
+      "auth": {
+        "sustainablib83250c6": {}
+      }
+    }
+  }
+}

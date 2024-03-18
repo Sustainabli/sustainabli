@@ -33,7 +33,6 @@ import {
   MIN_DATE,
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
-  FETCH_ALL_ACCOUNTS_FROM_ORGANIZATION_PATH,
 } from './Constants.js';
 
 // API calls
@@ -249,7 +248,8 @@ export const fetchSensorInfoFromOrganization = async (organizationCode) => {
     method: 'POST',
     body: JSON.stringify(reqBody),
     headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
+  }).then(res => res.json())
+    .catch(err => console.warn(err));
 };
 
 export const addSensor = async (sensorId, organizationCode) => {
@@ -386,13 +386,17 @@ export const convertSashOpennessToMetricValueAverage = (metricType, values) => {
     case METRIC_TYPE_ENERGY:
       toRet = ((values.length * 136 * 35.71) + 11 * 35.71 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
+
     case METRIC_TYPE_CARBON:
       toRet = ((values.length * 136 * 13.771064) + 11 * 13.771064 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
+
     case METRIC_TYPE_COST:
       toRet = ((values.length * 136 * 5) + 11 * 5 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
+
     case METRIC_TYPE_AIRFLOW:
+    default:
       toRet = ((values.length * 136) + 11 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
   }
