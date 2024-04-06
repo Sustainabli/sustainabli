@@ -1,5 +1,4 @@
 import React from 'react';
-import { withAuth0 } from '@auth0/auth0-react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -152,8 +151,7 @@ class ProfilePage extends React.Component {
       selectedSensorInfo,
       selectedOrganizationInfo,
     } = this.state;
-    const { userInfo, auth0 } = this.props;
-    const { isAuthenticated, user } = auth0;
+    const { userInfo } = this.props;
 
     const isSuperAdmin = userInfo && userInfo.role === SUPER_ADMIN_ROLE;
     const isOrganizationAdmin = userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE;
@@ -190,11 +188,10 @@ class ProfilePage extends React.Component {
           />
         }
         <Header pageName='Profile' />
-        {isAuthenticated ? (
           userInfo && userInfo.email ? (
             <React.Fragment>
               <Row className='profile-info'>
-                <h2>{user.email}</h2>
+                <h2>EMAIL</h2>
                 <h2>Role: {userInfo.role}</h2>
                 {!isSuperAdmin && <h2>Organization: {userInfo.organization_code}</h2>}
                 {isUserRole && <h2>Group: {userInfo.group_name}</h2>}
@@ -333,17 +330,9 @@ class ProfilePage extends React.Component {
               User info not found. Please contact <a href='mailto: admin@sustainabli.us'>admin@sustainabli.us</a> for help.
             </React.Fragment>
             )
-        )
-          :
-          (
-            <React.Fragment>
-              Please log in to view profile information.
-            </React.Fragment>
-          )
-        }
       </Container>
     );
   }
 }
 
-export default withAuth0(ProfilePage);
+export default ProfilePage;

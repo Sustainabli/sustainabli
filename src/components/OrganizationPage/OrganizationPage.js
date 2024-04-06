@@ -2,15 +2,16 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useRecoilState } from 'recoil';
 import FumeTable from '../../utils/components/FumeTable/FumeTable';
 import Header from '../../utils/components/Header/Header';
 import MetricsLineGraph from '../../utils/components/MetricsLineGraph/MetricsLineGraph';
+import { USER_INFO_STATE } from '../../utils/Constants';
 import {
   fetchAllGroupFumeHoodsFromOrganization,
   fetchAllSensorForOrganization
 } from '../../utils/Utils';
 
-// TODO redo this class to use recoil and match the figma. This was the old organization page so we need to redesign it
 class OrganizationPage extends React.Component {
   constructor() {
     super();
@@ -21,7 +22,7 @@ class OrganizationPage extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { userInfo } = this.props;
+    const [userInfo] = useRecoilState(USER_INFO_STATE);
 
     this.setState({
       allSensorsData: await fetchAllSensorForOrganization(userInfo.organization_code, new Date(2023, 0, 1), new Date()),
@@ -59,17 +60,17 @@ class OrganizationPage extends React.Component {
     return (
       <Container className='OrganizationPage' fluid>
         <Header pageName='Organization Page' />
-	{allSensorsData.length > 0 &&
-	  <Row>
-	    <Col md={6}>
-	      <MetricsLineGraph data={averageData}/>
-	      <FumeTable data={groupSummaryData} isGroup={true}/>
-	    </Col>
-	    <Col md={6}>
-	      <FumeTable data={allSensorsData}/>
-	    </Col>
-	  </Row>
-	}
+        {allSensorsData.length > 0 &&
+          <Row>
+            <Col md={6}>
+              <MetricsLineGraph data={averageData} />
+              <FumeTable data={groupSummaryData} isGroup={true} />
+            </Col>
+            <Col md={6}>
+              <FumeTable data={allSensorsData} />
+            </Col>
+          </Row>
+        }
       </Container>
     )
   }

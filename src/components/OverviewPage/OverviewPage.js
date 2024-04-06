@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { withAuth0 } from "@auth0/auth0-react";
 import { useRecoilState } from "recoil";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -10,7 +9,6 @@ import Header from "../../utils/components/Header/Header";
 import {
   // Recoil states
   ALL_SENSORS_IN_ORGANIZATION_DATA_STATE,
-  AVAILABLE_SENSORS_STATE,
   GROUPS_TO_FUME_HOODS_STATE,
   USER_INFO_STATE,
   AVAILABLE_ACCOUNTS_STATE,
@@ -32,11 +30,7 @@ function OverviewPage() {
   // List of sensor data
   const [allSensorsInOrganizationData, setAllSensorsInOrganizationData] =
     useRecoilState(ALL_SENSORS_IN_ORGANIZATION_DATA_STATE);
-  // List of sensor info
-  const [availableSensors, setAvailableSensors] = useRecoilState(
-    AVAILABLE_SENSORS_STATE
-  );
-  const [userInfo, _] = useRecoilState(USER_INFO_STATE);
+  const [userInfo] = useRecoilState(USER_INFO_STATE);
   const [groupsToFumeHoods, setGroupsToFumeHoods] = useRecoilState(
     GROUPS_TO_FUME_HOODS_STATE
   );
@@ -74,7 +68,7 @@ function OverviewPage() {
     if (userInfo && userInfo.organization_code) {
       loadData();
     }
-  }, [userInfo]);
+  }, [allSensorsInOrganizationData, availableAccounts, groupsToFumeHoods, userInfo]);
 
   const summedDataValues = []; // Data for impact calculations
   const averageChartData = []; // Data points for charts
@@ -151,4 +145,4 @@ function OverviewPage() {
   );
 }
 
-export default withAuth0(OverviewPage);
+export default OverviewPage;
