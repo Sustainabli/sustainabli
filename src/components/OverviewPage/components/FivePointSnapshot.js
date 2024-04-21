@@ -28,7 +28,7 @@ ChartJS.register(
 );
 
 function FivePointSnapshot() {
-  const [allSensorsInOrganizationData, _] = useRecoilState(
+  const [allSensorsInOrganizationData] = useRecoilState(
     ALL_SENSORS_IN_ORGANIZATION_DATA_STATE
   );
 

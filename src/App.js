@@ -18,7 +18,7 @@ function App() {
 
   return (
     <Authenticator loginMechanisms={['email']} components={components}>
-      {({ user }) => <RoutesContainer amplifyEmail={user.signInDetails.loginId} />}
+      {({ user }) => <RoutesContainer amplifyUser={user.signInDetails} />}
     </Authenticator>
   );
 }
