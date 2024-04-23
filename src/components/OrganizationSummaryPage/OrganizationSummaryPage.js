@@ -3,7 +3,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Header from '../Header/Header';
+import Header from "../../utils/components/Header/Header";
 import DataTable from './components/DataTable/DataTable';
 import './OrganizationSummaryPage.scss';
 import './components/DataTable/DataTable.scss';

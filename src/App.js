@@ -15,7 +15,7 @@ import {
 import DataQueryPage from './components/DataQueryPage/DataQueryPage';
 import FumeHoodsPage from './components/FumeHoodsPage/FumeHoodsPage';
 import LoginPage from './components/LoginPage/LoginPage';
-import OrganizationPage from './components/OrganizationPage/OrganizationPage';
+import OrganizationPage from './components/OrganizationSummaryPage/OrganizationSummaryPage.js';
 import OverviewPage from './components/OverviewPage/OverviewPage';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import TeamPage from './components/TeamPage/TeamPage';
