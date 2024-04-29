@@ -86,7 +86,7 @@ function RoutesContainer(props) {
             <Route
               exact
               path={PROFILE_PAGE_PATH}
-              element={<ProfilePage userInfo={userInfo} />}
+              element={ <ProfilePage userInfo={ userInfo } setUserInfo={ setUserInfo }/> }
             />
             {/* TODO have this redirect to "/". This was causing useEffect errors for some reason */}
             <Route

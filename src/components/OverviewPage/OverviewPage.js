@@ -42,16 +42,18 @@ function OverviewPage() {
     const loadData = async () => {
       // Load appropriate data if needed
       // Don't need to load availableSensors since App.js handles this
-      if (allSensorsInOrganizationData.length === 0) {
-        const currentDate = new Date();
-        const allSensorsInOrganizationData =
-          await fetchAllSensorForOrganization(
-            userInfo.organization_code,
-            CURRENT_YEAR_DATE,
-            currentDate
-          );
-        setAllSensorsInOrganizationData(allSensorsInOrganizationData);
-      }
+
+      // if statement makes it so that the rerender doesn't work
+      //if (allSensorsInOrganizationData.length === 0) {
+      const currentDate = new Date();
+      const allSensorsInOrganizationData =
+        await fetchAllSensorForOrganization(
+          userInfo.organization_code,
+          CURRENT_YEAR_DATE,
+          currentDate
+        );
+      setAllSensorsInOrganizationData(allSensorsInOrganizationData);
+      //}
       if (groupsToFumeHoods.length === 0) {
         const groupsToFumeHoods = await fetchAllGroupFumeHoodsFromOrganization(
           userInfo.organization_code
@@ -68,7 +70,8 @@ function OverviewPage() {
     if (userInfo && userInfo.organization_code) {
       loadData();
     }
-  }, [allSensorsInOrganizationData, availableAccounts, groupsToFumeHoods, userInfo]);
+    // other dependencies causes rerender to occur more often than it needs to be
+  }, [userInfo]);
 
   const summedDataValues = []; // Data for impact calculations
   const averageChartData = []; // Data points for charts

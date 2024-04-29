@@ -33,6 +33,7 @@ import {
   MIN_DATE,
   RELATIVE_TIME_RANGES_OPTIONS,
   TIME_GRANULARITIES,
+  FETCH_ALL_ACCOUNTS_FROM_ORGANIZATION_PATH,
 } from './Constants.js';
 
 // API calls
@@ -179,15 +180,13 @@ export const addUserInfo = async (email, name, role, organizationCode, groupName
   }).then(res => res.json());
 };
 
-export const updateUserInfo = async (newEmail, oldEmail, newGroupName, organizationCode, role,
-    queryOrganizationCode) => {
+export const updateUserInfo = async (newEmail, oldEmail, name, newGroupName, organizationCode) => {
   const reqBody = {
     new_email: newEmail,
     old_email: oldEmail == null ? '' : oldEmail,
+    name: name,
     group_name: newGroupName,
     organization_code: organizationCode,
-    role: role,
-    query_organization_code: queryOrganizationCode,
   };
   return fetch(UPDATE_USER_INFO_PATH, {
     method: 'PUT',
@@ -386,17 +385,13 @@ export const convertSashOpennessToMetricValueAverage = (metricType, values) => {
     case METRIC_TYPE_ENERGY:
       toRet = ((values.length * 136 * 35.71) + 11 * 35.71 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
-
     case METRIC_TYPE_CARBON:
       toRet = ((values.length * 136 * 13.771064) + 11 * 13.771064 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
-
     case METRIC_TYPE_COST:
       toRet = ((values.length * 136 * 5) + 11 * 5 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
-
     case METRIC_TYPE_AIRFLOW:
-    default:
       toRet = ((values.length * 136) + 11 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
       break;
   }

@@ -226,12 +226,18 @@ class ModalForm extends React.Component {
     updateAllUsersInOrganization(allUsersInOrganization);
   }
 
-  updateUserInfoAndUpdateUserList = async (newEmail, oldEmail, newGroupName, organizationCode, role) => {
-    const { userInfo } = this.props;
+  updateUserInfoAndUpdateUserList = async (newEmail, oldEmail, name, newGroupName, organizationCode) => {
 
-    const allUsersInOrganization = await updateUserInfo(newEmail, oldEmail, newGroupName,
-        organizationCode, role, userInfo.organization_code);
-    this.updateUserList(allUsersInOrganization);
+    const { setUserInfo } = this.props;
+
+    // Updated User Info
+    const allUsersInOrganization = await updateUserInfo(newEmail, oldEmail, name, newGroupName,
+        organizationCode);
+
+    // Update the user info here
+    setUserInfo(allUsersInOrganization[0])
+
+    //this.updateUserList(allUsersInOrganization);
   }
 
   onSubmitAddUserToOrganization = async (event) => {
@@ -252,11 +258,15 @@ class ModalForm extends React.Component {
     const { selectedUserInfo } = this.props;
     const { groupQuery } = this.state;
 
-    const newEmail = event.target.elements.userEmailFormGroup.value;
+    const oldEmail = selectedUserInfo.email;
+    const newName = event.target.elements.userEmailFormGroup[0].value;
+    const newEmail = event.target.elements.userEmailFormGroup[1].value;
+    const newGroup = event.target.elements.userEmailFormGroup[2].value;
+    const newOrg = event.target.elements.userEmailFormGroup[3].value;
 
     // TODO check for not found email
-    this.updateUserInfoAndUpdateUserList(newEmail, selectedUserInfo.email, groupQuery,
-        selectedUserInfo.organization_code, selectedUserInfo.role);
+    this.updateUserInfoAndUpdateUserList(newEmail, oldEmail, newName, newGroup,
+        newOrg);
     this.onCloseModal();
   }
 
@@ -718,37 +728,67 @@ class ModalForm extends React.Component {
             <Modal.Body>
               <Form.Group controlId='userEmailFormGroup'>
                 <Form.Label>
+                  <h5>Name</h5>
+                </Form.Label>
+                <Form.Control 
+                  type='input'
+                  defaultValue={selectedUserInfo.name}
+                  required
+                />
+                <Form.Label>
                   <h5>Email</h5>
                 </Form.Label>
                 <Form.Control
                   type='input'
-                  placeholder='Email'
                   defaultValue={selectedUserInfo.email}
                   required
                 />
-              </Form.Group>
-              <Form.Group>
                 <Form.Label>
-                  <h5>Group Name</h5>
+                  <h5>Group</h5>
                 </Form.Label>
-                <Select
-                  options={
-                    allGroupsInOrganization.map(group =>
-                      ({value: group.group_name, label: group.group_name})
-                    )
-                  }
-                  defaultValue={{value: selectedUserInfo.group_name, label: selectedUserInfo.group_name}}
-                  isMulti={false}
-                  onChange={selected => this.onChangeSelectedGroup(selected)}
-                  closeMenuOnSelect={true}
+                <Form.Control 
+                    type='input'
+                    defaultValue={selectedUserInfo.group_name}
+                    required
+                />
+                <Form.Label>
+                  <h5>Organization</h5>
+                </Form.Label>
+                <Form.Control 
+                    type='input'
+                    defaultValue={selectedUserInfo.organization_code}
+                    required
+                />
+                <Form.Label>
+                  <h5>Role</h5>
+                </Form.Label>
+                <Form.Control
+                    type='input'
+                    defaultValue={selectedUserInfo.role}
+                    disabled
                 />
               </Form.Group>
+              { /* Probably going to use this for preferred Fume Hood later
+                <Form.Group>
+                  <Form.Label>
+                    <h5>Group Name</h5>
+                  </Form.Label>
+                  <Select
+                    options={
+                      allGroupsInOrganization.map(group =>
+                        ({value: group.group_name, label: group.group_name})
+                      )
+                    }
+                    defaultValue={{value: selectedUserInfo.group_name, label: selectedUserInfo.group_name}}
+                    isMulti={false}
+                    onChange={selected => this.onChangeSelectedGroup(selected)}
+                    closeMenuOnSelect={true}
+                  />
+                </Form.Group>
+                */
+              }
             </Modal.Body>
             <Modal.Footer>
-              {/* TODO show are you sure message */}
-              <Button variant='danger' onClick={this.onRemoveUserFromOrganization}>
-                Remove User from Organization
-              </Button>
               <Button variant='dark' type='submit'> Update User Info </Button>
             </Modal.Footer>
           </Form>
