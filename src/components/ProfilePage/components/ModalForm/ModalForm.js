@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Select from 'react-select'
+import { useRecoilState } from 'recoil';
+import Select from 'react-select';
 import {
   // Modal form types
   ADD_ORGANIZATION_ADMIN,
@@ -21,7 +22,10 @@ import {
 
   // User roles
   ORGANIZATION_ADMIN_ROLE,
-  USER_ROLE
+  USER_ROLE,
+
+  // Recoil states
+  USER_INFO_STATE
 } from '../../../../utils/Constants';
 import {
   addGroup,
@@ -40,281 +44,252 @@ import {
 
 // Modal form specific to the profile page
 // TODO We probably don't need this once we finish developing the february release since we're moving functionality around
-class ModalForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      // Select states
-      groupQuery: '',
-      organizationCodeQuery: '',
-      selectedSensors: [],
-    }
-  }
+function ModalForm(props) {
+  const {
+  formType,
+  userInfo,
+  selectedUserInfo,
+  selectedGroupInfo,
+  selectedSensorInfo,
+  selectedOrganizationInfo,
+  clearModalFormType,
+  allOrganizations,
+  allGroupsInOrganization,
+  updateAllOrganizationsList,
+  updateAllSensorsList,
+  updateAllOrganizationAdminUsers,
+  updateAllGroupsInOrganization,
+  updateAllUsersInOrganization,
+  updateAllFumeHoodsInOrganizationList,
+  allFumeHoodsInOrganization,
+  } = props
+  const [, setUserInfo] = useRecoilState(USER_INFO_STATE);
+  const [groupQuery, setGroupQuery] = useState('')
+  const [organizationCodeQuery, setOrganizationCodeQuery] = useState('')
+  const [selectedSensors, setSelectedSensors] = useState([])
 
-  componentDidMount = () => {
-    const { selectedGroupInfo, selectedSensorInfo, selectedUserInfo } = this.props;
+  useEffect(() => {
     if (selectedUserInfo !== null) {
-      this.setState({
-        groupQuery: selectedUserInfo.group_name,
-        organizationCodeQuery: selectedUserInfo.organization_code
-      });
+      setGroupQuery(selectedUserInfo.group_name)
+      setOrganizationCodeQuery(selectedUserInfo.organization_code)
     } else if (selectedSensorInfo !== null) {
-      this.setState({
-        organizationCodeQuery: selectedSensorInfo.organization_code
-      });
+      setOrganizationCodeQuery(selectedSensorInfo.organization_code)
     } else if (selectedGroupInfo != null) {
-      this.setState({
-        selectedSensors: selectedGroupInfo.sensor_infos
-      });
+      setSelectedSensors(selectedGroupInfo.sensor_infos)
     }
-  }
+  }, [selectedUserInfo, selectedSensorInfo, selectedGroupInfo])
 
   // Functions for managing select states
-  onChangeSelectedGroup = selected => this.setState({groupQuery: selected.value});
-  onChangeSelectedOrganizationCode = selected => this.setState({organizationCodeQuery: selected.value});
-  onChangeSelectedSensors = options => this.setState({selectedSensors: options.map(option => ({id: option.value, fume_hood_name: option.label}))});
+  const onChangeSelectedGroup = selected => setGroupQuery(selected.value)
+  const onChangeSelectedOrganizationCode = selected => setOrganizationCodeQuery(selected.value)
+  const onChangeSelectedSensors = options => setSelectedSensors(options.map(option => ({id: option.value, fume_hood_name: option.label})))
 
-  onCloseModal = () => {
-    const { clearModalFormType } = this.props;
-    this.setState({
-      groupQuery: '',
-      organizationCodeQuery: '',
-      selectedSensors: [],
-    });
+  const onCloseModal = () => {
+    setGroupQuery('')
+    setOrganizationCodeQuery('')
+    setSelectedSensors([])
     clearModalFormType();
   }
 
 
   /** Functions for adding/updating organizations **/
   // Generic stuff we do when updating a organization
-  updateOrganizationList = allOrganizations => {
-    const { updateAllOrganizationsList } = this.props;
-
+  const updateOrganizationList = allOrganizations => {
     updateAllOrganizationsList(allOrganizations);
   }
 
-  onDeleteOrganization = async event => {
+  const onDeleteOrganization = async event => {
     event.preventDefault();
-    const { selectedOrganizationInfo } = this.props;
-
     const result = await deleteOrganization(selectedOrganizationInfo.code)
-    this.updateOrganizationList(result.organizations);
-    this.updateSensorList(result.sensors);
-    this.updateOrganizationAdminList(result.organization_admins);
-    this.onCloseModal();
+    updateOrganizationList(result.organizations);
+    updateSensorList(result.sensors);
+    updateOrganizationAdminList(result.organization_admins);
+    onCloseModal();
   }
 
-  onSubmitAddNewOrganization = async event => {
+  const onSubmitAddNewOrganization = async event => {
     event.preventDefault();
 
     const organizationCode = event.target.elements.organizationCodeFormGroup.value;
     const organizationName = event.target.elements.organizationNameFormGroup.value;
 
     const allOrganizations = await addOrganization(organizationCode, organizationName);
-    this.updateOrganizationList(allOrganizations);
-    this.onCloseModal();
+    updateOrganizationList(allOrganizations);
+    onCloseModal();
   }
 
-  onSubmitUpdateOrganizationInfo = async event => {
+  const onSubmitUpdateOrganizationInfo = async event => {
     event.preventDefault();
-    const { selectedOrganizationInfo } = this.props;
 
     const newOrganizationCode = event.target.elements.organizationCodeFormGroup.value;
     const newOrganizationName = event.target.elements.organizationNameFormGroup.value;
 
     const allOrganizations = await updateOrganizationInfo(newOrganizationCode, newOrganizationName,
         selectedOrganizationInfo.code);
-    this.updateOrganizationList(allOrganizations);
-    this.onCloseModal();
+    updateOrganizationList(allOrganizations);
+    onCloseModal();
   }
 
 
   /** Functions for creating/updating groups **/
   // Generic stuff we do when updating a group
-  updateGroupList = async allGroupsInOrganization => {
-    const { updateAllGroupsInOrganization } = this.props;
-
+  const updateGroupList = async allGroupsInOrganization => {
     updateAllGroupsInOrganization(allGroupsInOrganization);
   }
 
-  onSubmitCreateGroup = async event => {
+  const onSubmitCreateGroup = async event => {
     event.preventDefault();
-    const { selectedSensors } = this.state;
-    const { userInfo } = this.props;
 
     const groupName = event.target.elements.groupNameFormGroup.value;
 
     const allGroupsInOrganization = await addGroup(groupName, userInfo.organization_code, selectedSensors);
-    this.updateGroupList(allGroupsInOrganization);
-    this.onCloseModal();
+    updateGroupList(allGroupsInOrganization);
+    onCloseModal();
   }
 
-  onSubmitUpdateGroupInfo = async (event) => {
+  const onSubmitUpdateGroupInfo = async (event) => {
     event.preventDefault();
-    const { selectedGroupInfo, userInfo } = this.props;
-    const { selectedSensors } = this.state;
 
     const newGroupName = event.target.elements.groupNameFormGroup.value;
 
     const allGroupsInOrganization = await updateGroupInfo(newGroupName, selectedGroupInfo.group_name,
         userInfo.organization_code, selectedSensors);
-    this.updateGroupList(allGroupsInOrganization);
-    this.onCloseModal();
+    updateGroupList(allGroupsInOrganization);
+    onCloseModal();
   }
 
-  onRemoveGroupFromOrganization = async (event) => {
+  const onRemoveGroupFromOrganization = async (event) => {
     event.preventDefault();
-    const { selectedGroupInfo, userInfo } = this.props;
 
     const result = await deleteGroup(selectedGroupInfo.group_name, userInfo.organization_code);
-    this.updateGroupList(result.groups);
-    this.updateUserList(result.users);
-    this.onCloseModal();
+    updateGroupList(result.groups);
+    updateUserList(result.users);
+    onCloseModal();
   }
 
 
   /** Functions for adding organization admins **/
   // Generic stuff we do when adding/updating an organization admin info
-  updateOrganizationAdminList = async (allOrganizationAdminUsers) => {
-    const { updateAllOrganizationAdminUsers } = this.props;
-
+  const updateOrganizationAdminList = async (allOrganizationAdminUsers) => {
     updateAllOrganizationAdminUsers(allOrganizationAdminUsers);
   }
 
-  onSubmitAddOrganizationAdmin = async (event) => {
+  const onSubmitAddOrganizationAdmin = async (event) => {
     event.preventDefault();
-    const { organizationCodeQuery } = this.state;
 
     const email = event.target.elements.userEmailFormGroup.value;
 
     const allOrganizationAdminUsers = await updateUserRole(email, ORGANIZATION_ADMIN_ROLE,
         organizationCodeQuery);
-    this.updateOrganizationAdminList(allOrganizationAdminUsers);
-    this.onCloseModal();
+    updateOrganizationAdminList(allOrganizationAdminUsers);
+    onCloseModal();
   }
 
-  onSubmitUpdateOrganizationAdminInfo = async (event) => {
+  const onSubmitUpdateOrganizationAdminInfo = async (event) => {
     event.preventDefault();
-    const { selectedUserInfo } = this.props;
-    const { organizationCodeQuery } = this.state;
 
     const newEmail = event.target.elements.userEmailFormGroup.value;
 
     // TODO check for not found email
     const allOrganizationAdminUsers = await updateOrganizationAdminInfo(newEmail,
         selectedUserInfo.email, '', organizationCodeQuery, ORGANIZATION_ADMIN_ROLE);
-    this.updateOrganizationAdminList(allOrganizationAdminUsers);
-    this.onCloseModal();
+    updateOrganizationAdminList(allOrganizationAdminUsers);
+    onCloseModal();
   }
 
-  onRemoveOrganizationAdmin = async (event) => {
+  const onRemoveOrganizationAdmin = async (event) => {
     event.preventDefault();
-    const { selectedUserInfo } = this.props;
 
     const allOrganizationAdminUsers = await updateOrganizationAdminInfo(selectedUserInfo.email,
         selectedUserInfo.email, '', '', '');
-    this.updateOrganizationAdminList(allOrganizationAdminUsers);
-    this.onCloseModal();
+    updateOrganizationAdminList(allOrganizationAdminUsers);
+    onCloseModal();
   }
-
+  
 
   /** Functions for adding/updating user info **/
   // Generic stuff we do when updating a user's info
-  updateUserList = (allUsersInOrganization) => {
-    const { updateAllUsersInOrganization } = this.props;
-
+  const updateUserList = (allUsersInOrganization) => {
     updateAllUsersInOrganization(allUsersInOrganization);
   }
 
-  updateUserInfoAndUpdateUserList = async (newEmail, oldEmail, name, newGroupName, organizationCode) => {
-
-    const { setUserInfo } = this.props;
+  const updateUserInfoAndUpdateUserList = async (newEmail, oldEmail, name, newRole, newGroupName, organizationCode) => {
 
     // Updated User Info
-    const allUsersInOrganization = await updateUserInfo(newEmail, oldEmail, name, newGroupName,
+    const newUserInfo = await updateUserInfo(newEmail, oldEmail, name, newRole, newGroupName,
         organizationCode);
-
+    
     // Update the user info here
-    setUserInfo(allUsersInOrganization[0])
-
-    //this.updateUserList(allUsersInOrganization);
+    setUserInfo(newUserInfo)
   }
 
-  onSubmitAddUserToOrganization = async (event) => {
+  const onSubmitAddUserToOrganization = async (event) => {
     event.preventDefault();
-    const { userInfo } = this.props;
-    const { groupQuery } = this.state;
 
     const userEmail = event.target.elements.userEmailFormGroup.value;
 
     // TODO check for not found email
-    this.updateUserInfoAndUpdateUserList(userEmail, userEmail, groupQuery,
+    updateUserInfoAndUpdateUserList(userEmail, userEmail, groupQuery,
         userInfo.organization_code, USER_ROLE);
-    this.onCloseModal();
+    onCloseModal();
   }
 
-  onSubmitUpdateUserInfo = async (event) => {
+  const onSubmitUpdateUserInfo = async (event) => {
     event.preventDefault();
-    const { selectedUserInfo } = this.props;
-    const { groupQuery } = this.state;
-
     const oldEmail = selectedUserInfo.email;
     const newName = event.target.elements.userEmailFormGroup[0].value;
     const newEmail = event.target.elements.userEmailFormGroup[1].value;
     const newGroup = event.target.elements.userEmailFormGroup[2].value;
     const newOrg = event.target.elements.userEmailFormGroup[3].value;
+    const newRole = event.target.elements.userEmailFormGroup[4].value;
 
     // TODO check for not found email
-    this.updateUserInfoAndUpdateUserList(newEmail, oldEmail, newName, newGroup,
+    updateUserInfoAndUpdateUserList(newEmail, oldEmail, newName, newRole, newGroup,
         newOrg);
-    this.onCloseModal();
+    onCloseModal();
   }
 
-  onRemoveUserFromOrganization = async (event) => {
+  /*
+  const onRemoveUserFromOrganization = async (event) => {
     event.preventDefault();
     const { selectedUserInfo } = this.props;
 
-    this.updateUserInfoAndUpdateUserList(selectedUserInfo.email, selectedUserInfo.email, '', '', '');
-    this.onCloseModal();
+    updateUserInfoAndUpdateUserList(selectedUserInfo.email, selectedUserInfo.email, '', '', '');
+    onCloseModal();
   }
+  */
 
 
   /** Functions for adding/updating sensors (super admin perspective) **/
   // Generic stuff we do when updating a sensor
-  updateSensorList =  async allSensors => {
-    const { updateAllSensorsList } = this.props;
-
+  const updateSensorList =  async allSensors => {
     updateAllSensorsList(allSensors);
   }
 
-  onSubmitAddNewSensor = async event => {
+  const onSubmitAddNewSensor = async event => {
     event.preventDefault();
-    const { organizationCodeQuery } = this.state;
 
     const sensorId = event.target.elements.addNewSensorIdFormGroup.value;
 
     const allSensors = await addSensor(sensorId, organizationCodeQuery);
-    this.updateSensorList(allSensors);
-    this.onCloseModal();
+    updateSensorList(allSensors);
+    onCloseModal();
   }
 
-  onSubmitUpdateSensorInfo = async event => {
+  const onSubmitUpdateSensorInfo = async event => {
     event.preventDefault();
-    const { selectedSensorInfo } = this.props;
-    const { organizationCodeQuery } = this.state;
 
     const newSensorId = event.target.elements.sensorIdFormGroup.value;
 
     const allSensors = await updateSensorInfo(newSensorId, selectedSensorInfo.id, organizationCodeQuery);
-    this.updateSensorList(allSensors);
-    this.onCloseModal();
+    updateSensorList(allSensors);
+    onCloseModal();
   }
 
 
   /** Functions for updating fume hoods (organization_admin perspective) **/
-  onSubmitUpdateFumeHoodInfo = async event => {
+  const onSubmitUpdateFumeHoodInfo = async event => {
     event.preventDefault();
-    const { updateAllFumeHoodsInOrganizationList, updateAllGroupsInOrganization, clearModalFormType, selectedSensorInfo } = this.props;
 
     const fumeHoodName = event.target.elements.fumeHoodNameFormGroup.value;
 
@@ -325,18 +300,7 @@ class ModalForm extends React.Component {
   }
 
 
-  renderFormContent = () => {
-    const {
-      allFumeHoodsInOrganization,
-      allGroupsInOrganization,
-      allOrganizations,
-      formType,
-      selectedGroupInfo,
-      selectedSensorInfo,
-      selectedOrganizationInfo,
-      selectedUserInfo,
-    } = this.props;
-
+  const renderFormContent = () => {
     let formTitle = '';
     let modalBody;
     // TODO put limit on form fields
@@ -344,7 +308,7 @@ class ModalForm extends React.Component {
       case ADD_ORGANIZATION_ADMIN:
         formTitle = 'Add an Organization Admin';
         modalBody =
-          <Form onSubmit={this.onSubmitAddOrganizationAdmin}>
+          <Form onSubmit={onSubmitAddOrganizationAdmin}>
             <Modal.Body>
               <Form.Group controlId='userEmailFormGroup'>
                 <Form.Label>
@@ -367,7 +331,7 @@ class ModalForm extends React.Component {
                     )
                   }
                   isMulti={false}
-                  onChange={selected => this.onChangeSelectedOrganizationCode(selected)}
+                  onChange={selected => onChangeSelectedOrganizationCode(selected)}
                   closeMenuOnSelect={true}
                 />
               </Form.Group>
@@ -382,7 +346,7 @@ class ModalForm extends React.Component {
       case ADD_USER:
         formTitle = 'Add a User to Organization';
         modalBody =
-          <Form onSubmit={this.onSubmitAddUserToOrganization}>
+          <Form onSubmit={onSubmitAddUserToOrganization}>
             <Modal.Body>
               <Form.Group controlId='userEmailFormGroup'>
                 <Form.Label>
@@ -405,7 +369,7 @@ class ModalForm extends React.Component {
                     )
                   }
                   isMulti={false}
-                  onChange={selected => this.onChangeSelectedGroup(selected)}
+                  onChange={selected => onChangeSelectedGroup(selected)}
                   closeMenuOnSelect={true}
                 />
               </Form.Group>
@@ -420,7 +384,7 @@ class ModalForm extends React.Component {
       case CREATE_GROUP:
         formTitle = 'Create a New Group';
         modalBody =
-          <Form onSubmit={this.onSubmitCreateGroup}>
+          <Form onSubmit={onSubmitCreateGroup}>
             <Modal.Body>
               <Form.Group controlId='groupNameFormGroup'>
                 <Form.Label>
@@ -443,7 +407,7 @@ class ModalForm extends React.Component {
                     )
                   }
                   isMulti={true}
-                  onChange={options => this.onChangeSelectedSensors(options)}
+                  onChange={options => onChangeSelectedSensors(options)}
                   closeMenuOnSelect={false}
                 />
               </Form.Group>
@@ -459,7 +423,7 @@ class ModalForm extends React.Component {
       case CREATE_ORGANIZATION:
         formTitle = 'Create a New Organization';
         modalBody =
-          <Form onSubmit={this.onSubmitAddNewOrganization}>
+          <Form onSubmit={onSubmitAddNewOrganization}>
             <Modal.Body>
               <Form.Group controlId='organizationCodeFormGroup'>
                 <Form.Label>
@@ -493,7 +457,7 @@ class ModalForm extends React.Component {
       case CREATE_SENSOR:
         formTitle = 'Add a New Sensor';
         modalBody =
-          <Form onSubmit={this.onSubmitAddNewSensor}>
+          <Form onSubmit={onSubmitAddNewSensor}>
             <Modal.Body>
               <Form.Group controlId='addNewSensorIdFormGroup'>
                 <Form.Label>
@@ -516,7 +480,7 @@ class ModalForm extends React.Component {
                     )
                   }
                   isMulti={false}
-                  onChange={selected => this.onChangeSelectedOrganizationCode(selected)}
+                  onChange={selected => onChangeSelectedOrganizationCode(selected)}
                   closeMenuOnSelect={true}
                 />
               </Form.Group>
@@ -532,7 +496,7 @@ class ModalForm extends React.Component {
       case UPDATE_ORGANIZATION_INFO:
         formTitle = 'Update Organization Info';
         modalBody =
-          <Form onSubmit={this.onSubmitUpdateOrganizationInfo}>
+          <Form onSubmit={onSubmitUpdateOrganizationInfo}>
             <Modal.Body>
               <Form.Group controlId='organizationCodeFormGroup'>
                 <Form.Label>
@@ -558,7 +522,7 @@ class ModalForm extends React.Component {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='danger' onClick={this.onDeleteOrganization}>
+              <Button variant='danger' onClick={onDeleteOrganization}>
                 Delete Organization
               </Button>
               <Button variant='dark' type='submit'>
@@ -571,7 +535,7 @@ class ModalForm extends React.Component {
       case UPDATE_ORGANIZATION_ADMIN_INFO:
         formTitle = 'Update Organization Admin Info';
         modalBody =
-          <Form onSubmit={this.onSubmitUpdateOrganizationAdminInfo}>
+          <Form onSubmit={onSubmitUpdateOrganizationAdminInfo}>
             <Modal.Body>
               <Form.Group controlId='userEmailFormGroup'>
                 <Form.Label>
@@ -595,14 +559,14 @@ class ModalForm extends React.Component {
                     )
                   }
                   isMulti={false}
-                  onChange={selected => this.onChangeSelectedOrganizationCode(selected)}
+                  onChange={selected => onChangeSelectedOrganizationCode(selected)}
                   defaultValue={{value: selectedUserInfo.organization_code,
                       label: selectedUserInfo.organization_code}}
                   closeMenuOnSelect={true}
                 />
               </Form.Group>
             <Modal.Footer>
-              <Button variant='danger' onClick={this.onRemoveOrganizationAdmin}>
+              <Button variant='danger' onClick={onRemoveOrganizationAdmin}>
                 Remove Organization Admin
               </Button>
               <Button variant='dark' type='submit'>Update Organization Admin Info</Button>
@@ -614,7 +578,7 @@ class ModalForm extends React.Component {
       case UPDATE_SENSOR_INFO:
         formTitle = 'Update Sensor Info';
         modalBody =
-          <Form onSubmit={this.onSubmitUpdateSensorInfo}>
+          <Form onSubmit={onSubmitUpdateSensorInfo}>
             <Modal.Body>
               <Form.Group controlId='sensorIdFormGroup'>
                 <Form.Label>
@@ -638,7 +602,7 @@ class ModalForm extends React.Component {
                     )
                   }
                   isMulti={false}
-                  onChange={selected => this.onChangeSelectedOrganizationCode(selected)}
+                  onChange={selected => onChangeSelectedOrganizationCode(selected)}
                   defaultValue={{value: selectedSensorInfo.organization_code, label: selectedSensorInfo.organization_code}}
                   closeMenuOnSelect={true}
                 />
@@ -653,7 +617,7 @@ class ModalForm extends React.Component {
       case UPDATE_FUME_HOOD_INFO:
         formTitle = 'Update Fume Hood Info';
         modalBody =
-          <Form onSubmit={this.onSubmitUpdateFumeHoodInfo}>
+          <Form onSubmit={onSubmitUpdateFumeHoodInfo}>
             <Modal.Body>
               <Row>
                 <Col> <h5>Sensor ID/Mac Address</h5> </Col>
@@ -680,7 +644,7 @@ class ModalForm extends React.Component {
       case UPDATE_GROUP_INFO:
         formTitle = 'Update Group Info'
         modalBody =
-          <Form onSubmit={this.onSubmitUpdateGroupInfo}>
+          <Form onSubmit={onSubmitUpdateGroupInfo}>
             <Modal.Body>
               <Form.Group controlId='groupNameFormGroup'>
                 <Form.Label>
@@ -706,14 +670,14 @@ class ModalForm extends React.Component {
                   defaultValue={selectedGroupInfo.sensor_infos.map(
                       sensor_info => ({value: sensor_info.id, label: sensor_info.fume_hood_name}))}
                   isMulti={true}
-                  onChange={options => this.onChangeSelectedSensors(options)}
+                  onChange={options => onChangeSelectedSensors(options)}
                   closeMenuOnSelect={false}
                 />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               {/* TODO show are you sure message */}
-              <Button variant='danger' onClick={this.onRemoveGroupFromOrganization}>
+              <Button variant='danger' onClick={onRemoveGroupFromOrganization}>
                 Remove Group from Organization
               </Button>
               <Button variant='dark' type='submit'> Update Group Info </Button>
@@ -724,7 +688,7 @@ class ModalForm extends React.Component {
       case UPDATE_USER_INFO:
         formTitle = 'Update User Info'
         modalBody =
-          <Form onSubmit={this.onSubmitUpdateUserInfo}>
+          <Form onSubmit={onSubmitUpdateUserInfo}>
             <Modal.Body>
               <Form.Group controlId='userEmailFormGroup'>
                 <Form.Label>
@@ -801,26 +765,23 @@ class ModalForm extends React.Component {
       formTitle,
       modalBody
     };
-  };
-
-  render() {
-    const { formType } = this.props;
-    const { formTitle, modalBody } = this.renderFormContent();
-    return (
-      <Modal
-        size='lg'
-        show={formType}
-        onHide={() => this.onCloseModal()}
-        keyboard={false}
-        backdrop={'static'}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title> {formTitle} </Modal.Title>
-        </Modal.Header>
-        {modalBody}
-      </Modal>
-    );
   }
+
+  const { formTitle, modalBody } = renderFormContent();
+  return (
+    <Modal
+      size='lg'
+      show={formType}
+      onHide={() => onCloseModal()}
+      keyboard={false}
+      backdrop={'static'}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title> {formTitle} </Modal.Title>
+      </Modal.Header>
+      {modalBody}
+    </Modal>
+  );
 }
 
 export default ModalForm;

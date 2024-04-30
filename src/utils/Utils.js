@@ -180,13 +180,14 @@ export const addUserInfo = async (email, name, role, organizationCode, groupName
   }).then(res => res.json());
 };
 
-export const updateUserInfo = async (newEmail, oldEmail, name, newGroupName, organizationCode) => {
+export const updateUserInfo = async (newEmail, oldEmail, name, newRole, newGroupName, organizationCode) => {
   const reqBody = {
     new_email: newEmail,
     old_email: oldEmail == null ? '' : oldEmail,
     name: name,
+    new_role: newRole,
     group_name: newGroupName,
-    organization_code: organizationCode,
+    organization_code: organizationCode
   };
   return fetch(UPDATE_USER_INFO_PATH, {
     method: 'PUT',
