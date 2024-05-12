@@ -33,6 +33,7 @@ import {
 import './ProfilePage.scss';
 import { useRecoilState } from 'recoil';
 
+// TODO figure out which of these should be recoil states
 function ProfilePage() {
   const [selectedModalForm, setSelectedModalForm] = useState('')
   const [selectedOrganizationInfo, setSelectedOrganizationInfo] = useState(null)
@@ -44,8 +45,7 @@ function ProfilePage() {
   const [allSensors, setAllSensors] = useState([])
   const [allGroupsInOrganization, setAllGroupsInOrganization] = useState([])
   const [allUsersInOrganization, setAllUsersInOrganization] = useState([])
-
-  const [userInfo, setUserInfo] = useRecoilState(USER_INFO_STATE)
+  const [userInfo] = useRecoilState(USER_INFO_STATE)
 
   useEffect(() => {
     async function fetchData() {
@@ -116,8 +116,6 @@ function ProfilePage() {
   }
 
   const isSuperAdmin = userInfo && userInfo.role === SUPER_ADMIN_ROLE;
-  const isOrganizationAdmin = userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE;
-  const isUserRole = userInfo && userInfo.role === USER_ROLE;
 
   // TODO for all of the tables in this page, add columns for editing and deleting entries
   // TODO add table headers for each of the tables
@@ -163,7 +161,7 @@ function ProfilePage() {
                   <h2>Email: {userInfo.email}</h2>
                   <h2>Group: {userInfo.group_name}</h2>
                   {!isSuperAdmin && <h2>Organization: {userInfo.organization_code}</h2>}
-                  <h2>Role: {userInfo.role}</h2>              
+                  <h2>Role: {userInfo.role}</h2>
                   <h2 className='button-cell'>{renderShowModalButton(UPDATE_USER_INFO, 'Edit Information', userInfo, null, null, null)}</h2>
                 </Col>
                 {/* TODO commonize the table creation code */}
@@ -253,7 +251,7 @@ function ProfilePage() {
           )}
       </Container>
   );
-  
+
 }
 
 export default ProfilePage;

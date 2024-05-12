@@ -1,6 +1,9 @@
 import { Fragment, useEffect } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { signOut } from 'aws-amplify/auth';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NavSidebar from '../../utils/components/NavSidebar/NavSidebar';
 import { addUserInfo, fetchSensorInfoFromGroup, fetchSensorInfoFromOrganization, fetchUserInfo, fetchUsersInOrganization } from '../../utils/Utils';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -13,7 +16,7 @@ import ShutTheSashPage from '../ShutTheSashPage/ShutTheSashPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 
 function RoutesContainer(props) {
-  const { amplifyEmail } = props;
+  const { amplifyUser } = props;
 
   const setAvailableAccounts = useSetRecoilState(AVAILABLE_ACCOUNTS_STATE);
   const [availableSensors, setAvailableSensors] = useRecoilState(AVAILABLE_SENSORS_STATE);  // Available sensors to view metrics for the user
@@ -21,7 +24,8 @@ function RoutesContainer(props) {
 
   useEffect(() => {
     const loadData = async () => {
-      if (amplifyEmail !== null && userInfo === null) {
+      if (amplifyUser && userInfo === null) {
+        const amplifyEmail = amplifyUser.loginId;
         let userInfo = await fetchUserInfo(amplifyEmail);
 
         // If there is no info on the user, then create an empty user_role account for them for the database
@@ -44,60 +48,71 @@ function RoutesContainer(props) {
     };
 
     loadData();
-  }, [amplifyEmail, setAvailableAccounts, setAvailableSensors, setUserInfo, userInfo]);
+  }, [amplifyUser, setAvailableAccounts, setAvailableSensors, setUserInfo, userInfo]);
 
-  return (userInfo !== null &&
-    <BrowserRouter>
-      <Row className='p-0 m-0 root-row'>
-        <Col sm={1} lg={2} className='p-0'>
-          <NavSidebar userInfo={userInfo} />
-        </Col>
-        <Col sm={12} lg={10} className='p-0'>
-          <Routes>
-            {userInfo.role === ORGANIZATION_ADMIN_ROLE &&
-              <Fragment>
+  return userInfo ?
+      (
+        <BrowserRouter>
+          <Row className='p-0 m-0 root-row'>
+            <Col sm={1} lg={2} className='p-0'>
+              <NavSidebar userInfo={userInfo} />
+            </Col>
+            <Col sm={12} lg={10} className='p-0'>
+              <Routes>
+                {userInfo.role === ORGANIZATION_ADMIN_ROLE &&
+                  <Fragment>
+                    <Route
+                      exact
+                      path={OVERVIEW_PAGE_PATH}
+                      element={<OverviewPage />}
+                    />
+                    <Route
+                      exact
+                      path={ORGANIZATION_PAGE_PATH}
+                      element={<OrganizationPage />}
+                    />
+                    <Route
+                      exact
+                      path={FUME_HOODS_PAGE_PATH}
+                      element={<FumeHoodsPage />}
+                    />
+                    <Route
+                      exact
+                      path={DATA_QUERY_PAGE_PATH}
+                      element={<DataQueryPage />}
+                    />
+                    <Route
+                      exact
+                      path={SHUT_THE_SASH_PAGE_PATH}
+                      element={<ShutTheSashPage />}
+                    />
+                  </Fragment>
+                }
                 <Route
                   exact
-                  path={OVERVIEW_PAGE_PATH}
+                  path={PROFILE_PAGE_PATH}
+                  element={<ProfilePage userInfo={userInfo} />}
+                />
+                {/* TODO have this redirect to "/". This was causing useEffect errors for some reason */}
+                <Route
+                  path='/*'
                   element={<OverviewPage />}
                 />
-                <Route
-                  exact
-                  path={ORGANIZATION_PAGE_PATH}
-                  element={<OrganizationPage />}
-                />
-                <Route
-                  exact
-                  path={FUME_HOODS_PAGE_PATH}
-                  element={<FumeHoodsPage />}
-                />
-                <Route
-                  exact
-                  path={DATA_QUERY_PAGE_PATH}
-                  element={<DataQueryPage availableSensors={availableSensors} userInfo={userInfo} />}
-                />
-                <Route
-                  exact
-                  path={SHUT_THE_SASH_PAGE_PATH}
-                  element={<ShutTheSashPage />}
-                />
-              </Fragment>
-            }
-            <Route
-              exact
-              path={PROFILE_PAGE_PATH}
-              element={ <ProfilePage userInfo={ userInfo } setUserInfo={ setUserInfo }/> }
-            />
-            {/* TODO have this redirect to "/". This was causing useEffect errors for some reason */}
-            <Route
-              path='/*'
-              element={<OverviewPage />}
-            />
-          </Routes>
-        </Col>
-      </Row>
-    </BrowserRouter>
-  );
+              </Routes>
+            </Col>
+          </Row>
+        </BrowserRouter>
+      )
+    :
+      (
+        <Button
+          variant='dark'
+          className='logout-button'
+          onClick={async () => await signOut().catch(err => console.warn(err))}
+        >
+          Log Out
+        </Button>
+      )
 }
 
 export default RoutesContainer;

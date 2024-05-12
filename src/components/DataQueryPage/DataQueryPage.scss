@@ -1,16 +1,23 @@
 .DataQueryPage {
-  .filter-row {
+  .filter-date-row {
     margin-bottom: 20px;
-    align-items: center;
-    border-style: solid;
+    // border-style: solid;
 
-    .filter-col {
+    .filter-date-col {
       display: flex;
-      padding-top: 15px;
-      padding-bottom: 15px;
       flex-direction: row;
       align-items: center;
+      * {
+        margin-right: 20px;
+      }
+    }
+  }
 
+  .filter-fume-hoods-row {
+    .filter-fume-hoods-col {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       .filter-select {
         margin-left: 15px;
         flex: 1;

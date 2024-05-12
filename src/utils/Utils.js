@@ -293,6 +293,7 @@ export const updateSensorInfo = async (newId, oldId, organizationCode) => {
   }).then(res => res.json());
 }
 
+// TODO we probably need to convert dates to UTC time
 export const fetchSensorData = async (granularity, startDate, endDate, sensors) => {
   const reqBody = {
     granularity: granularity,
@@ -361,6 +362,21 @@ export const fetchAllSensorForOrganization = async (organizationCode, startDate,
       return toRet;
     });
 };
+
+// Format date into YYYY-MM-DDTHH:MM format
+export const formatDateQueryDate = (time) => {
+  // Sometimes we'll get passed a date object other times we'll get passed the time as a string
+  // object, so we need to create a new date object to work with
+  const date = new Date(time);
+  const regex = /\d\d\d\d-\d\d-\d\dT\d\d:\d\d/;
+
+  // Get timezone offset from UTC
+  const offset = date.getTimezoneOffset() * 60 * 1000;
+
+  const localTime = new Date(date - offset);
+
+  return regex.exec(localTime.toISOString())[0];
+}
 
 
 export const convertSashHeightToMetricValue = (metricType, value) => {

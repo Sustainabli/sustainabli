@@ -16,7 +16,7 @@ const Header = ({ pageName }) => {
         <Col xs={2}>
           <Button
             variant='dark'
-            className='login-button'
+            className='logout-button'
             onClick={async () => await signOut().catch(err => console.warn(err))}
           >
             Log Out

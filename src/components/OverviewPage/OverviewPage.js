@@ -41,19 +41,17 @@ function OverviewPage() {
   useEffect(() => {
     const loadData = async () => {
       // Load appropriate data if needed
-      // Don't need to load availableSensors since App.js handles this
-
-      // if statement makes it so that the rerender doesn't work
-      //if (allSensorsInOrganizationData.length === 0) {
-      const currentDate = new Date();
-      const allSensorsInOrganizationData =
-        await fetchAllSensorForOrganization(
-          userInfo.organization_code,
-          CURRENT_YEAR_DATE,
-          currentDate
-        );
-      setAllSensorsInOrganizationData(allSensorsInOrganizationData);
-      //}
+      // Don't need to load availableSensors since RoutesContainer.js handles this
+      if (allSensorsInOrganizationData.length === 0) {
+        const currentDate = new Date();
+        const allSensorsInOrganizationData =
+          await fetchAllSensorForOrganization(
+            userInfo.organization_code,
+            CURRENT_YEAR_DATE,
+            currentDate
+          );
+        setAllSensorsInOrganizationData(allSensorsInOrganizationData);
+      }
       if (groupsToFumeHoods.length === 0) {
         const groupsToFumeHoods = await fetchAllGroupFumeHoodsFromOrganization(
           userInfo.organization_code
@@ -70,8 +68,7 @@ function OverviewPage() {
     if (userInfo && userInfo.organization_code) {
       loadData();
     }
-    // other dependencies causes rerender to occur more often than it needs to be
-  }, [userInfo]);
+  }, [allSensorsInOrganizationData, availableAccounts, groupsToFumeHoods, userInfo, setAllSensorsInOrganizationData, setAvailableAccounts, setGroupsToFumeHoods]);
 
   const summedDataValues = []; // Data for impact calculations
   const averageChartData = []; // Data points for charts
