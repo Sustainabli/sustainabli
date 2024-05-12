@@ -341,16 +341,16 @@ app.post('/api/add_user_info', async (req, res) => {
 //  }
 // }
 // response: {
-//  List of user info
+//  The updated user info
 // }
 app.put('/api/update_user_info', async (req, res) => {
-  const { new_email, old_email, group_name, organization_code, role, query_organization_code } = req.body;
+  const { new_email, old_email, name, new_role, group_name, organization_code} = req.body;
   const client = await pool.connect();
   let toRet;
   try {
     await client.query('BEGIN');
-    await client.query(format(UPDATE_USER_INFO_QUERY, new_email, role, organization_code, group_name, old_email));
-    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, query_organization_code))).rows;
+    await client.query(format(UPDATE_USER_INFO_QUERY, new_email, name, new_role, organization_code, group_name, old_email));
+    toRet = (await client.query(format(SELECT_USER_INFO_QUERY, new_email))).rows[0];
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');

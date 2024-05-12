@@ -83,6 +83,7 @@ const INSERT_USER_INFO_QUERY = `
 const UPDATE_USER_INFO_QUERY = `
   UPDATE accounts
   SET email = %L,
+      name = %L,
       role = %L,
       organization_code = %L,
       group_name = %L
