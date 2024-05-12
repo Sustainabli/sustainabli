@@ -79,7 +79,7 @@ function RoutesContainer(props) {
                     <Route
                       exact
                       path={DATA_QUERY_PAGE_PATH}
-                      element={<DataQueryPage availableSensors={availableSensors} userInfo={userInfo} />}
+                      element={<DataQueryPage />}
                     />
                     <Route
                       exact
