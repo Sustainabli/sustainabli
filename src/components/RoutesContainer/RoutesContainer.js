@@ -3,7 +3,7 @@ import { signOut } from 'aws-amplify/auth';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import NavSidebar from '../../utils/components/NavSidebar/NavSidebar';
 import { addUserInfo, fetchSensorInfoFromGroup, fetchSensorInfoFromOrganization, fetchUserInfo, fetchUsersInOrganization } from '../../utils/Utils';
 import { useRecoilState, useSetRecoilState } from 'recoil';

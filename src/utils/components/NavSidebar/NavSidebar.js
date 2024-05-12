@@ -11,7 +11,6 @@ import {
   OVERVIEW_PAGE_PATH,
   PROFILE_PAGE_PATH,
   SHUT_THE_SASH_PAGE_PATH,
-  TEAM_PAGE_PATH,
 
   // Account roles
   ORGANIZATION_ADMIN_ROLE
@@ -79,13 +78,9 @@ function NavSidebar({userInfo}) {
           {userInfo && renderMenuItem(OVERVIEW_PAGE_PATH, 'Overview', false)}
           {userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE && renderMenuItem(ORGANIZATION_PAGE_PATH, 'Organization', false)}
           {userInfo && renderMenuItem(FUME_HOODS_PAGE_PATH, 'Fume Hoods', false)}
-         {/* TODO make data query page */}
           {userInfo && renderMenuItem(DATA_QUERY_PAGE_PATH, 'Data Query', false)}
-         {/* TODO make shut the sash page */}
+          {/* TODO make shut the sash page */}
           {userInfo && renderMenuItem(SHUT_THE_SASH_PAGE_PATH, 'Shut the Sash', false)}
-          {/* TODO figure out if we need this
-            {renderMenuItem(TEAM_PAGE_PATH, 'Our Team', false)}
-          */}
           {renderMenuItem(PROFILE_PAGE_PATH, 'Profile', true)}
         </Menu>
       </Sidebar>

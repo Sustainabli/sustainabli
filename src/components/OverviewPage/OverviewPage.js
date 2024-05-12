@@ -41,7 +41,7 @@ function OverviewPage() {
   useEffect(() => {
     const loadData = async () => {
       // Load appropriate data if needed
-      // Don't need to load availableSensors since App.js handles this
+      // Don't need to load availableSensors since RoutesContainer.js handles this
       if (allSensorsInOrganizationData.length === 0) {
         const currentDate = new Date();
         const allSensorsInOrganizationData =
@@ -68,7 +68,7 @@ function OverviewPage() {
     if (userInfo && userInfo.organization_code) {
       loadData();
     }
-  }, [allSensorsInOrganizationData, availableAccounts, groupsToFumeHoods, userInfo]);
+  }, [allSensorsInOrganizationData, availableAccounts, groupsToFumeHoods, userInfo, setAllSensorsInOrganizationData, setAvailableAccounts, setGroupsToFumeHoods]);
 
   const summedDataValues = []; // Data for impact calculations
   const averageChartData = []; // Data points for charts
