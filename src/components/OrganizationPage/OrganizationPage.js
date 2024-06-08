@@ -1,79 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useRecoilState } from 'recoil';
-import FumeTable from '../../utils/components/FumeTable/FumeTable';
+import DataTable from './components/DataTable';
 import Header from '../../utils/components/Header/Header';
-import MetricsLineGraph from '../../utils/components/MetricsLineGraph/MetricsLineGraph';
 import { USER_INFO_STATE } from '../../utils/Constants';
 import {
-  fetchAllGroupFumeHoodsFromOrganization,
-  fetchAllSensorForOrganization
+  fetchUsersInOrganization
 } from '../../utils/Utils';
+import './OrganizationPage.scss';
 
-class OrganizationPage extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      allSensorsData: [],
-      groupsToFumeHoods: [],
-    };
-  }
+function OrganizationPage() {
+  const [organizationUsers, setOrganizationUsers] = useState([]);
+  const userInfo = useRecoilState(USER_INFO_STATE);
+  useEffect(() => {
+    const loadData = async() => {
+      const queriedSensorData = await fetchUsersInOrganization(userInfo[0].organization_code);
+      setOrganizationUsers(queriedSensorData);
+    }
+    if (organizationUsers.length == 0) {
+      loadData();
+    }
+  }, [organizationUsers, userInfo]);
 
-  componentDidMount = async () => {
-    const [userInfo] = useRecoilState(USER_INFO_STATE);
-
-    this.setState({
-      allSensorsData: await fetchAllSensorForOrganization(userInfo.organization_code, new Date(2023, 0, 1), new Date()),
-      groupsToFumeHoods: await fetchAllGroupFumeHoodsFromOrganization(userInfo.organization_code),
-    });
-  }
-
-  render() {
-    const { allSensorsData, groupsToFumeHoods } = this.state;
-
-    const averageData = allSensorsData.map(datum => ({
-      time: datum.time,
-      data: {
-	total: Object.values(datum.data).reduce((acc, curr) => acc + curr, 0)
-      }
-    }));
-
-    const groupSummaryData = allSensorsData.map(datum => {
-      const data = {};
-      groupsToFumeHoods.forEach(groupFumeHoods => {
-	data[groupFumeHoods.group_name] = groupFumeHoods.fume_hoods.reduce((acc, fumeHood) => {
-	  if (datum.data[fumeHood]) {
-	    return datum.data[fumeHood] + acc
-	  }
-	  return acc;
-	}, 0);
-      });
-
-      return {
-	time: datum.time,
-	data: data,
-      };
-    });
-
-    return (
-      <Container className='OrganizationPage' fluid>
-        <Header pageName='Organization Page' />
-        {allSensorsData.length > 0 &&
-          <Row>
-            <Col md={6}>
-              <MetricsLineGraph data={averageData} />
-              <FumeTable data={groupSummaryData} isGroup={true} />
-            </Col>
-            <Col md={6}>
-              <FumeTable data={allSensorsData} />
-            </Col>
-          </Row>
-        }
-      </Container>
-    )
-  }
+  return (
+    <Container fluid className="OrganizationPage">
+      <Header pageName={userInfo.organization_code}/>
+        <Row>
+          <Col xs={12}>
+            <DataTable data={organizationUsers} />
+          </Col>
+        </Row>
+    </Container>
+  );
 }
 
 export default OrganizationPage;

@@ -39,7 +39,10 @@ CREATE TABLE IF NOT EXISTS accounts (
   name VARCHAR(50) NOT NULL,
   role VARCHAR(20) NOT NULL,
   organization_code VARCHAR(5),
-  group_name VARCHAR(50)
+  group_name VARCHAR(50),
+  preferred_hood VARCHAR(30),
+  joined DATE,
+  efficiency_score VARCHAR(15)
 );
 
 CREATE TABLE IF NOT EXISTS group_fume_hoods (
