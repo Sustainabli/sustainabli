@@ -1,0 +1,9 @@
+.OrganizationPage {
+  .efficiency-score {
+    &.very-low { color: #000000; } 
+    &.low { color: #d9534f; } 
+    &.medium { color: #f0ad4e; }
+    &.high { color: #5cb85c; } 
+    &.very-high { color: #0275d8; } 
+  }
+}
