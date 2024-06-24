@@ -1,5 +1,8 @@
+// Login header user will see when they see the login page
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+
 import './LoginHeader.scss';
 
 const LoginHeader = () => {

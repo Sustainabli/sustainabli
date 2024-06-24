@@ -1,8 +1,7 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import Table from "react-bootstrap/Table";
 import {
-  AVAILABLE_ACCOUNTS_STATE,
-  AVAILABLE_SENSORS_STATE,
   CURRENT_YEAR_DATE,
   DAYS_IN_YEARS,
 
@@ -10,38 +9,22 @@ import {
   METRIC_TYPE_CARBON,
   METRIC_TYPE_COST,
   METRIC_TYPE_ENERGY,
-  MILLISECONDS_CONVERSION,
+  MILLISECONDS_IN_DAY,
 } from "../../../../utils/Constants";
+import { availableSensorInfoSelector, userInfosFromOrganizationSelector } from "../../../../utils/Recoil";
 import { convertSashOpennessToMetricValueAverage } from "../../../../utils/Utils";
-import { useRecoilState } from "recoil";
 
 function ImpactTable(props) {
   const { summedDataValues } = props;
-  const [availableSensors] = useRecoilState(
-    AVAILABLE_SENSORS_STATE
-  );
-  const [availableAccounts] = useRecoilState(
-    AVAILABLE_ACCOUNTS_STATE
-  );
-  const numBuildings = new Set(availableSensors.map((ele) => ele.building));
 
-  // We can also directly query db for groups
+  const availableSensors = useRecoilValue(availableSensorInfoSelector);
+  const availableAccounts = useRecoilValue(userInfosFromOrganizationSelector);
+  const numBuildings = new Set(availableSensors.map((ele) => ele.building));
   const labs = new Set(availableSensors.map((ele) => ele.groups).flat());
 
-  const toDateEnergy = convertSashOpennessToMetricValueAverage(
-    METRIC_TYPE_ENERGY,
-    summedDataValues
-  );
-
-  const toDateCost = convertSashOpennessToMetricValueAverage(
-    METRIC_TYPE_COST,
-    summedDataValues
-  );
-
-  const toDateCarbon = convertSashOpennessToMetricValueAverage(
-    METRIC_TYPE_CARBON,
-    summedDataValues
-  );
+  const toDateEnergy = convertSashOpennessToMetricValueAverage(METRIC_TYPE_ENERGY, summedDataValues);
+  const toDateCost = convertSashOpennessToMetricValueAverage(METRIC_TYPE_COST, summedDataValues);
+  const toDateCarbon = convertSashOpennessToMetricValueAverage(METRIC_TYPE_CARBON, summedDataValues);
 
   const renderCells = (value, units) => {
     return (
@@ -53,8 +36,7 @@ function ImpactTable(props) {
     );
   };
 
-  const date_diff =
-    Math.abs(new Date() - CURRENT_YEAR_DATE) / MILLISECONDS_CONVERSION;
+  const date_diff = Math.abs(new Date() - CURRENT_YEAR_DATE) / MILLISECONDS_IN_DAY;
 
   return (
     <Table borderless>

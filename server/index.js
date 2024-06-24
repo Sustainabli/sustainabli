@@ -35,6 +35,7 @@ const {
   UPDATE_USER_INFO_QUERY,
   UPDATE_USER_ROLE_QUERY,
   DELETE_GROUP_ON_FUME_HOOD_UPDATE,
+  ADD_USER_TO_ORGANIZATION_QUERY,
 } = require('./Constants');
 
 const app = express();
@@ -316,7 +317,7 @@ app.post('/api/add_user_info', async (req, res) => {
   try {
     await client.query('BEGIN');
     await client.query(format(INSERT_USER_INFO_QUERY, email, name, role, organization_code, group_name));
-    toRet = (await client.query(format(SELECT_USER_INFO_QUERY, organization_code))).rows;
+    toRet = (await client.query(format(SELECT_USER_INFO_QUERY, email))).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -568,7 +569,7 @@ app.post('/api/fetch_sensor_data', (req, res) => {
   pool.query(format(SELECT_SENSOR_DATA_QUERY, granularity, start_date, end_date, sensors, granularity), (err, results) => {
     if (err) {
       res.status(500).send('POST fetch sensors data errored ' + err);
-      console.log(err);
+      console.warn(err);
       return;
     }
     const toRet = results.rows;
@@ -620,6 +621,29 @@ app.post('/api/add_sensor_data', async (req, res) => {
   }
   res.status(200).json('POST add sensor data succeeded');
   });
+});
+
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+});
+
+app.post('/api/add_user_to_organization', async (req, res) => {
+  const { email, organization_code, group_name } = req.body;
+  const client = await pool.connect();
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    await client.query(format(ADD_USER_TO_ORGANIZATION_QUERY, organization_code, group_name, email));
+    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('POST add user into organization errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
 });
 
 app.get('*', (_, res) => {

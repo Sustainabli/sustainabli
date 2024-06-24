@@ -1,25 +1,31 @@
-import React from "react";
+// Modal form that ORGANIZATION_ADMIN can use to update fume hood info
+
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import "../FumeHoodsPage.scss";
-import { CREATE_SENSOR, UPDATE_FUME_HOOD_INFO } from "../../../utils/Constants";
-import { updateFumeHoodInfo } from "../../../utils/Utils";
+import { 
+  CREATE_SENSOR, 
+  UPDATE_FUME_HOOD_INFO 
+} from "../../../utils/Constants";
+import { updateFumeHoodInfo } from "../../../utils/Requests";
 
-class FumeModalForm extends React.Component {
-  onCloseModal = () => {
-    const { clearModalFormType } = this.props;
-    clearModalFormType();
+import "../FumeHoodsPage.scss";
+
+function FumeModalForm(props) {
+  const { 
+    closeModal, 
+    formType,
+    selectedSensorInfo,
+    setLocalAvailableSensors,
+  } = props;
+
+  const onCloseModal = () => {
+    closeModal();
   };
 
   /** Functions for updating fume hoods (organization_admin perspective) on the fume hoods page**/
-  onSubmitUpdateFumeHoodInfo = async (event) => {
+  const onSubmitUpdateFumeHoodInfo = async (event) => {
     event.preventDefault();
-    const {
-      clearModalFormType,
-      selectedSensorInfo,
-      setAvailableSensors
-    } = this.props;
 
     //0: fume hood name, 1: building, 2: room, 3: lab
     const fumeHoodName = event.target.elements.fumeHoodNameUpdatePage[0].value;
@@ -35,13 +41,11 @@ class FumeModalForm extends React.Component {
       lab,
       selectedSensorInfo.organization_code
     );
-    setAvailableSensors(result.fume_hoods);
-    clearModalFormType();
+    setLocalAvailableSensors(result.fume_hoods);
+    closeModal();
   };
 
-  renderFormContent = () => {
-    const { formType, selectedSensorInfo } = this.props;
-
+  const renderFormContent = () => {
     let formTitle = "";
     let modalBody;
 
@@ -49,7 +53,7 @@ class FumeModalForm extends React.Component {
       case UPDATE_FUME_HOOD_INFO:
         formTitle = "Update Fume Hood Page";
         modalBody = (
-          <Form onSubmit={this.onSubmitUpdateFumeHoodInfo}>
+          <Form onSubmit={onSubmitUpdateFumeHoodInfo}>
             <Modal.Body>
               <Form.Group controlId="fumeHoodNameUpdatePage">
                 <Form.Label>
@@ -131,15 +135,14 @@ class FumeModalForm extends React.Component {
                 </Form.Label>
                 <Form.Control type="input" placeholder="Lab" required />
                 <Form.Label>
-                  <h5>Sensor MAC</h5>
+                  <h5>Sensor ID/MAC</h5>
                 </Form.Label>
-                <Form.Control type="input" placeholder="Sensor MAC" required />
+                <Form.Control type="input" placeholder="Sensor ID/MAC" required />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="info" type="submit">
-                {" "}
-                Create Fume Hood{" "}
+                Create Fume Hood
               </Button>
             </Modal.Footer>
           </Form>
@@ -148,29 +151,24 @@ class FumeModalForm extends React.Component {
 
       default:
     }
-    return {
-      formTitle,
-      modalBody,
-    };
+    return { formTitle, modalBody };
   };
-  render() {
-    const { formType } = this.props;
-    const { formTitle, modalBody } = this.renderFormContent();
-    return (
-      <Modal
-        size="lg"
-        show={formType}
-        onHide={() => this.onCloseModal()}
-        keyboard={false}
-        backdrop={"static"}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title> {formTitle} </Modal.Title>
-        </Modal.Header>
-        {modalBody}
-      </Modal>
-    );
-  }
+
+  const { formTitle, modalBody } = renderFormContent();
+  return (
+    <Modal
+      size="lg"
+      show={formType}
+      onHide={() => onCloseModal()}
+      keyboard={false}
+      backdrop={"static"}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title> {formTitle} </Modal.Title>
+      </Modal.Header>
+      {modalBody}
+    </Modal>
+  );
 }
 
 export default FumeModalForm;

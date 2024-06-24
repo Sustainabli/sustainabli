@@ -8,15 +8,11 @@ import Header from '../../utils/components/Header/Header';
 import {
   // Form types
   ADD_ORGANIZATION_ADMIN,
-  ADD_USER,
-  CREATE_GROUP,
   CREATE_ORGANIZATION,
   CREATE_SENSOR,
-  UPDATE_GROUP_INFO,
   UPDATE_ORGANIZATION_ADMIN_INFO,
   UPDATE_ORGANIZATION_INFO,
   UPDATE_SENSOR_INFO,
-  UPDATE_USER_INFO,
 
   // User Roles
   ORGANIZATION_ADMIN_ROLE,
@@ -24,16 +20,18 @@ import {
   USER_ROLE,
 } from '../../utils/Constants.js';
 import {
-  fetchAllSensorInfo,
-  fetchGroupsInOrganization,
-  fetchOrganizationAdminUserInfo,
-  fetchOrganizations,
-  fetchUsersInOrganization,
+  // fetchAllSensorInfo,
+  // fetchGroupsInOrganization,
+  // fetchOrganizationAdminUserInfo,
+  // fetchOrganizations,
+  // fetchUsersInOrganization,
 } from '../../utils/Utils.js';
 
 import './ProfilePage.scss';
 
+// TODO make this functional and access userInfo via Recoil
 class ProfilePage extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -57,23 +55,22 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount = async () => {
-    const { userInfo } = this.props;
-    if (userInfo) {
-      const { organization_code, role } = userInfo;
-      this.setState({
-        // Super admin can create/delete organizations
-        allOrganizations: role === SUPER_ADMIN_ROLE ? await fetchOrganizations() : [],
-        // Super admin can add/remove sensors
-        allSensors: role === SUPER_ADMIN_ROLE ? await fetchAllSensorInfo() : [],
-        // Super admin can view list of organization admins
-        allOrganizationAdminUsers: role === SUPER_ADMIN_ROLE ? await fetchOrganizationAdminUserInfo() : [],
-
-        // Organization admin can create/delete groups in his organization
-        allGroupsInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchGroupsInOrganization(organization_code) : [],
-        // Organization admin can manage users in his organization
-        allUsersInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchUsersInOrganization(organization_code) : [],
-      });
-    }
+    // if (userInfo) {
+    //   const { organization_code, role } = userInfo;
+    //   this.setState({
+    //     // Super admin can create/delete organizations
+    //     allOrganizations: role === SUPER_ADMIN_ROLE ? await fetchOrganizations() : [],
+    //     // Super admin can add/remove sensors
+    //     allSensors: role === SUPER_ADMIN_ROLE ? await fetchAllSensorInfo() : [],
+    //     // Super admin can view list of organization admins
+    //     allOrganizationAdminUsers: role === SUPER_ADMIN_ROLE ? await fetchOrganizationAdminUserInfo() : [],
+    //
+    //     // Organization admin can create/delete groups in his organization
+    //     allGroupsInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchGroupsInOrganization(organization_code) : [],
+    //     // Organization admin can manage users in his organization
+    //     allUsersInOrganization: role === ORGANIZATION_ADMIN_ROLE ? await fetchUsersInOrganization(organization_code) : [],
+    //   });
+    // }
   }
 
   showModalForm = (formType, userInfo, groupInfo, sensorInfo, organizationInfo) => {
@@ -142,7 +139,6 @@ class ProfilePage extends React.Component {
     const {
       allSensors,
       allOrganizations,
-      allUsersInOrganization,
       allGroupsInOrganization,
       selectedModalForm,
       allOrganizationAdminUsers,
@@ -154,44 +150,44 @@ class ProfilePage extends React.Component {
     const { userInfo } = this.props;
 
     const isSuperAdmin = userInfo && userInfo.role === SUPER_ADMIN_ROLE;
-    const isOrganizationAdmin = userInfo && userInfo.role === ORGANIZATION_ADMIN_ROLE;
     const isUserRole = userInfo && userInfo.role === USER_ROLE;
 
     // TODO for all of the tables in this page, add columns for editing and deleting entries
     // TODO add table headers for each of the tables
     return (
       <Container fluid className='ProfilePage'>
-        { selectedModalForm &&
-          <ModalForm
-            formType={selectedModalForm}
-            userInfo={userInfo}
-            selectedUserInfo={selectedUserInfo}
-            selectedGroupInfo={selectedGroupInfo}
-            selectedSensorInfo={selectedSensorInfo}
-            selectedOrganizationInfo={selectedOrganizationInfo}
-            clearModalFormType={this.clearModalFormType}
-
-            // States used by super admin
-            allOrganizations={allOrganizations}
-
-            // States used by organization admin
-            allGroupsInOrganization={allGroupsInOrganization}
-
-            // Callbacks used by super admin
-            updateAllOrganizationsList={this.updateAllOrganizationsList}
-            updateAllSensorsList={this.updateAllSensorsList}
-            updateAllOrganizationAdminUsers={this.updateAllOrganizationAdminUsers}
-
-            // Callbacks used by organization admin
-            updateAllGroupsInOrganization={this.updateAllGroupsInOrganization}
-            updateAllUsersInOrganization={this.updateAllUsersInOrganization}
-          />
-        }
+        {/* { selectedModalForm && */}
+        {/*   <ModalForm */}
+        {/*     formType={selectedModalForm} */}
+        {/*     userInfo={userInfo} */}
+        {/*     selectedUserInfo={selectedUserInfo} */}
+        {/*     selectedGroupInfo={selectedGroupInfo} */}
+        {/*     selectedSensorInfo={selectedSensorInfo} */}
+        {/*     selectedOrganizationInfo={selectedOrganizationInfo} */}
+        {/*     clearModalFormType={this.clearModalFormType} */}
+        {/**/}
+        {/*     // States used by super admin */}
+        {/*     allOrganizations={allOrganizations} */}
+        {/**/}
+        {/*     // States used by organization admin */}
+        {/*     allGroupsInOrganization={allGroupsInOrganization} */}
+        {/**/}
+        {/*     // Callbacks used by super admin */}
+        {/*     updateAllOrganizationsList={this.updateAllOrganizationsList} */}
+        {/*     updateAllSensorsList={this.updateAllSensorsList} */}
+        {/*     updateAllOrganizationAdminUsers={this.updateAllOrganizationAdminUsers} */}
+        {/**/}
+        {/*     // Callbacks used by organization admin */}
+        {/*     updateAllGroupsInOrganization={this.updateAllGroupsInOrganization} */}
+        {/*     updateAllUsersInOrganization={this.updateAllUsersInOrganization} */}
+        {/*   /> */}
+        {/* } */}
         <Header pageName='Profile' />
         { userInfo && userInfo.email ? (
           <React.Fragment>
             <Row className='profile-info'>
               <h2>Email: {userInfo.email}</h2>
+              <h2>Name: {userInfo.name}</h2>
               <h2>Role: {userInfo.role}</h2>
               {!isSuperAdmin && <h2>Organization: {userInfo.organization_code}</h2>}
               {isUserRole && <h2>Group: {userInfo.group_name}</h2>}
@@ -265,57 +261,6 @@ class ProfilePage extends React.Component {
                         <td>{user.organization_code}</td>
                         <td className='button-cell'>
                           {this.renderShowModalButton(UPDATE_ORGANIZATION_ADMIN_INFO, 'Edit', user, null, null, null)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </React.Fragment>
-            }
-            {isOrganizationAdmin &&
-              <React.Fragment>
-                <Row className='table-header'> <h3>Users in Organization</h3> </Row>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Email</th>
-                      <th>Group</th>
-                      <th>Role</th>
-                      <th className='button-cell'> {this.renderShowModalButton(ADD_USER, 'Add User')} </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allUsersInOrganization.map((user, index) => (
-                      <tr key={index}>
-                        <td>{user.email}</td>
-                        <td>{user.group_name}</td>
-                        <td>{user.role}</td>
-                        <td className='button-cell'>
-                          {this.renderShowModalButton(UPDATE_USER_INFO, 'Edit', user, null, null, null)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-
-                <Row className='table-header'> <h3>Groups in Organization</h3> </Row>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Group Name</th>
-                      <th>Fume Hoods</th>
-                      <th className='button-cell'>
-                        {this.renderShowModalButton(CREATE_GROUP, 'Create New Group')}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allGroupsInOrganization.map((group, index) => (
-                      <tr key={index}>
-                        <td>{group.group_name}</td>
-                        <td>{group.sensor_infos.map(sensor_info => sensor_info.fume_hood_name).join(', ')}</td>
-                        <td className='button-cell'>
-                          {this.renderShowModalButton(UPDATE_GROUP_INFO, 'Edit', null, group, null, null)}
                         </td>
                       </tr>
                     ))}
