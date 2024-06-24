@@ -1,39 +1,3 @@
-import {
-  atom,
-} from 'recoil';
-
-export const ALL_ORGANIZATIONS_STATE = atom({
-  key: 'allOrganizationsState',
-  default: [],
-});
-export const ALL_SENSORS_IN_ORGANIZATION_DATA_STATE = atom({
-  key: 'allSensorsInOrganizationDataState',
-  default: [],
-});
-
-// availableSensors is a list of the possible sensors
-// ex: [{fume_hood_name: 'testMac', organization_code: 'TTT', sensor_id: 'testMac'}, ...]
-export const AVAILABLE_SENSORS_STATE = atom({
-  key: 'availableSensorsState',
-  default: [],
-});
-export const GROUPS_TO_FUME_HOODS_STATE = atom({
-  key: 'groupsToFumHoodState',
-  default: [],
-});
-export const USER_INFO_STATE = atom({
-  key: 'userInfoState',
-  default: null,
-});
-export const AVAILABLE_ACCOUNTS_STATE = atom({
-  key: 'availableAccountsState',
-  default: [],
-});
-
-
-
-
-
 /** General Constants **/
 // Distinct color hexes. If we need more look at https://medialab.github.io/iwanthue/
 export const CHART_COLORS = [
@@ -102,15 +66,13 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
   },
 };
 
-// TODO find a better date to use for MIN_DATE when viewing all data
-const currentDate = new Date();
+// TODO: find a better date to use for MIN_DATE when viewing all data
 export const MIN_DATE = new Date(2023, 0, 1);
+const currentDate = new Date();
 export const CURRENT_YEAR_DATE = new Date(currentDate.getFullYear(), 0, 1);
 
-export const MILLISECONDS_CONVERSION = 86400000
+export const MILLISECONDS_IN_DAY = 86400000;
 export const DAYS_IN_YEARS = 365
-
-export const NUM_OF_CATEGORIES = 5
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
 export const METRIC_TYPE_CARBON = 'carbon';
@@ -138,34 +100,7 @@ export const FUME_HOODS_PAGE_PATH = '/fume_hoods';
 export const DATA_QUERY_PAGE_PATH = '/data_query';
 export const SHUT_THE_SASH_PAGE_PATH = '/shut_the_sash';
 
-// API endpoints
-export const ADD_GROUP_PATH = '/api/add_group';
-export const ADD_ORGANIZATION_PATH = '/api/add_organization';
-export const ADD_SENSOR_DATA_PATH = '/api/add_sensor_data';
-export const ADD_SENSOR_INFO_PATH = '/api/add_sensor_info';
-export const ADD_USER_INFO_PATH = '/api/add_user_info';
-export const DELETE_GROUP_PATH = '/api/delete_group';
-export const DELETE_ORGANIZATION_PATH = '/api/delete_organization';
-export const FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION = '/api/fetch_all_group_fume_hoods_from_organization';
-export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
-export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
-export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
-export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
-export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
-export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';
-export const FETCH_ORGANIZATIONS_PATH = '/api/fetch_organizations';
-export const FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH = '/api/fetch_all_sensor_data_for_organization';
-export const FETCH_SENSOR_DATA_PATH = '/api/fetch_sensor_data';
-export const FETCH_USER_INFO_PATH = '/api/fetch_user_info';
-export const UPDATE_FUME_HOOD_INFO_PATH = '/api/update_fume_hood_info';
-export const UPDATE_GROUP_INFO_PATH = '/api/update_group_info';
-export const UPDATE_ORGANIZATION_ADMIN_INFO_PATH = '/api/update_organization_admin_info';
-export const UPDATE_ORGANIZATION_INFO_PATH = '/api/update_organization_info';
-export const UPDATE_SENSOR_INFO_PATH = '/api/update_sensor_info';
-export const UPDATE_USER_INFO_PATH = '/api/update_user_info';
-export const UPDATE_USER_ROLE_PATH = '/api/update_user_role';
-
-// Form Types for Profile Page
+// Form Types
 export const ADD_ORGANIZATION_ADMIN = 'add_organization_admin';
 export const ADD_USER = 'add_user';
 export const CREATE_GROUP = 'create_group';
@@ -177,3 +112,14 @@ export const UPDATE_ORGANIZATION_ADMIN_INFO = 'update_organization_admin_info';
 export const UPDATE_ORGANIZATION_INFO = 'update_organization_info';
 export const UPDATE_SENSOR_INFO = 'update_sensor_info';
 export const UPDATE_USER_INFO = 'update_user_info';
+export const UPDATE_USER_GROUP = 'update_user_group';
+export const ADD_USER_TO_ORGANIZATION = "add_user_to_organization";
+
+// Partition labels used in FivePointSnapshot
+export const PARTITION_LABELS = [
+  "Closed",
+  "0-10cm",
+  "10-25cm",
+  "25-45cm",
+  "> 45cm",
+];

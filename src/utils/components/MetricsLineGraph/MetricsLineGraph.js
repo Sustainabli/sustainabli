@@ -35,7 +35,7 @@ ChartJS.register(
 
 
 // Component for displaying line graphs
-// TODO comment the format of the data that comes in
+// TODO: comment the format of the data that comes in
 class MetricsLineGraph extends React.Component {
   render() {
     const { data } = this.props;

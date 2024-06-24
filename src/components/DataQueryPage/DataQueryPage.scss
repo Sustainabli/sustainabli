@@ -1,7 +1,6 @@
 .DataQueryPage {
   .filter-date-row {
     margin-bottom: 20px;
-    // border-style: solid;
 
     .filter-date-col {
       display: flex;
@@ -22,13 +21,6 @@
         margin-left: 15px;
         flex: 1;
       }
-    }
-  }
-
-  .metrics-row {
-    .metrics-card {
-      border-style: solid;
-      margin-bottom: 40px;
     }
   }
 }

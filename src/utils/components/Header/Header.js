@@ -1,8 +1,11 @@
+// Header that is used by most pages
+
 import { signOut } from 'aws-amplify/auth';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
 import './Header.scss';
 
 // Header to be used by all pages. Contains the page name and logout button

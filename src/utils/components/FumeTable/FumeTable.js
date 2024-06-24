@@ -10,7 +10,7 @@ import './FumeTable.scss';
 //    - grouped data (i.e. all fume hoods within a group/laboratory)
 //    - individual data (i.e. individual fume hoods)
 // The caller parses the data into the correct format. This component only converts it into CFM values and displays the data
-// TODO comment the format of the data that comes in
+// TODO: comment the format of the data that comes in
 class FumeTable extends React.Component {
   render() {
     const { data, isGroup } = this.props;

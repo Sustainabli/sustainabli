@@ -1,118 +1,139 @@
-import { Fragment, useEffect } from 'react';
+// Handles routing of the app and managing what pages which user roles have access to
+//    - For users that do not belong to an organization, they will see a "Please contact" UI. Users must belong to an organization to view any data
+//    - There is also a potential bug where the user is logged via amplify but we aren't receiving any userInfo from the database. In this case, we show a logout button
+
+import { 
+  Fragment, 
+  useEffect 
+} from 'react';
+import { 
+  useRecoilValue, 
+  useSetRecoilState 
+} from 'recoil';
 import { signOut } from 'aws-amplify/auth';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import NavSidebar from '../../utils/components/NavSidebar/NavSidebar';
-import { addUserInfo, fetchSensorInfoFromGroup, fetchSensorInfoFromOrganization, fetchUserInfo, fetchUsersInOrganization } from '../../utils/Utils';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { AVAILABLE_ACCOUNTS_STATE, AVAILABLE_SENSORS_STATE, DATA_QUERY_PAGE_PATH, FUME_HOODS_PAGE_PATH, ORGANIZATION_ADMIN_ROLE, ORGANIZATION_PAGE_PATH, OVERVIEW_PAGE_PATH, PROFILE_PAGE_PATH, SHUT_THE_SASH_PAGE_PATH, USER_INFO_STATE, USER_ROLE } from '../../utils/Constants';
+import { 
+  BrowserRouter, 
+  Route, 
+  Routes 
+} from 'react-router-dom';
 import OverviewPage from '../OverviewPage/OverviewPage';
 import OrganizationPage from '../OrganizationPage/OrganizationPage';
 import FumeHoodsPage from '../FumeHoodsPage/FumeHoodsPage';
 import DataQueryPage from '../DataQueryPage/DataQueryPage';
 import ShutTheSashPage from '../ShutTheSashPage/ShutTheSashPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
+import NavSidebar from '../../utils/components/NavSidebar/NavSidebar';
+import { 
+  // User Roles
+  ORGANIZATION_ADMIN_ROLE, 
+  USER_ROLE,
+
+  // Page paths
+  OVERVIEW_PAGE_PATH, 
+  ORGANIZATION_PAGE_PATH, 
+  FUME_HOODS_PAGE_PATH, 
+  DATA_QUERY_PAGE_PATH, 
+  SHUT_THE_SASH_PAGE_PATH,
+  PROFILE_PAGE_PATH, 
+} from '../../utils/Constants';
+import { 
+  amplifyEmailState, 
+  userInfoSelector, 
+} from '../../utils/Recoil';
 
 function RoutesContainer(props) {
   const { amplifyUser } = props;
 
-  const setAvailableAccounts = useSetRecoilState(AVAILABLE_ACCOUNTS_STATE);
-  const [availableSensors, setAvailableSensors] = useRecoilState(AVAILABLE_SENSORS_STATE);  // Available sensors to view metrics for the user
-  const [userInfo, setUserInfo] = useRecoilState(USER_INFO_STATE);
+  const setAmplifyEmail = useSetRecoilState(amplifyEmailState);
+  const userInfo = useRecoilValue(userInfoSelector);
+
+  // Default page user will navigate to depending his role
+  const defaultComponent = userInfo && userInfo.role === USER_ROLE ? <DataQueryPage /> : <OverviewPage />;
 
   useEffect(() => {
-    const loadData = async () => {
-      if (amplifyUser && userInfo === null) {
-        const amplifyEmail = amplifyUser.loginId;
-        let userInfo = await fetchUserInfo(amplifyEmail);
+    if (amplifyUser) {
+      setAmplifyEmail(amplifyUser.loginId);
+    } 
+  }, [amplifyUser, setAmplifyEmail]);
 
-        // If there is no info on the user, then create an empty user_role account for them for the database
-        if (Object.keys(userInfo).length === 0) {
-          userInfo = await addUserInfo(amplifyEmail, '', USER_ROLE, '', '');
-        } else {
-          // Get available sensors depending on user account role
-          let availableSensors = [];
-          if (userInfo.role === USER_ROLE) {
-            availableSensors = await fetchSensorInfoFromGroup(userInfo.organization_code, userInfo.group_name);
-          } else if (userInfo.role === ORGANIZATION_ADMIN_ROLE) {
-            availableSensors = await fetchSensorInfoFromOrganization(userInfo.organization_code);
-            const availableAccounts = await fetchUsersInOrganization(userInfo.organization_code);
-            setAvailableAccounts(availableAccounts);
-          }
-          setAvailableSensors(availableSensors);
-        }
-        setUserInfo(userInfo);
+  const renderContent = () => {
+    if (userInfo) {
+      if (userInfo.organization_code) {
+        return (
+          <BrowserRouter>
+            <Row className='p-0 m-0 root-row'>
+              <Col sm={1} lg={2} className='p-0'>
+                <NavSidebar />
+              </Col>
+              <Col sm={12} lg={10} className='p-0'>
+                <Routes>
+                  {userInfo.role === ORGANIZATION_ADMIN_ROLE &&
+                    <Fragment>
+                      <Route
+                        exact
+                        path={OVERVIEW_PAGE_PATH}
+                        element={<OverviewPage />}
+                      />
+                      <Route
+                        exact
+                        path={ORGANIZATION_PAGE_PATH}
+                        element={<OrganizationPage />}
+                      />
+                      <Route
+                        exact
+                        path={FUME_HOODS_PAGE_PATH}
+                        element={<FumeHoodsPage />}
+                      />
+                    </Fragment>
+                  }
+                  <Route
+                    exact
+                    path={DATA_QUERY_PAGE_PATH}
+                    element={<DataQueryPage />}
+                  />
+                  <Route
+                    exact
+                    path={SHUT_THE_SASH_PAGE_PATH}
+                    element={<ShutTheSashPage />}
+                  />
+                  <Route
+                    exact
+                    path={PROFILE_PAGE_PATH}
+                    element={<ProfilePage userInfo={userInfo} />}
+                  />
+                  {/* TODO figure out Navigate is causing maximum stack depth */}
+                  <Route 
+                    path='/*'
+                    element={defaultComponent} />
+                </Routes>
+              </Col>
+            </Row>
+          </BrowserRouter>
+        );
       }
-    };
+    // TODO: Create UI for user not in organization
+      return (
+        <Row>
+          Please contact your organization admin to add you to an organization and a group. You will not be able to view data until you are a part of an organization and a group.
+        </Row>
+      );
+    }
+    // TODO: Create log out UI 
+    return (
+      <Button
+        variant='dark'
+        className='logout-button'
+        onClick={async () => await signOut().catch(err => console.warn(err))}
+      >
+        Log Out
+      </Button>
+    );
+  }
 
-    loadData();
-  }, [amplifyUser, setAvailableAccounts, setAvailableSensors, setUserInfo, userInfo]);
-
-  return userInfo ?
-      (
-        <BrowserRouter>
-          <Row className='p-0 m-0 root-row'>
-            <Col sm={1} lg={2} className='p-0'>
-              <NavSidebar userInfo={userInfo} />
-            </Col>
-            <Col sm={12} lg={10} className='p-0'>
-              <Routes>
-                {userInfo.role === ORGANIZATION_ADMIN_ROLE &&
-                  <Fragment>
-                    <Route
-                      exact
-                      path={OVERVIEW_PAGE_PATH}
-                      element={<OverviewPage />}
-                    />
-                    <Route
-                      exact
-                      path={ORGANIZATION_PAGE_PATH}
-                      element={<OrganizationPage />}
-                    />
-                    <Route
-                      exact
-                      path={FUME_HOODS_PAGE_PATH}
-                      element={<FumeHoodsPage />}
-                    />
-                    <Route
-                      exact
-                      path={DATA_QUERY_PAGE_PATH}
-                      element={<DataQueryPage />}
-                    />
-                    <Route
-                      exact
-                      path={SHUT_THE_SASH_PAGE_PATH}
-                      element={<ShutTheSashPage />}
-                    />
-                  </Fragment>
-                }
-                <Route
-                  exact
-                  path={PROFILE_PAGE_PATH}
-                  element={<ProfilePage userInfo={userInfo} />}
-                />
-                {/* TODO have this redirect to "/". This was causing useEffect errors for some reason */}
-                <Route
-                  path='/*'
-                  element={<OverviewPage />}
-                />
-              </Routes>
-            </Col>
-          </Row>
-        </BrowserRouter>
-      )
-    :
-      (
-        <Button
-          variant='dark'
-          className='logout-button'
-          onClick={async () => await signOut().catch(err => console.warn(err))}
-        >
-          Log Out
-        </Button>
-      )
+  return renderContent();
 }
 
 export default RoutesContainer;

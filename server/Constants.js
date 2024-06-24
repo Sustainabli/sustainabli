@@ -117,7 +117,7 @@ const UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY = `
 `;
 
 const SELECT_ALL_SENSOR_INFO_QUERY = `
-  SELECT id, organization_code, fume_hood_name
+  SELECT id AS sensor_id, organization_code, fume_hood_name
   FROM sensor_info
   ORDER BY organization_code, id;
 `;
@@ -194,6 +194,19 @@ const SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY = `
   ORDER BY group_name
 `;
 
+const ADD_USER_TO_ORGANIZATION_QUERY = `
+  UPDATE accounts
+  SET organization_code = %L,
+      group_name = %L
+  WHERE email=%L;
+`;
+
+const UPDATE_USER_GROUP_QUERY = `
+  UPDATE accounts
+  SET group_name = %L
+  WHERE email = %L;
+`;
+
 module.exports = {
   SELECT_ALL_ORGANIZATIONS_QUERY,
   INSERT_ORGANIZATION_QUERY,
@@ -226,4 +239,6 @@ module.exports = {
   UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY,
   SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY,
   SELECT_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION_QUERY,
+  ADD_USER_TO_ORGANIZATION_QUERY,
+  UPDATE_USER_GROUP_QUERY,
 };
