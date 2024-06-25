@@ -1,0 +1,26 @@
+.DataQueryPage {
+  .filter-date-row {
+    margin-bottom: 20px;
+
+    .filter-date-col {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      * {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .filter-fume-hoods-row {
+    .filter-fume-hoods-col {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .filter-select {
+        margin-left: 15px;
+        flex: 1;
+      }
+    }
+  }
+}

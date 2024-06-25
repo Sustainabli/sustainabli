@@ -1,0 +1,50 @@
+.OrganizationPage {
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white; 
+
+    th {
+      background-color: #4e5d6c; 
+      color: white;
+      text-align: left;
+      font-weight: normal;
+      padding: 12px 15px;
+      border-bottom: 2px solid #36454f; 
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd; 
+      color: #333; 
+
+
+      &:last-child {
+        text-align: right;
+        font-weight: bold;
+      }
+
+      .efficiency-score {
+        &.very-low { color: #000000; } 
+        &.low { color: #d9534f; } 
+        &.medium { color: #f0ad4e; }
+        &.high { color: #5cb85c; } 
+        &.very-high { color: #0275d8; } 
+      }
+    }
+
+    tr {
+      &:nth-child(even) {
+        background-color: #f2f2f2; 
+      }
+
+      &:hover {
+        background-color: #eaeaea; 
+      }
+    }
+  }
+}

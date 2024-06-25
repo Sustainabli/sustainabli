@@ -1,20 +1,21 @@
-import React from 'react';
+import { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { ProSidebarProvider } from 'react-pro-sidebar';
-import { Auth0Provider } from '@auth0/auth0-react';
+import { RecoilRoot } from 'recoil';
 import App from './App';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
+// TODO: configure fetch error component https://react.dev/reference/react/useTransition#displaying-an-error-to-users-with-error-boundary
+// TODO: Make a nice looking loading screen
 ReactDOM.render(
-  <ProSidebarProvider>
-    <Auth0Provider
-      domain={process.env.REACT_APP_AUTH0_DOMAIN}
-      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-      redirectUri={window.location.href}
-    >
-      <App />
-    </Auth0Provider>
-  </ProSidebarProvider>,
+  <Suspense fallback={<div>Loading... </div>}>
+    <RecoilRoot>
+      <ProSidebarProvider>
+        <App />
+      </ProSidebarProvider>
+    </RecoilRoot>
+  </Suspense>,
   document.getElementById('root')
 );

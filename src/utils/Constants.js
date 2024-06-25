@@ -23,6 +23,14 @@ export const CHART_COLORS = [
   '#9f582c',
 ];
 
+export const SNAPSHOT_COLORS = [
+  'rgb(135, 211, 0)',
+  'rgb(246,230,0)',
+  'rgb(239,165,0)',
+  'rgb(199,0,5)',
+  'rgb(140,26,255)',
+]
+
 export const TIME_GRANULARITIES = {
   none: 'none',
   day: 'day',
@@ -58,8 +66,13 @@ export const RELATIVE_TIME_RANGES_OPTIONS = {
   },
 };
 
-// TODO find a better date to use for MIN_DATE when viewing all data
-export const MIN_DATE = new Date('01/01/2000');
+// TODO: find a better date to use for MIN_DATE when viewing all data
+export const MIN_DATE = new Date(2023, 0, 1);
+const currentDate = new Date();
+export const CURRENT_YEAR_DATE = new Date(currentDate.getFullYear(), 0, 1);
+
+export const MILLISECONDS_IN_DAY = 86400000;
+export const DAYS_IN_YEARS = 365
 
 export const METRIC_TYPE_AIRFLOW = 'airflow';
 export const METRIC_TYPE_CARBON = 'carbon';
@@ -79,40 +92,15 @@ export const ORGANIZATION_ADMIN_ROLE = 'organization_admin';
 export const USER_ROLE = 'user';
 
 // Endpoints for various pages on the website
-export const HOME_PAGE_PATH = '/';
-export const TEAM_PAGE_PATH = '/team';
+export const OVERVIEW_PAGE_PATH = '/';
 export const PROFILE_PAGE_PATH = '/profile';
-export const SUMMARY_PAGE_PATH = '/summary';
+export const ORGANIZATION_PAGE_PATH = '/organization';
 export const LOGIN_PAGE_PATH = '/login';
+export const FUME_HOODS_PAGE_PATH = '/fume_hoods';
+export const DATA_QUERY_PAGE_PATH = '/data_query';
+export const SHUT_THE_SASH_PAGE_PATH = '/shut_the_sash';
 
-// API endpoints
-export const ADD_GROUP_PATH = '/api/add_group';
-export const ADD_ORGANIZATION_PATH = '/api/add_organization';
-export const ADD_SENSOR_DATA_PATH = '/api/add_sensor_data';
-export const ADD_SENSOR_INFO_PATH = '/api/add_sensor_info';
-export const ADD_USER_INFO_PATH = '/api/add_user_info';
-export const DELETE_GROUP_PATH = '/api/delete_group';
-export const DELETE_ORGANIZATION_PATH = '/api/delete_organization';
-export const FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION = '/api/fetch_all_group_fume_hoods_from_organization';
-export const FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH = '/api/fetch_all_organization_admin_user_info';
-export const FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH = '/api/fetch_all_sensor_info_from_group';
-export const FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_sensor_info_from_organization';
-export const FETCH_ALL_SENSOR_INFO_PATH = '/api/fetch_all_sensor_info';
-export const FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH = '/api/fetch_all_user_info_from_organization';
-export const FETCH_GROUPS_IN_ORGANIZATION_PATH = '/api/fetch_groups_in_organization';
-export const FETCH_ORGANIZATIONS_PATH = '/api/fetch_organizations';
-export const FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH = '/api/fetch_all_sensor_data_for_organization';
-export const FETCH_SENSOR_DATA_PATH = '/api/fetch_sensor_data';
-export const FETCH_USER_INFO_PATH = '/api/fetch_user_info';
-export const UPDATE_FUME_HOOD_INFO_PATH = '/api/update_fume_hood_info';
-export const UPDATE_GROUP_INFO_PATH = '/api/update_group_info';
-export const UPDATE_ORGANIZATION_ADMIN_INFO_PATH = '/api/update_organization_admin_info';
-export const UPDATE_ORGANIZATION_INFO_PATH = '/api/update_organization_info';
-export const UPDATE_SENSOR_INFO_PATH = '/api/update_sensor_info';
-export const UPDATE_USER_INFO_PATH = '/api/update_user_info';
-export const UPDATE_USER_ROLE_PATH = '/api/update_user_role';
-
-// Form Types for Profile Page
+// Form Types
 export const ADD_ORGANIZATION_ADMIN = 'add_organization_admin';
 export const ADD_USER = 'add_user';
 export const CREATE_GROUP = 'create_group';
@@ -124,3 +112,14 @@ export const UPDATE_ORGANIZATION_ADMIN_INFO = 'update_organization_admin_info';
 export const UPDATE_ORGANIZATION_INFO = 'update_organization_info';
 export const UPDATE_SENSOR_INFO = 'update_sensor_info';
 export const UPDATE_USER_INFO = 'update_user_info';
+export const UPDATE_USER_GROUP = 'update_user_group';
+export const ADD_USER_TO_ORGANIZATION = "add_user_to_organization";
+
+// Partition labels used in FivePointSnapshot
+export const PARTITION_LABELS = [
+  "Closed",
+  "0-10cm",
+  "10-25cm",
+  "25-45cm",
+  "> 45cm",
+];

@@ -18,6 +18,7 @@ const {
   SELECT_ALL_ORGANIZATION_ADMIN_USER_INFO_QUERY,
   SELECT_ALL_ORGANIZATIONS_QUERY,
   SELECT_ALL_SENSOR_INFO_FROM_GROUP_QUERY,
+  SELECT_ALL_GROUPS_FROM_SENSOR_INFO,
   SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY,
   SELECT_ALL_SENSOR_INFO_QUERY,
   SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY,
@@ -33,6 +34,9 @@ const {
   UPDATE_USER_INFO_ON_GROUP_DELETION_QUERY,
   UPDATE_USER_INFO_QUERY,
   UPDATE_USER_ROLE_QUERY,
+  DELETE_GROUP_ON_FUME_HOOD_UPDATE,
+  ADD_USER_TO_ORGANIZATION_QUERY,
+  UPDATE_USER_GROUP_QUERY
 } = require('./Constants');
 
 const app = express();
@@ -314,7 +318,7 @@ app.post('/api/add_user_info', async (req, res) => {
   try {
     await client.query('BEGIN');
     await client.query(format(INSERT_USER_INFO_QUERY, email, name, role, organization_code, group_name));
-    toRet = (await client.query(format(SELECT_USER_INFO_QUERY, organization_code))).rows;
+    toRet = (await client.query(format(SELECT_USER_INFO_QUERY, email))).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -339,20 +343,39 @@ app.post('/api/add_user_info', async (req, res) => {
 //  }
 // }
 // response: {
-//  List of user info
+//  The updated user info
 // }
 app.put('/api/update_user_info', async (req, res) => {
-  const { new_email, old_email, group_name, organization_code, role, query_organization_code } = req.body;
+  const { new_email, old_email, name, new_role, group_name, organization_code} = req.body;
   const client = await pool.connect();
   let toRet;
   try {
     await client.query('BEGIN');
-    await client.query(format(UPDATE_USER_INFO_QUERY, new_email, role, organization_code, group_name, old_email));
-    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, query_organization_code))).rows;
+    await client.query(format(UPDATE_USER_INFO_QUERY, new_email, name, new_role, organization_code, group_name, old_email));
+    toRet = (await client.query(format(SELECT_USER_INFO_QUERY, new_email))).rows[0];
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
     res.status(500).send('PUT update user info errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
+});
+
+app.put('/api/update_user_group', async (req, res) => {
+  const { email, group_name, organization_code } = req.body;
+  const client = await pool.connect();
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    await client.query(format(UPDATE_USER_GROUP_QUERY, group_name, email));
+    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('PUT update user group errored ' + err);
     return;
   } finally {
     client.release();
@@ -494,20 +517,33 @@ app.post('/api/add_sensor_info', async (req, res) => {
 // reqBody {
 //  sensor_id: String,
 //  fume_hood_name: String,
+//  building: String,
+//  room: String,
+//  lab: String,
 //  organization_code: String
 // }
 // response {
 //  List of sensor info from organization
 // }
 app.put('/api/update_fume_hood_info', async (req, res) => {
-  const { sensor_id, fume_hood_name, organization_code } = req.body;
+  const { sensor_id, fume_hood_name, building, room, lab, organization_code } = req.body;
   const client = await pool.connect();
   let toRet = {};
   try {
     await client.query('BEGIN');
-    await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, sensor_id));
+    await client.query(format(UPDATE_FUME_HOOD_INFO_QUERY, fume_hood_name, building, room, sensor_id));
+    const existing_groups = ((await client.query(format(SELECT_ALL_GROUPS_FROM_SENSOR_INFO, organization_code, sensor_id))).rows).map((ele) => ele.group_name);
+    const needsDelete = existing_groups.filter((ele) => !lab.includes(ele))
+    if (needsDelete.length > 0) {
+      //array of size 1 gets translated to 'Group_x' instead of '(Group_x)'
+      const formattedDelete = needsDelete.length === 1 ? [needsDelete] : needsDelete
+      await client.query(format(DELETE_GROUP_ON_FUME_HOOD_UPDATE, sensor_id, formattedDelete))
+    }
+    const needsAdd = lab.filter((ele) => !existing_groups.includes(ele)).map((group) => [organization_code, group, sensor_id, fume_hood_name])
+    if (needsAdd.length >= 1) {
+        await client.query(format(INSERT_GROUP_FUME_HOODS_QUERY, needsAdd));
+    }
     toRet.fume_hoods = (await client.query(format(SELECT_ALL_SENSOR_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
-    toRet.groups = (await client.query(format(SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY, organization_code))).rows;
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
@@ -553,7 +589,7 @@ app.post('/api/fetch_sensor_data', (req, res) => {
   pool.query(format(SELECT_SENSOR_DATA_QUERY, granularity, start_date, end_date, sensors, granularity), (err, results) => {
     if (err) {
       res.status(500).send('POST fetch sensors data errored ' + err);
-      console.log(err);
+      console.warn(err);
       return;
     }
     const toRet = results.rows;
@@ -562,8 +598,8 @@ app.post('/api/fetch_sensor_data', (req, res) => {
 });
 
 app.post('/api/fetch_all_sensor_data_for_organization', (req, res) => {
-  const { organization_code} = req.body;
-  pool.query(format(SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY, organization_code), (err, results) => {
+  const { organization_code, start_date, end_date } = req.body;
+  pool.query(format(SELECT_ALL_SENSOR_DATA_FOR_ORGANIZATION_QUERY, organization_code, start_date, end_date), (err, results) => {
     if (err) {
       res.status(500).send('POST fetch sensors data errored ' + err);
       return;
@@ -605,6 +641,29 @@ app.post('/api/add_sensor_data', async (req, res) => {
   }
   res.status(200).json('POST add sensor data succeeded');
   });
+});
+
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+});
+
+app.post('/api/add_user_to_organization', async (req, res) => {
+  const { email, organization_code, group_name } = req.body;
+  const client = await pool.connect();
+  let toRet;
+  try {
+    await client.query('BEGIN');
+    await client.query(format(ADD_USER_TO_ORGANIZATION_QUERY, organization_code, group_name, email));
+    toRet = (await client.query(format(SELECT_ALL_USER_INFO_FROM_ORGANIZATION_QUERY, organization_code))).rows;
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).send('POST add user into organization errored ' + err);
+    return;
+  } finally {
+    client.release();
+  }
+  res.status(200).json(toRet);
 });
 
 app.get('*', (_, res) => {

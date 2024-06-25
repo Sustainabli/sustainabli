@@ -1,30 +1,4 @@
 import {
-  // API paths
-  ADD_GROUP_PATH,
-  ADD_ORGANIZATION_PATH,
-  ADD_SENSOR_INFO_PATH,
-  ADD_USER_INFO_PATH,
-  DELETE_GROUP_PATH,
-  FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION,
-  FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH,
-  FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH,
-  FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH,
-  FETCH_ALL_SENSOR_INFO_PATH,
-  FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH,
-  FETCH_GROUPS_IN_ORGANIZATION_PATH,
-  FETCH_ORGANIZATIONS_PATH,
-  FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH,
-  FETCH_SENSOR_DATA_PATH,
-  FETCH_USER_INFO_PATH,
-  UPDATE_FUME_HOOD_INFO_PATH,
-  UPDATE_GROUP_INFO_PATH,
-  UPDATE_ORGANIZATION_ADMIN_INFO_PATH,
-  UPDATE_ORGANIZATION_INFO_PATH,
-  DELETE_ORGANIZATION_PATH,
-  UPDATE_SENSOR_INFO_PATH,
-  UPDATE_USER_INFO_PATH,
-  UPDATE_USER_ROLE_PATH,
-
   // Other imports
   METRIC_TYPE_AIRFLOW,
   METRIC_TYPE_CARBON,
@@ -35,323 +9,20 @@ import {
   TIME_GRANULARITIES,
 } from './Constants.js';
 
-// API calls
-export const fetchOrganizations = async () => fetch(FETCH_ORGANIZATIONS_PATH).then(res => res.json());
+// Format date into YYYY-MM-DDTHH:MM format
+export const formatDateQueryDate = (time) => {
+  // Sometimes we'll get passed a date object other times we'll get passed the time as a string
+  // object, so we need to create a new date object to work with
+  const date = new Date(time);
+  const regex = /\d\d\d\d-\d\d-\d\dT\d\d:\d\d/;
 
-export const addOrganization = async (organizationCode, organizationName) => {
-  const reqBody = {
-    organization_code: organizationCode,
-    organization_name: organizationName,
-  };
-  return fetch(ADD_ORGANIZATION_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
+  // Get timezone offset from UTC
+  const offset = date.getTimezoneOffset() * 60 * 1000;
+
+  const localTime = new Date(date - offset);
+
+  return regex.exec(localTime.toISOString())[0];
 }
-
-export const updateOrganizationInfo = async (newOrganizationCode, newOrganizationName,
-    oldOrganizationCode) => {
-  const reqBody = {
-    old_organization_code: oldOrganizationCode,
-    new_organization_code: newOrganizationCode,
-    new_organization_name: newOrganizationName,
-  };
-  return fetch(UPDATE_ORGANIZATION_INFO_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const deleteOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code: organizationCode
-  };
-  return fetch(DELETE_ORGANIZATION_PATH, {
-    method: 'DELETE',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const fetchGroupsInOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code: organizationCode
-  };
-  return fetch(FETCH_GROUPS_IN_ORGANIZATION_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const fetchAllGroupFumeHoodsFromOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code: organizationCode
-  };
-  return fetch(FETCH_ALL_GROUP_FUME_HOODS_FROM_ORGANIZATION, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-
-}
-
-export const addGroup = async (groupName, organizationCode, sensorInfos) => {
-  const reqBody = {
-    group_name: groupName,
-    organization_code: organizationCode,
-    sensor_infos: sensorInfos
-  };
-  return fetch(ADD_GROUP_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const updateGroupInfo = async (newGroupName, oldGroupName, organizationCode, sensorInfos) => {
-  const reqBody = {
-    new_group_name: newGroupName,
-    old_group_name: oldGroupName,
-    organization_code: organizationCode,
-    sensor_infos: sensorInfos
-  };
-  return fetch(UPDATE_GROUP_INFO_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const deleteGroup = async (groupName, organizationCode) => {
-  const reqBody = {
-    group_name: groupName,
-    organization_code: organizationCode
-  };
-  return fetch(DELETE_GROUP_PATH, {
-    method: 'DELETE',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const fetchUserInfo = async (reqBody) => {
-  return fetch(FETCH_USER_INFO_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const fetchOrganizationAdminUserInfo = async () => {
-  return fetch(FETCH_ALL_ORGANIZATION_ADMIN_USER_INFO_PATH).then(res => res.json());
-};
-
-export const fetchUsersInOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code: organizationCode
-  };
-  return fetch(FETCH_ALL_USER_INFO_FROM_ORGANIZATION_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const addUserInfo = async (email, name, role, organizationCode, groupName) => {
-  const reqBody = {
-    email: email,
-    name: name,
-    role: role,
-    organization_code: organizationCode,
-    group_name: groupName
-  };
-  return fetch(ADD_USER_INFO_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const updateUserInfo = async (newEmail, oldEmail, newGroupName, organizationCode, role,
-    queryOrganizationCode) => {
-  const reqBody = {
-    new_email: newEmail,
-    old_email: oldEmail == null ? '' : oldEmail,
-    group_name: newGroupName,
-    organization_code: organizationCode,
-    role: role,
-    query_organization_code: queryOrganizationCode,
-  };
-  return fetch(UPDATE_USER_INFO_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const updateOrganizationAdminInfo = async (newEmail, oldEmail, groupName, organizationCode, role) => {
-  const reqBody = {
-    new_email: newEmail,
-    old_email: oldEmail,
-    group_name: groupName,
-    organization_code: organizationCode,
-    role: role
-  };
-  return fetch(UPDATE_ORGANIZATION_ADMIN_INFO_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const updateUserRole = async (email, role, organizationCode) => {
-  const reqBody = {
-    email: email,
-    role: role,
-    organization_code: organizationCode,
-  };
-  return fetch(UPDATE_USER_ROLE_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const fetchAllSensorInfo = async () => {
-  return fetch(FETCH_ALL_SENSOR_INFO_PATH).then(res => res.json());
-}
-
-export const fetchSensorInfoFromGroup = async (organizationCode, groupName) => {
-  const reqBody = {
-    organization_code: organizationCode,
-    group_name: groupName,
-  };
-  return fetch(FETCH_ALL_SENSOR_INFO_FROM_GROUP_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json())
-};
-
-export const fetchSensorInfoFromOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code: organizationCode,
-  };
-  return fetch(FETCH_ALL_SENSOR_INFO_FROM_ORGANIZATION_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-};
-
-export const addSensor = async (sensorId, organizationCode) => {
-  const reqBody = {
-    sensor_id: sensorId,
-    organization_code: organizationCode,
-  };
-  return fetch(ADD_SENSOR_INFO_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const updateFumeHoodInfo = async (sensorId, fumeHoodName, organizationCode) => {
-  const reqBody = {
-    fume_hood_name: fumeHoodName,
-    sensor_id: sensorId,
-    organization_code: organizationCode
-  };
-  return fetch(UPDATE_FUME_HOOD_INFO_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const updateSensorInfo = async (newId, oldId, organizationCode) => {
-  const reqBody = {
-    new_id: newId,
-    old_id: oldId,
-    new_organization_code: organizationCode
-  };
-  return fetch(UPDATE_SENSOR_INFO_PATH, {
-    method: 'PUT',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json());
-}
-
-export const fetchSensorData = async (granularity, startDate, endDate, sensors) => {
-  const reqBody = {
-    granularity: granularity,
-    start_date: startDate,
-    end_date: endDate,
-    sensors: sensors
-  }
-  return fetch(FETCH_SENSOR_DATA_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json())
-    .then(res => {
-      // We are guaranteed that the result is sorted by date
-      const toRet = [];
-      let currTime = null;
-      // Index of toRet
-      let currIndex = -1;
-      res.forEach(datum => {
-        // New timestamp so create a new data object
-        if (currTime != datum.time) {
-          currTime = datum.time;
-          const currDatum = {
-            time: datum.time,
-            data: {}
-          };
-          toRet.push(currDatum);
-          currIndex++;
-        }
-        toRet[currIndex].data[datum.fume_hood_name] = datum.value;
-      });
-      return toRet;
-    });
-};
-
-export const fetchAllSensorForOrganization = async (organizationCode) => {
-  const reqBody = {
-    organization_code: organizationCode,
-  }
-
-  return fetch(FETCH_ALL_SENSOR_DATA_FOR_ORGANIZATION_PATH, {
-    method: 'POST',
-    body: JSON.stringify(reqBody),
-    headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json())
-    .then(res => {
-      // We are guaranteed that the result is sorted by date
-      const toRet = [];
-      let currTime = null;
-      // Index of toRet
-      let currIndex = -1;
-      res.forEach(datum => {
-        // New timestamp so create a new data object
-        if (currTime != datum.time) {
-          currTime = datum.time;
-          const currDatum = {
-            time: datum.time,
-            data: {}
-          };
-          toRet.push(currDatum);
-          currIndex++;
-        }
-        toRet[currIndex].data[datum.fume_hood_name] = datum.value;
-      });
-      return toRet;
-    });
-};
 
 
 export const convertSashHeightToMetricValue = (metricType, value) => {
@@ -368,6 +39,29 @@ export const convertSashHeightToMetricValue = (metricType, value) => {
     default:
   }
   return value
+}
+
+// Takes list of sash openness values and calculates the metric value average
+export const convertSashOpennessToMetricValueAverage = (metricType, values) => {
+  let toRet = 0;
+  switch (metricType) {
+    case METRIC_TYPE_ENERGY:
+      toRet = ((values.length * 136 * 35.71) + 11 * 35.71 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+    case METRIC_TYPE_CARBON:
+      toRet = ((values.length * 136 * 13.771064) + 11 * 13.771064 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+    case METRIC_TYPE_COST:
+      toRet = ((values.length * 136 * 5) + 11 * 5 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+    case METRIC_TYPE_AIRFLOW:
+      toRet = ((values.length * 136) + 11 * (values.reduce((acc, value) => acc + value, 0))) / values.length;
+      break;
+
+    default:
+      toRet = 0;
+  }
+  return toRet.toFixed(2);
 }
 
 // Formats the date label on the charts based on the granularity we are looking at

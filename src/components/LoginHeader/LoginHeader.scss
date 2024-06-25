@@ -1,0 +1,25 @@
+.LoginHeader {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    margin-bottom: 30px;
+    margin-left: 0px;
+    margin-right: 0px;
+
+    h1 {
+      font-size: 50px;
+    }
+
+    h3 {
+      font-size: 30px;
+    }
+  }
+
+  .blurb {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+}
