@@ -14,7 +14,6 @@ import Header from "../../utils/components/Header/Header";
 import {
   // Form types
   UPDATE_FUME_HOOD_INFO,
-  CREATE_SENSOR,
 
   // Metric types
   METRIC_TYPE_AIRFLOW,
@@ -58,11 +57,11 @@ function FumeHoodsPage() {
     setForm(UPDATE_FUME_HOOD_INFO);
   };
 
-  const createFumeModal = () => {
-    setShouldShowModalForm(true);
-    setSensor(null);
-    setForm(CREATE_SENSOR);
-  };
+  // const createFumeModal = () => {
+  //   setShouldShowModalForm(true);
+  //   setSensor(null);
+  //   setForm(CREATE_SENSOR);
+  // };
 
   const closeModal = () => {
     setShouldShowModalForm(false);

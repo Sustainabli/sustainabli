@@ -1,6 +1,5 @@
 // Page contains stats about the overall organization. This is only accessible to ORGANIZATION_ADMIN role.
 
-import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
