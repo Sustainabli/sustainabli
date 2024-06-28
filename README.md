@@ -23,6 +23,13 @@ Frontend code is hosted in `src/`
 
 - Common components used across multiple pages is hosted in `src/utils/components/`
 
-Any utiliy code (e.g. helper functions or constants) are stored in `src/utils/`
+- Any Frontend utiliy code (e.g. helper functions or constants) are stored in `src/utils/`
 
-State that needs to persist throughout the app (e.g. userInfo or availableSensors) is handled using Recoil. Recoil state is stored in `src/utils/Constants.js`
+- State that needs to persist throughout the app (e.g. userInfo or availableSensors) is handled using Recoil
+
+- Login authentication is handled by AWS Amplify
+
+## Deployment
+
+- Code is pushed to github but app is hosted on Heroku servers
+

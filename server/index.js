@@ -11,6 +11,7 @@ const {
   INSERT_GROUP_QUERY,
   INSERT_ORGANIZATION_QUERY,
   INSERT_SENSOR_DATA_QUERY,
+  INSERT_MULTIPLE_SENSOR_DATA_QUERY,
   INSERT_SENSOR_INFO_QUERY,
   INSERT_USER_INFO_QUERY,
   SELECT_ALL_GROUPS_FROM_ORGANIZATION_QUERY,
@@ -641,6 +642,22 @@ app.post('/api/add_sensor_data', async (req, res) => {
   }
   res.status(200).json('POST add sensor data succeeded');
   });
+});
+
+app.post('/api/v2/add_sensor_data', async (req, res) => {
+  const { mac, closed_cm, data } = req.body;
+  const values = data.map(datum => ([mac, datum.time, datum.pos - closed_cm]));
+  if (values && values.length > 0) {
+    pool.query(format(INSERT_MULTIPLE_SENSOR_DATA_QUERY, values), (err, _) => {
+      if (err) {
+        res.status(500).send('POST add sensor data v2 errored ' + err);
+        return;
+      }
+      res.status(200).json('POST add sensor data v2 succeeded');
+    });
+  } else {
+    res.status(200).json('POST add sensor data v2 no data');
+  }
 });
 
 app.get('*', (_, res) => {
